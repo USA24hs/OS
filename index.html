@@ -315,7 +315,52 @@ var App = {
     '</body></html>';
   win.document.write(html); win.document.close(); setTimeout(()=>win.print(),500); },
   abrirMapa:function(){ var end=Utils.getVal('endereco'); if(end) window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(end)); else Utils.showToast('Informe o endereço primeiro.',true); },
-  sendWhatsAppMessage:function(){ var numero=prompt('WhatsApp com DDD:',Utils.getVal('whatsappCliente')); if(!numero)return; var msg='*MARLIFT EMPILHADEIRAS*\nOS: '+Utils.getVal('numeroOS')+'\nCliente: '+Utils.getVal('cliente')+'\nData: '+Utils.getVal('dataOS')+'\nStatus: '+Utils.formatStatus(State.currentStatus)+'\nHoras: '+Utils.getVal('horasTotais'); window.open('https://wa.me/'+numero.replace(/\D/g,'')+'?text='+encodeURIComponent(msg)); },
+sendWhatsAppMessage: function() {
+  var numero = prompt('WhatsApp com DDD:', Utils.getVal('whatsappCliente'));
+  if (!numero) return;
+  
+  var tipoChamado = Utils.getVal('tipoChamado') || 'normal';
+  var tipoChamadoFormatado = Utils.formatTipoChamado(tipoChamado);
+  var statusTexto = Utils.formatStatus(State.currentStatus);
+  var horasTotais = Utils.getVal('horasTotais') || '0h';
+  var marca = Utils.getVal('marca') || 'Não informada';
+  var modelo = Utils.getVal('modelo') || 'Não informado';
+  var descricao = Utils.getVal('descricaoServico') || 'Não informado';
+  var pecas = Utils.getVal('pecasAplicadas') || 'Nenhuma peça informada';
+  var pendencias = Utils.getVal('pendencias') || 'Nenhuma pendência informada';
+  var relato = Utils.getVal('relatoCliente') || 'Não informado';
+  
+  // Formatação moderna com emojis
+  var msg = '🏭 *MARLIFT EMPILHADEIRAS*\n';
+  msg += '━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━\n';
+  msg += '📋 *OS:* ' + Utils.getVal('numeroOS') + '\n';
+  msg += '👤 *Cliente:* ' + Utils.getVal('cliente') + '\n';
+  msg += '🔧 *Empilhadeira:* ' + marca + ' ' + modelo + '\n';
+  msg += '⏱️ *Tempo de Serviço:* ' + horasTotais + '\n';
+  msg += '✅ *Status:* ' + statusTexto + '\n\n';
+  
+  msg += '📄 *Tipo de Chamado:* ' + tipoChamadoFormatado + '\n';
+  msg += '🗣️ *Relato do Cliente:* ' + relato + '\n\n';
+  
+  msg += '📝 *Serviço Realizado:*\n';
+  msg += '```\n' + descricao + '\n```\n\n';
+  
+  if (pecas && pecas !== 'Nenhuma peça informada') {
+    msg += '🔩 *Peças Aplicadas:*\n';
+    msg += '```\n' + pecas + '\n```\n\n';
+  }
+  
+  if (pendencias && pendencias !== 'Nenhuma pendência informada') {
+    msg += '⚠️ *Pendências:*\n';
+    msg += '```\n' + pendencias + '\n```\n\n';
+  }
+  
+  msg += '━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━\n';
+  msg += '📱 *MARLIFT Empilhadeiras*\n';
+  msg += '🏭 *Excelência em Movimento*';
+  
+  window.open('https://wa.me/' + numero.replace(/\D/g, '') + '?text=' + encodeURIComponent(msg));
+},
   printOS:function(){ window.print(); },
   clearForm:function(){ if(State.hasUnsavedChanges && !confirm('Há alterações não salvas. Criar nova OS?')) return; location.reload(); }
 };
