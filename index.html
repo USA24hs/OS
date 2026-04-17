@@ -22,337 +22,84 @@
       --danger: #ef4444;
       --info: #3b82f6;
     }
-    
     * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
-    
-    body {
-      background: var(--bg);
-      color: var(--fg);
-      min-height: 100vh;
-      margin: 0;
-    }
-    
+    body { background: var(--bg); color: var(--fg); min-height: 100vh; margin: 0; }
     .font-display { font-family: 'Bebas Neue', sans-serif; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
-    
-    .checklist-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      transition: all 0.3s;
-    }
-    
-    .form-input {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--fg);
-      padding: 8px 12px;
-      border-radius: 8px;
-      width: 100%;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    
-    .form-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
-    }
-    
-    .form-input:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      background: var(--bg-secondary);
-    }
-    
-    .btn {
-      font-weight: 600;
-      padding: 10px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: none;
-      transition: all 0.2s;
-      font-size: 14px;
-    }
-    
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none !important;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
-      color: white;
-    }
-    
-    .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-    }
-    
-    .btn-secondary {
-      background: var(--card);
-      color: var(--fg);
-      border: 1px solid var(--border);
-    }
-    
-    .btn-secondary:hover:not(:disabled) {
-      background: var(--bg-secondary);
-      border-color: var(--accent);
-    }
-    
+    .checklist-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; transition: all 0.3s; }
+    .form-input { background: var(--bg); border: 1px solid var(--border); color: var(--fg); padding: 8px 12px; border-radius: 8px; width: 100%; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15); }
+    .form-input:disabled { opacity: 0.6; cursor: not-allowed; background: var(--bg-secondary); }
+    .btn { font-weight: 600; padding: 10px 18px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; border: none; transition: all 0.2s; font-size: 14px; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); }
+    .btn-secondary { background: var(--card); color: var(--fg); border: 1px solid var(--border); }
+    .btn-secondary:hover:not(:disabled) { background: var(--bg-secondary); border-color: var(--accent); }
     .btn-success { background: var(--success); color: white; }
     .btn-danger { background: var(--danger); color: white; }
     .btn-warning { background: var(--warning); color: white; }
     .btn-info { background: var(--info); color: white; }
-    
-    .signature-canvas {
-      border: 2px dashed var(--border);
-      border-radius: 8px;
-      background: white;
-      width: 100%;
-      height: 140px;
-      cursor: crosshair;
-      touch-action: none;
-    }
-    
-    .progress-bar {
-      height: 6px;
-      background: var(--border);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-      transition: width 0.5s ease;
-    }
-    
-    .status-badge {
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      display: inline-block;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
+    .signature-canvas { border: 2px dashed var(--border); border-radius: 8px; background: white; width: 100%; height: 140px; cursor: crosshair; touch-action: none; }
+    .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); transition: width 0.5s ease; }
+    .status-badge { padding: 5px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; display: inline-block; text-transform: uppercase; letter-spacing: 0.5px; }
     .status-abertura { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
     .status-execucao { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
     .status-finalizacao { background: rgba(16, 185, 129, 0.2); color: #34d399; }
     .status-fechada { background: rgba(139, 92, 246, 0.25); color: #a78bfa; border: 1px solid #8b5cf6; }
     .status-aprovada { background: rgba(34, 197, 94, 0.3); color: #4ade80; border: 1px solid #22c55e; }
-    
-    .toast-center {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--card);
-      border: 2px solid var(--success);
-      color: var(--fg);
-      padding: 24px 48px;
-      border-radius: 16px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      z-index: 2000;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-      display: none;
-      align-items: center;
-      gap: 14px;
-      white-space: nowrap;
-    }
-    
-    .toast-center.show {
-      display: flex;
-      animation: fadeInOut 2.5s ease forwards;
-    }
-    
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-      10% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-    }
-    
-    .tab-button {
-      padding: 12px 20px;
-      font-weight: 600;
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-    }
-    
+    .toast-center { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); border: 2px solid var(--success); color: var(--fg); padding: 24px 48px; border-radius: 16px; font-weight: bold; font-size: 1.1rem; z-index: 2000; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); display: none; align-items: center; gap: 14px; white-space: nowrap; }
+    .toast-center.show { display: flex; animation: fadeInOut 2.5s ease forwards; }
+    @keyframes fadeInOut { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } 10% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } }
+    .tab-button { padding: 12px 20px; font-weight: 600; background: transparent; border: none; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
     .tab-button:hover { color: var(--fg); }
     .tab-button.active { color: var(--accent); border-bottom-color: var(--accent); }
-    
     .tab-content { display: none; animation: fadeIn 0.3s ease; }
     .tab-content.active { display: block; }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
     .photo-preview { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
-    
-    .photo-item {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      border-radius: 8px;
-      border: 2px solid var(--border);
-      overflow: hidden;
-      background: var(--bg);
-    }
-    
+    .photo-item { position: relative; width: 120px; height: 120px; border-radius: 8px; border: 2px solid var(--border); overflow: hidden; background: var(--bg); }
     .photo-item img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .photo-remove {
-      position: absolute;
-      top: 4px; right: 4px;
-      background: rgba(220, 38, 38, 0.9);
-      border-radius: 50%;
-      width: 24px; height: 24px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: white; font-size: 14px; font-weight: bold;
-    }
-    
-    .equip-item {
-      background: var(--bg-secondary);
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 8px;
-      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-    }
-    
-    .step-indicator {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      background: var(--card);
-      border-radius: 40px;
-      padding: 5px;
-      border: 1px solid var(--border);
-    }
-    
-    .step {
-      flex: 1;
-      text-align: center;
-      padding: 10px 6px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 10px;
-      transition: all 0.3s;
-      color: var(--muted);
-    }
-    
+    .photo-remove { position: absolute; top: 4px; right: 4px; background: rgba(220, 38, 38, 0.9); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 14px; font-weight: bold; }
+    .equip-item { background: var(--bg-secondary); border-radius: 8px; padding: 10px; margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .step-indicator { display: flex; justify-content: space-between; margin-bottom: 20px; background: var(--card); border-radius: 40px; padding: 5px; border: 1px solid var(--border); }
+    .step { flex: 1; text-align: center; padding: 10px 6px; border-radius: 30px; font-weight: 600; font-size: 10px; transition: all 0.3s; color: var(--muted); }
     .step.active { background: var(--accent); color: white; }
     .step.completed { background: var(--success); color: white; }
     .step.locked { background: #8b5cf6; color: white; }
-    
-    .timer-display {
-      font-size: 2.5rem;
-      font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: 3px;
-    }
-    
-    .checklist-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: var(--bg);
-      margin-bottom: 6px;
-    }
-    
+    .timer-display { font-size: 2.5rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, var(--accent), var(--accent-light)); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 3px; }
+    .checklist-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 8px; background: var(--bg); margin-bottom: 6px; }
     .checklist-item label { display: flex; align-items: center; gap: 10px; cursor: pointer; flex: 1; }
     .checklist-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
-    
-    .action-buttons {
-      display: flex; flex-wrap: wrap; gap: 8px;
-      padding: 12px;
-      background: var(--bg-secondary);
-      border-radius: 12px;
-      margin-top: 16px;
-    }
-    
-    .loading-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(12, 15, 18, 0.95);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      z-index: 9999;
-    }
-    .spinner {
-      border: 4px solid var(--border);
-      border-top: 4px solid var(--accent);
-      border-radius: 50%;
-      width: 50px; height: 50px;
-      animation: spin 1s linear infinite;
-    }
+    .action-buttons { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; background: var(--bg-secondary); border-radius: 12px; margin-top: 16px; }
+    .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(12, 15, 18, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+    .spinner { border: 4px solid var(--border); border-top: 4px solid var(--accent); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    @media print {
-      .no-print { display: none !important; }
-      body { background: white; color: black; }
-    }
-    
-    @media (max-width: 768px) {
-      .step { font-size: 9px; padding: 8px 4px; }
-      .timer-display { font-size: 1.8rem; }
-      .btn { padding: 8px 12px; font-size: 12px; }
-      .photo-item { width: 100px; height: 100px; }
-    }
+    @media print { .no-print { display: none !important; } body { background: white; color: black; } }
+    @media (max-width: 768px) { .step { font-size: 9px; padding: 8px 4px; } .timer-display { font-size: 1.8rem; } .btn { padding: 8px 12px; font-size: 12px; } .photo-item { width: 100px; height: 100px; } }
   </style>
 </head>
 <body>
-
 <div id="loadingOverlay" class="loading-overlay">
   <div class="spinner"></div>
   <p class="mt-4 text-[var(--accent)] font-display text-xl">Carregando Sistema...</p>
 </div>
-
 <div class="min-h-screen" id="appContainer" style="display:none;">
   <header class="no-print border-b border-[var(--border)] bg-[var(--bg)]/95 backdrop-blur-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-4">
         <div class="w-12 h-12 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] rounded-xl flex items-center justify-center shadow-lg">
-          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-          </svg>
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
         </div>
-        <div>
-          <h1 class="font-display text-2xl tracking-wide text-[var(--accent)]">MARLIFT EMPILHADEIRAS</h1>
-          <p class="text-xs text-[var(--muted)]">Sistema de O.S - v3.0</p>
-        </div>
+        <div><h1 class="font-display text-2xl tracking-wide text-[var(--accent)]">MARLIFT EMPILHADEIRAS</h1><p class="text-xs text-[var(--muted)]">Sistema de O.S - v3.0</p></div>
       </div>
       <div class="flex flex-wrap gap-2">
-        <button onclick="App.gerarRelatorioFinal()" id="btnRelatorioFinal" class="btn btn-primary text-sm" disabled>
-          <i class="fas fa-file-pdf"></i> Relatório
-        </button>
-        <button onclick="App.sendWhatsAppMessage()" class="btn btn-secondary text-sm">
-          <i class="fab fa-whatsapp text-green-500"></i> WhatsApp
-        </button>
-        <button onclick="App.printOS()" class="btn btn-secondary text-sm">
-          <i class="fas fa-print"></i> Prévia
-        </button>
+        <button onclick="App.gerarRelatorioFinal()" id="btnRelatorioFinal" class="btn btn-primary text-sm" disabled><i class="fas fa-file-pdf"></i> Relatório</button>
+        <button onclick="App.sendWhatsAppMessage()" class="btn btn-secondary text-sm"><i class="fab fa-whatsapp text-green-500"></i> WhatsApp</button>
+        <button onclick="App.printOS()" class="btn btn-secondary text-sm"><i class="fas fa-print"></i> Prévia</button>
       </div>
     </div>
   </header>
-
   <main class="max-w-7xl mx-auto px-4 py-6">
     <div class="step-indicator no-print mb-6">
       <div class="step" data-step="abertura">Abertura</div>
@@ -361,322 +108,86 @@
       <div class="step" data-step="fechada">Fechada</div>
       <div class="step" data-step="aprovada">Aprovada</div>
     </div>
-
     <div class="flex border-b border-[var(--border)] mb-6 no-print overflow-x-auto">
       <button class="tab-button active" data-tab="tab-os">O.S</button>
       <button class="tab-button" data-tab="tab-checklist">Checklist</button>
       <button class="tab-button" data-tab="tab-clientes">Clientes</button>
       <button class="tab-button" data-tab="tab-historico">Histórico</button>
     </div>
-
     <!-- Tab OS -->
     <div id="tab-os" class="tab-content active">
       <div class="checklist-card p-5 mb-5">
-        <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
-          <h2 class="font-display text-xl">Informações da O.S</h2>
-          <div><span class="status-badge" id="statusBadge">EM ABERTURA</span></div>
-        </div>
-        <!-- Nº OS, Data, Tipo Chamado na mesma linha (grid 3 colunas) -->
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-4"><h2 class="font-display text-xl">Informações da O.S</h2><div><span class="status-badge" id="statusBadge">EM ABERTURA</span></div></div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">N° O.S</label>
-            <input type="text" id="numeroOS" class="form-input font-mono font-bold text-lg" readonly>
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Data</label>
-            <input type="date" id="dataOS" class="form-input">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Tipo de Chamado</label>
-            <select id="tipoChamado" class="form-input">
-              <option value="normal">Normal</option>
-              <option value="emergencial">Emergencial</option>
-              <option value="garantia">Garantia</option>
-              <option value="preventiva">Preventiva</option>
-              <option value="corretiva">Corretiva</option>
-            </select>
-          </div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">N° O.S</label><input type="text" id="numeroOS" class="form-input font-mono font-bold text-lg" readonly></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Data</label><input type="date" id="dataOS" class="form-input"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Tipo de Chamado</label><select id="tipoChamado" class="form-input"><option value="normal">Normal</option><option value="emergencial">Emergencial</option><option value="garantia">Garantia</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option></select></div>
         </div>
-        <div>
-          <label class="block text-xs text-[var(--muted)] mb-1">Relato do Cliente</label>
-          <textarea id="relatoCliente" class="form-input" rows="2" placeholder="Descreva o problema..."></textarea>
-        </div>
-        
+        <div><label class="block text-xs text-[var(--muted)] mb-1">Relato do Cliente</label><textarea id="relatoCliente" class="form-input" rows="2" placeholder="Descreva o problema..."></textarea></div>
         <div class="action-buttons no-print">
-          <button id="btnAbrirOS" class="btn btn-primary" onclick="App.mudarStatus('abertura')">
-            <i class="fas fa-plus-circle"></i> Abrir O.S
-          </button>
-          <button id="btnIniciarExecucao" class="btn btn-info" onclick="App.iniciarExecucao()">
-            <i class="fas fa-play"></i> Iniciar Execucao
-          </button>
-          <button id="btnFinalizar" class="btn btn-warning" onclick="App.finalizarServico()">
-            <i class="fas fa-stop"></i> Finalizar Serviço
-          </button>
-          <button id="btnFecharOS" class="btn btn-danger" onclick="App.fecharOS()">
-            <i class="fas fa-lock"></i> Fechar O.S
-          </button>
-          <button id="btnAprovar" class="btn btn-success" onclick="App.mudarStatus('aprovada')">
-            <i class="fas fa-stamp"></i> Aprovar com Assinatura
-          </button>
+          <button id="btnAbrirOS" class="btn btn-primary" onclick="App.mudarStatus('abertura')"><i class="fas fa-plus-circle"></i> Abrir O.S</button>
+          <button id="btnIniciarExecucao" class="btn btn-info" onclick="App.iniciarExecucao()"><i class="fas fa-play"></i> Iniciar Execucao</button>
+          <button id="btnFinalizar" class="btn btn-warning" onclick="App.finalizarServico()"><i class="fas fa-stop"></i> Finalizar Serviço</button>
+          <button id="btnFecharOS" class="btn btn-danger" onclick="App.fecharOS()"><i class="fas fa-lock"></i> Fechar O.S</button>
+          <button id="btnAprovar" class="btn btn-success" onclick="App.mudarStatus('aprovada')"><i class="fas fa-stamp"></i> Aprovar com Assinatura</button>
         </div>
       </div>
-
-      <!-- Dados Equipamento -->
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Dados do Equipamento</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Marca</label>
-            <select id="marcaSelect" class="form-input"></select>
-            <div id="marcaOutraDiv" style="display:none;" class="mt-1">
-              <input type="text" id="marcaOutra" class="form-input" placeholder="Digite a marca">
-            </div>
-            <input type="hidden" id="marca">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Modelo</label>
-            <input type="text" id="modelo" class="form-input">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">N° Série</label>
-            <input type="text" id="numSerie" class="form-input">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Horímetro <span class="text-red-400">*</span></label>
-            <input type="text" id="horimetro" class="form-input" placeholder="Ex: 1250h" required>
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Combustível</label>
-            <select id="combustivel" class="form-input">
-              <option value="">Selecione</option>
-              <option value="eletrico">Elétrico</option>
-              <option value="diesel">Diesel</option>
-              <option value="gasolina">Gasolina</option>
-              <option value="glp">GLP</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">WhatsApp Cliente</label>
-            <input type="text" id="whatsappCliente" class="form-input" placeholder="(00) 00000-0000">
-          </div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Marca</label><select id="marcaSelect" class="form-input"></select><div id="marcaOutraDiv" style="display:none;" class="mt-1"><input type="text" id="marcaOutra" class="form-input" placeholder="Digite a marca"></div><input type="hidden" id="marca"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Modelo</label><input type="text" id="modelo" class="form-input"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">N° Série</label><input type="text" id="numSerie" class="form-input"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Horímetro <span class="text-red-400">*</span></label><input type="text" id="horimetro" class="form-input" placeholder="Ex: 1250h" required></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Combustível</label><select id="combustivel" class="form-input"><option value="">Selecione</option><option value="eletrico">Elétrico</option><option value="diesel">Diesel</option><option value="gasolina">Gasolina</option><option value="glp">GLP</option></select></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">WhatsApp Cliente</label><input type="text" id="whatsappCliente" class="form-input" placeholder="(00) 00000-0000"></div>
         </div>
         <div class="grid md:grid-cols-3 gap-4 mt-4">
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Cliente</label>
-            <input type="text" id="cliente" class="form-input" required>
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">CNPJ/CPF</label>
-            <input type="text" id="cnpj" class="form-input">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Cidade</label>
-            <input type="text" id="cidadeCliente" class="form-input">
-          </div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Cliente</label><input type="text" id="cliente" class="form-input" required></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">CNPJ/CPF</label><input type="text" id="cnpj" class="form-input"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Cidade</label><input type="text" id="cidadeCliente" class="form-input"></div>
         </div>
-        <div class="mt-4">
-          <label class="block text-xs text-[var(--muted)] mb-1">Endereco</label>
-          <div class="flex gap-2">
-            <input type="text" id="endereco" class="form-input flex-1">
-            <button type="button" onclick="App.abrirMapa()" class="btn btn-secondary">
-              <i class="fas fa-map-marker-alt"></i>
-            </button>
-          </div>
-        </div>
+        <div class="mt-4"><label class="block text-xs text-[var(--muted)] mb-1">Endereco</label><div class="flex gap-2"><input type="text" id="endereco" class="form-input flex-1"><button type="button" onclick="App.abrirMapa()" class="btn btn-secondary"><i class="fas fa-map-marker-alt"></i></button></div></div>
       </div>
-
-      <!-- Servico Realizado -->
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Serviço Realizado</h2>
-        <div>
-          <label class="block text-xs text-[var(--muted)] mb-1">Diagnóstico / Serviços executados</label>
-          <textarea id="descricaoServico" class="form-input min-h-24" placeholder="Descreva o diagnostico..."></textarea>
-        </div>
-        <div class="mt-3">
-          <label class="block text-xs text-[var(--muted)] mb-1">Peças / Materiais Aplicados</label>
-          <textarea id="pecasAplicadas" class="form-input min-h-20" placeholder="Liste as pecas..."></textarea>
-        </div>
-        <div class="mt-3">
-          <label class="block text-xs text-[var(--muted)] mb-1">Pendencias / Itens Críticos</label>
-          <textarea id="pendencias" class="form-input min-h-20" placeholder="Pendencias..."></textarea>
-        </div>
+        <div><label class="block text-xs text-[var(--muted)] mb-1">Diagnóstico / Serviços executados</label><textarea id="descricaoServico" class="form-input min-h-24" placeholder="Descreva o diagnostico..."></textarea></div>
+        <div class="mt-3"><label class="block text-xs text-[var(--muted)] mb-1">Peças / Materiais Aplicados</label><textarea id="pecasAplicadas" class="form-input min-h-20" placeholder="Liste as pecas..."></textarea></div>
+        <div class="mt-3"><label class="block text-xs text-[var(--muted)] mb-1">Pendencias / Itens Críticos</label><textarea id="pendencias" class="form-input min-h-20" placeholder="Pendencias..."></textarea></div>
       </div>
-
-      <!-- Fotos -->
-      <div class="checklist-card p-5 mb-5">
-        <h2 class="font-display text-xl mb-2"><i class="fas fa-camera"></i> Foto do Horímetro</h2>
-        <input type="file" id="fotoHorimetroInput" accept="image/*" class="form-input">
-        <div id="fotoHorimetroPreview" class="photo-preview"></div>
-      </div>
-
-      <div class="checklist-card p-5 mb-5">
-        <h2 class="font-display text-xl mb-2">Fotos do Servico (max. 4)</h2>
-        <input type="file" id="fotosServico" multiple accept="image/*" class="form-input">
-        <div id="fotosPreview" class="photo-preview"></div>
-      </div>
-
-      <!-- Assinaturas -->
+      <div class="checklist-card p-5 mb-5"><h2 class="font-display text-xl mb-2"><i class="fas fa-camera"></i> Foto do Horímetro</h2><input type="file" id="fotoHorimetroInput" accept="image/*" class="form-input"><div id="fotoHorimetroPreview" class="photo-preview"></div></div>
+      <div class="checklist-card p-5 mb-5"><h2 class="font-display text-xl mb-2">Fotos do Servico (max. 4)</h2><input type="file" id="fotosServico" multiple accept="image/*" class="form-input"><div id="fotosPreview" class="photo-preview"></div></div>
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Assinaturas Digitais</h2>
         <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Técnico</label>
-            <canvas id="sigTecnicoCanvas" class="signature-canvas" width="400" height="140"></canvas>
-            <div class="flex gap-2 mt-2">
-              <button type="button" onclick="Signature.clear('tec')" class="btn btn-secondary text-xs">Limpar</button>
-              <button type="button" onclick="Signature.save('tec')" class="btn btn-primary text-xs">Salvar</button>
-            </div>
-            <input type="hidden" id="assinaturaTecnicoData">
-            <input type="text" id="tecnico" value="LEONARDO MARTINS" class="form-input mt-2">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Cliente / Recebedor</label>
-            <canvas id="sigClienteCanvas" class="signature-canvas" width="400" height="140"></canvas>
-            <div class="flex gap-2 mt-2">
-              <button type="button" onclick="Signature.clear('cli')" class="btn btn-secondary text-xs">Limpar</button>
-              <button type="button" onclick="Signature.save('cli')" class="btn btn-primary text-xs">Salvar</button>
-            </div>
-            <input type="hidden" id="assinaturaClienteData">
-            <input type="text" id="recebedor" placeholder="Nome do recebedor" class="form-input mt-2">
-          </div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Técnico</label><canvas id="sigTecnicoCanvas" class="signature-canvas" width="400" height="140"></canvas><div class="flex gap-2 mt-2"><button type="button" onclick="Signature.clear('tec')" class="btn btn-secondary text-xs">Limpar</button><button type="button" onclick="Signature.save('tec')" class="btn btn-primary text-xs">Salvar</button></div><input type="hidden" id="assinaturaTecnicoData"><input type="text" id="tecnico" value="LEONARDO MARTINS" class="form-input mt-2"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Cliente / Recebedor</label><canvas id="sigClienteCanvas" class="signature-canvas" width="400" height="140"></canvas><div class="flex gap-2 mt-2"><button type="button" onclick="Signature.clear('cli')" class="btn btn-secondary text-xs">Limpar</button><button type="button" onclick="Signature.save('cli')" class="btn btn-primary text-xs">Salvar</button></div><input type="hidden" id="assinaturaClienteData"><input type="text" id="recebedor" placeholder="Nome do recebedor" class="form-input mt-2"></div>
         </div>
       </div>
-
-      <!-- Controle de Horas -->
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Controle de Horas</h2>
-        <div class="text-center mb-4">
-          <div class="timer-display" id="timerDisplay">00:00:00</div>
-          <div class="flex gap-2 justify-center mt-3">
-            <button type="button" onclick="Timer.control('start')" class="btn btn-success text-sm">Iniciar</button>
-            <button type="button" onclick="Timer.control('pause')" class="btn btn-warning text-sm">Pausar</button>
-            <button type="button" onclick="Timer.control('stop')" class="btn btn-danger text-sm">Parar</button>
-          </div>
-        </div>
+        <div class="text-center mb-4"><div class="timer-display" id="timerDisplay">00:00:00</div><div class="flex gap-2 justify-center mt-3"><button type="button" onclick="Timer.control('start')" class="btn btn-success text-sm">Iniciar</button><button type="button" onclick="Timer.control('pause')" class="btn btn-warning text-sm">Pausar</button><button type="button" onclick="Timer.control('stop')" class="btn btn-danger text-sm">Parar</button></div></div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Início</label>
-            <input type="time" id="horaInicio" class="form-input">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Saída Almoço</label>
-            <input type="time" id="horaAlmocoSaida" class="form-input">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Retorno Almoço</label>
-            <input type="time" id="horaAlmocoRetorno" class="form-input">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Termino</label>
-            <input type="time" id="horaTermino" class="form-input">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Horas Cobradas</label>
-            <input type="text" id="horasTotais" class="form-input font-mono font-bold" readonly>
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Horas Extras</label>
-            <input type="text" id="horasExtras" class="form-input" placeholder="00:00">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Adicional Noturno</label>
-            <input type="text" id="adicionalNoturno" class="form-input" placeholder="00:00">
-          </div>
-          <div>
-            <label class="block text-xs text-[var(--muted)] mb-1">Total Geral</label>
-            <input type="text" id="totalGeral" class="form-input font-mono font-bold text-[var(--success)]" readonly>
-          </div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Início</label><input type="time" id="horaInicio" class="form-input"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Saída Almoço</label><input type="time" id="horaAlmocoSaida" class="form-input"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Retorno Almoço</label><input type="time" id="horaAlmocoRetorno" class="form-input"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Termino</label><input type="time" id="horaTermino" class="form-input"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Horas Cobradas</label><input type="text" id="horasTotais" class="form-input font-mono font-bold" readonly></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Horas Extras</label><input type="text" id="horasExtras" class="form-input" placeholder="00:00"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Adicional Noturno</label><input type="text" id="adicionalNoturno" class="form-input" placeholder="00:00"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Total Geral</label><input type="text" id="totalGeral" class="form-input font-mono font-bold text-[var(--success)]" readonly></div>
         </div>
       </div>
-
-      <div class="flex gap-3 justify-center mb-8 no-print">
-        <button onclick="App.salvarOSManual()" class="btn btn-primary">
-          <i class="fas fa-save"></i> Salvar Progresso
-        </button>
-        <button onclick="App.clearForm()" class="btn btn-secondary">
-          <i class="fas fa-plus"></i> Nova O.S
-        </button>
-      </div>
+      <div class="flex gap-3 justify-center mb-8 no-print"><button onclick="App.salvarOSManual()" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Progresso</button><button onclick="App.clearForm()" class="btn btn-secondary"><i class="fas fa-plus"></i> Nova O.S</button></div>
     </div>
-
-    <!-- Tab Checklist -->
-    <div id="tab-checklist" class="tab-content">
-      <div class="checklist-card p-4 mb-5">
-        <div class="flex justify-between items-center">
-          <span class="font-semibold">Progresso do Checklist</span>
-          <span id="progressText" class="font-mono text-[var(--accent)] text-lg">0%</span>
-        </div>
-        <div class="progress-bar mt-2">
-          <div id="progressFill" class="progress-fill" style="width:0%"></div>
-        </div>
-      </div>
-      <div id="checklistSections"></div>
-    </div>
-
-    <!-- Tab Clientes (com campo combustível no equipamento) -->
-    <div id="tab-clientes" class="tab-content">
-      <div class="checklist-card p-5 mb-5">
-        <h2 class="font-display text-xl mb-3">Cadastro de Cliente</h2>
-        <div class="grid md:grid-cols-2 gap-3">
-          <input type="text" id="cad_nome" placeholder="Nome*" class="form-input">
-          <input type="text" id="cad_cnpj" placeholder="CNPJ" class="form-input">
-          <input type="text" id="cad_endereco" placeholder="Endereço" class="form-input">
-          <input type="text" id="cad_cidade" placeholder="Cidade" class="form-input">
-          <input type="text" id="cad_telefone" placeholder="Telefone" class="form-input">
-          <input type="text" id="cad_whatsapp" placeholder="WhatsApp" class="form-input">
-        </div>
-        <div class="mt-4">
-          <label class="font-semibold text-sm">Equipamentos do Cliente</label>
-          <div id="equipamentosList"></div>
-          <button type="button" onclick="Clientes.addEquipField()" class="btn btn-secondary text-sm mt-2">
-            <i class="fas fa-plus"></i> Adicionar Equipamento
-          </button>
-        </div>
-        <div class="flex gap-3 mt-5">
-          <button class="btn btn-primary" onclick="Clientes.save()">
-            <i class="fas fa-save"></i> Salvar Cliente
-          </button>
-          <button id="cad_btnCancelar" class="btn btn-secondary" style="display:none;" onclick="Clientes.cancelEdit()">
-            Cancelar
-          </button>
-        </div>
-      </div>
-      <div class="mt-5">
-        <input type="text" id="cad_searchInput" placeholder="Buscar cliente..." class="form-input w-full md:w-64 mb-3">
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead class="bg-[var(--bg-secondary)]">
-              <tr><th class="p-3 text-left">Nome</th><th class="p-3 text-left">Cidade</th><th class="p-3 text-left">Equipamentos</th><th class="p-3 text-left">Ações</th></tr>
-            </thead>
-            <tbody id="cad_tableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab Historico -->
-    <div id="tab-historico" class="tab-content">
-      <div class="checklist-card p-5">
-        <h2 class="font-display text-xl mb-3">Histórico de O.S</h2>
-        <div class="flex flex-wrap gap-3 mb-4">
-          <input type="text" id="historicoSearch" placeholder="Buscar..." class="form-input w-64">
-          <select id="historicoFiltroTipo" class="form-input w-40"><option value="">Todos os Tipos</option><option value="emergencial">Emergencial</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option><option value="garantia">Garantia</option></select>
-          <select id="historicoFiltroStatus" class="form-input w-36"><option value="">Todos Status</option><option value="abertura">Abertura</option><option value="execucao">Execução</option><option value="finalizacao">Finalizando</option><option value="fechada">Fechada</option><option value="aprovada">Aprovada</option></select>
-          <button onclick="Historico.exportCSV()" class="btn btn-secondary text-sm"><i class="fas fa-file-csv"></i> CSV</button>
-          <button onclick="Historico.clear()" class="btn btn-secondary text-sm text-red-400"><i class="fas fa-trash"></i> Limpar</button>
-        </div>
-        <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-[var(--bg-secondary)]"><tr><th class="p-2 text-left">O.S</th><th class="p-2 text-left">Data</th><th class="p-2 text-left">Cliente</th><th class="p-2 text-left">Status</th><th class="p-2 text-left">Horas</th><th class="p-2 text-left">Acoes</th></tr></thead><tbody id="historicoTableBody"></tbody></table></div>
-        <div id="historicoEmpty" class="text-center py-8 text-[var(--muted)] hidden">Nenhuma O.S encontrada</div>
-      </div>
-    </div>
+    <div id="tab-checklist" class="tab-content"><div class="checklist-card p-4 mb-5"><div class="flex justify-between items-center"><span class="font-semibold">Progresso do Checklist</span><span id="progressText" class="font-mono text-[var(--accent)] text-lg">0%</span></div><div class="progress-bar mt-2"><div id="progressFill" class="progress-fill" style="width:0%"></div></div></div><div id="checklistSections"></div></div>
+    <div id="tab-clientes" class="tab-content"><div class="checklist-card p-5 mb-5"><h2 class="font-display text-xl mb-3">Cadastro de Cliente</h2><div class="grid md:grid-cols-2 gap-3"><input type="text" id="cad_nome" placeholder="Nome*" class="form-input"><input type="text" id="cad_cnpj" placeholder="CNPJ" class="form-input"><input type="text" id="cad_endereco" placeholder="Endereço" class="form-input"><input type="text" id="cad_cidade" placeholder="Cidade" class="form-input"><input type="text" id="cad_telefone" placeholder="Telefone" class="form-input"><input type="text" id="cad_whatsapp" placeholder="WhatsApp" class="form-input"></div><div class="mt-4"><label class="font-semibold text-sm">Equipamentos do Cliente</label><div id="equipamentosList"></div><button type="button" onclick="Clientes.addEquipField()" class="btn btn-secondary text-sm mt-2"><i class="fas fa-plus"></i> Adicionar Equipamento</button></div><div class="flex gap-3 mt-5"><button class="btn btn-primary" onclick="Clientes.save()"><i class="fas fa-save"></i> Salvar Cliente</button><button id="cad_btnCancelar" class="btn btn-secondary" style="display:none;" onclick="Clientes.cancelEdit()">Cancelar</button></div></div><div class="mt-5"><input type="text" id="cad_searchInput" placeholder="Buscar cliente..." class="form-input w-full md:w-64 mb-3"><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-[var(--bg-secondary)]"><tr><th class="p-3 text-left">Nome</th><th class="p-3 text-left">Cidade</th><th class="p-3 text-left">Equipamentos</th><th class="p-3 text-left">Ações</th></tr></thead><tbody id="cad_tableBody"></tbody></table></div></div></div>
+    <div id="tab-historico" class="tab-content"><div class="checklist-card p-5"><h2 class="font-display text-xl mb-3">Histórico de O.S</h2><div class="flex flex-wrap gap-3 mb-4"><input type="text" id="historicoSearch" placeholder="Buscar..." class="form-input w-64"><select id="historicoFiltroTipo" class="form-input w-40"><option value="">Todos os Tipos</option><option value="emergencial">Emergencial</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option><option value="garantia">Garantia</option></select><select id="historicoFiltroStatus" class="form-input w-36"><option value="">Todos Status</option><option value="abertura">Abertura</option><option value="execucao">Execução</option><option value="finalizacao">Finalizando</option><option value="fechada">Fechada</option><option value="aprovada">Aprovada</option></select><button onclick="Historico.exportCSV()" class="btn btn-secondary text-sm"><i class="fas fa-file-csv"></i> CSV</button><button onclick="Historico.clear()" class="btn btn-secondary text-sm text-red-400"><i class="fas fa-trash"></i> Limpar</button></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-[var(--bg-secondary)]"><tr><th class="p-2 text-left">O.S</th><th class="p-2 text-left">Data</th><th class="p-2 text-left">Cliente</th><th class="p-2 text-left">Status</th><th class="p-2 text-left">Horas</th><th class="p-2 text-left">Acoes</th></tr></thead><tbody id="historicoTableBody"></tbody></table></div><div id="historicoEmpty" class="text-center py-8 text-[var(--muted)] hidden">Nenhuma O.S encontrada</div></div></div>
   </main>
   <div id="toastCenter" class="toast-center"><i class="fas fa-check-circle text-green-500 text-2xl"></i><span id="toastMessage">Operação realizada</span></div>
 </div>
-
 <script>
-// ============================================
-// CONFIG & GLOBAL STATE
-// ============================================
+// ==================== DB COMPLETO COM MÉTODO GET ====================
 var Config = {
   marcas: ["TOYOTA","CLARK","BYD","PALETRANS","LINDE","HYSTER","YALE","CATERPILLAR","KOMATSU","MITSUBISHI","NISSAN","STILL","CROWN","JUNGHEINRICH","TCM","HYUNDAI","DOOSAN","HELI","HANGCHA","LONKING","OUTRA"],
   checklist: [ { id:'motor', title:'Motor e Componentes', items:[{id:'motor_oleo',label:'Nivel de oleo do motor'},{id:'motor_filtro_oleo',label:'Filtro de oleo'},{id:'motor_filtro_ar',label:'Filtro de ar'},{id:'motor_filtro_comb',label:'Filtro de combustivel'},{id:'motor_correias',label:'Correias'},{id:'motor_radiador',label:'Radiador'}] }, { id:'eletrico', title:'Sistema Eletrico', items:[{id:'eletr_bateria',label:'Bateria'},{id:'eletr_terminais',label:'Terminais'},{id:'eletr_alternador',label:'Alternador'},{id:'eletr_partida',label:'Motor de partida'},{id:'eletr_farois',label:'Farois'},{id:'eletr_buzina',label:'Buzina'}] }, { id:'hidraulico', title:'Sistema Hidraulico', items:[{id:'hidr_oleo',label:'Nivel oleo hidraulico'},{id:'hidr_bomba',label:'Bomba hidraulica'},{id:'hidr_cilindros',label:'Cilindros'},{id:'hidr_vazamentos',label:'Vazamentos'},{id:'hidr_mangueiras',label:'Mangueiras'}] }, { id:'transmissao', title:'Transmissao e Freios', items:[{id:'trans_oleo',label:'Oleo transmissao'},{id:'freio_servico',label:'Freio de servico'},{id:'freio_estac',label:'Freio de estacionamento'},{id:'freio_pastilhas',label:'Pastilhas/Lonas'}] }, { id:'direcao', title:'Direcao', items:[{id:'dir_volante',label:'Volante'},{id:'dir_caixa',label:'Caixa de direcao'},{id:'dir_hidraulica',label:'Direcao hidraulica'}] }, { id:'estrutura', title:'Estrutura e Garfos', items:[{id:'est_mastros',label:'Mastros'},{id:'est_correntes',label:'Correntes'},{id:'est_garfos',label:'Garfos'},{id:'est_roletes',label:'Roletes'}] }, { id:'seguranca', title:'Seguranca', items:[{id:'seg_cinto',label:'Cinto de seguranca'},{id:'seg_extintor',label:'Extintor'},{id:'seg_espelhos',label:'Espelhos'},{id:'seg_alarme',label:'Alarme de re'}] } ],
@@ -684,18 +195,17 @@ var Config = {
 };
 var State = { currentStatus:'abertura', photos:[], fotoHorimetro:null, clients:[], osHistory:[], editingClientId:null, hasUnsavedChanges:false, db:null };
 
-// ============================================
-// INDEXEDDB & UTILS (mantido original)
-// ============================================
 var DB = {
-  init:function(){ return new Promise((resolve,reject)=>{ var req=indexedDB.open(Config.dbName,Config.dbVersion); req.onupgradeneeded=e=>{ var db=e.target.result; if(!db.objectStoreNames.contains('os_history')) db.createObjectStore('os_history',{keyPath:'numeroOS'}); if(!db.objectStoreNames.contains('clientes')) db.createObjectStore('clientes',{keyPath:'id'}); if(!db.objectStoreNames.contains('config')) db.createObjectStore('config',{keyPath:'key'}); }; req.onsuccess=e=>{ State.db=e.target.result; resolve(e.target.result); }; req.onerror=()=>reject('Erro ao abrir banco'); }); },
+  init: function(){ return new Promise((resolve,reject)=>{ var req=indexedDB.open(Config.dbName,Config.dbVersion); req.onupgradeneeded=e=>{ var db=e.target.result; if(!db.objectStoreNames.contains('os_history')) db.createObjectStore('os_history',{keyPath:'numeroOS'}); if(!db.objectStoreNames.contains('clientes')) db.createObjectStore('clientes',{keyPath:'id'}); if(!db.objectStoreNames.contains('config')) db.createObjectStore('config',{keyPath:'key'}); }; req.onsuccess=e=>{ State.db=e.target.result; resolve(e.target.result); }; req.onerror=()=>reject('Erro ao abrir banco'); }); },
   transaction:function(storeName,mode,callback){ var tx=State.db.transaction(storeName,mode); return callback(tx.objectStore(storeName)); },
+  get:function(storeName,key){ return new Promise((resolve,reject)=>{ this.transaction(storeName,'readonly',store=>{ var req=store.get(key); req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }); }); },
   getAll:function(storeName){ return new Promise((resolve,reject)=>{ this.transaction(storeName,'readonly',store=>{ var req=store.getAll(); req.onsuccess=()=>resolve(req.result||[]); req.onerror=()=>reject(req.error); }); }); },
   put:function(storeName,data){ return new Promise((resolve,reject)=>{ this.transaction(storeName,'readwrite',store=>{ var req=store.put(data); req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }); }); },
   delete:function(storeName,key){ return new Promise((resolve,reject)=>{ this.transaction(storeName,'readwrite',store=>{ var req=store.delete(key); req.onsuccess=()=>resolve(); req.onerror=()=>reject(req.error); }); }); },
   clear:function(storeName){ return new Promise((resolve,reject)=>{ this.transaction(storeName,'readwrite',store=>{ var req=store.clear(); req.onsuccess=()=>resolve(); req.onerror=()=>reject(req.error); }); }); },
   migrateFromLocalStorage:async function(){ try{ var counter=localStorage.getItem('marlift_os_counter'); if(counter){ await this.put('config',{key:'os_counter',value:parseInt(counter)}); localStorage.removeItem('marlift_os_counter'); } var clients=localStorage.getItem('marlift_clientes'); if(clients){ var cArr=JSON.parse(clients); if(Array.isArray(cArr)) for(var c of cArr) await this.put('clientes',c); localStorage.removeItem('marlift_clientes'); } var hist=localStorage.getItem('marlift_os_history'); if(hist){ var hArr=JSON.parse(hist); if(Array.isArray(hArr)) for(var os of hArr.filter(o=>o.numeroOS)) await this.put('os_history',os); localStorage.removeItem('marlift_os_history'); } console.log('Migração ok'); }catch(e){ console.error(e); } }
 };
+
 var Utils = {
   $:function(id){ return document.getElementById(id); },
   showToast:function(msg,isError=false){ var t=this.$('toastCenter'), icon=t.querySelector('i'); this.$('toastMessage').textContent=msg; t.style.borderColor=isError?'var(--danger)':'var(--success)'; icon.className=isError?'fas fa-exclamation-circle text-red-500 text-2xl':'fas fa-check-circle text-green-500 text-2xl'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); },
@@ -708,32 +218,19 @@ var Utils = {
   setVal:function(id,v){ var e=this.$(id); if(e) e.value=v||''; },
   formatStatus:function(st){ var map={abertura:'ABERTURA',execucao:'EM EXECUCAO',finalizacao:'FINALIZANDO',fechada:'FECHADA',aprovada:'APROVADA'}; return map[st]||st.toUpperCase(); }
 };
-// Timer, Horas, Signature, Fotos (somente alteração limite fotos)
+// Timer, Horas, Signature, Fotos (com limite 4)
 var Timer = { interval:null, seconds:0, running:false, paused:false, control:function(a){ if(a==='start')this.start(); else if(a==='pause')this.pause(); else if(a==='stop')this.stop(); }, start:function(){ if(this.running&&!this.paused)return; if(this.paused){ this.paused=false; this.running=true; }else{ this.running=true; this.paused=false; if(this.seconds===0)this.reset(); } if(!Utils.getVal('horaInicio')){ var n=new Date(); Utils.setVal('horaInicio',n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})); } if(this.interval)clearInterval(this.interval); this.interval=setInterval(()=>{ if(!this.paused&&this.running){ this.seconds++; this.updateDisplay(); } },1000); }, pause:function(){ if(!this.running)return; this.paused=true; if(!Utils.getVal('horaAlmocoSaida')){ var n=new Date(); Utils.setVal('horaAlmocoSaida',n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})); } }, stop:function(){ if(!this.running)return; clearInterval(this.interval); this.running=false; this.paused=false; if(!Utils.getVal('horaTermino')){ var n=new Date(); Utils.setVal('horaTermino',n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})); } Horas.calcular(); }, reset:function(){ this.seconds=0; Utils.$('timerDisplay').textContent='00:00:00'; }, updateDisplay:function(){ var h=Math.floor(this.seconds/3600), m=Math.floor((this.seconds%3600)/60), s=this.seconds%60; Utils.$('timerDisplay').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); } };
 var Horas = { calcular:function(){ var i=Utils.getVal('horaInicio'), t=Utils.getVal('horaTermino'); if(!i||!t)return 0; var total=Utils.timeDiff(i,t); var saida=Utils.getVal('horaAlmocoSaida'), retorno=Utils.getVal('horaAlmocoRetorno'); if(saida&&retorno) total-=Utils.timeDiff(saida,retorno); var horas=Math.ceil(total/60); if(horas<1)horas=1; Utils.setVal('horasTotais',horas+'h'); this.updateTotal(); return horas; }, updateTotal:function(){ var hs=Utils.getVal('horasTotais'); var min=0; if(hs){ var m=hs.match(/(\d+)h/); if(m) min=parseInt(m[1])*60; } var extra=Utils.timeToMinutes(Utils.getVal('horasExtras')), not=Utils.timeToMinutes(Utils.getVal('adicionalNoturno')); var total=min+extra+not; var h=Math.floor(total/60), m=total%60; Utils.setVal('totalGeral',String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')); }, initListeners:function(){ var self=this; ['horaInicio','horaTermino','horaAlmocoSaida','horaAlmocoRetorno'].forEach(id=>Utils.$(id).addEventListener('change',()=>self.calcular())); Utils.$('horasExtras').addEventListener('input',()=>this.updateTotal()); Utils.$('adicionalNoturno').addEventListener('input',()=>this.updateTotal()); } };
 var Signature = { canvases:{}, drawing:{tec:false,cli:false}, init:function(){ this.canvases.tec=Utils.$('sigTecnicoCanvas'); this.canvases.cli=Utils.$('sigClienteCanvas'); this.setupCanvas('tec'); this.setupCanvas('cli'); this.clear('tec'); this.clear('cli'); }, setupCanvas:function(who){ var self=this, canvas=this.canvases[who], ctx=canvas.getContext('2d'); ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2; ctx.lineCap='round'; ctx.lineJoin='round'; var draw=function(e){ if(!self.drawing[who])return; var rect=canvas.getBoundingClientRect(), scaleX=canvas.width/rect.width, scaleY=canvas.height/rect.height; var cx=e.touches?e.touches[0].clientX:e.clientX, cy=e.touches?e.touches[0].clientY:e.clientY; var x=(cx-rect.left)*scaleX, y=(cy-rect.top)*scaleY; ctx.lineTo(x,y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x,y); }; var start=function(e){ self.drawing[who]=true; ctx.beginPath(); draw(e); }; var stop=function(){ self.drawing[who]=false; ctx.beginPath(); }; canvas.addEventListener('mousedown',start); canvas.addEventListener('mousemove',draw); canvas.addEventListener('mouseup',stop); canvas.addEventListener('mouseleave',stop); canvas.addEventListener('touchstart',e=>{ e.preventDefault(); start(e.touches[0]); },{passive:false}); canvas.addEventListener('touchmove',e=>{ e.preventDefault(); draw(e.touches[0]); },{passive:false}); canvas.addEventListener('touchend',stop); }, clear:function(who){ var canvas=this.canvases[who], ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2; Utils.setVal(who==='tec'?'assinaturaTecnicoData':'assinaturaClienteData',''); }, save:function(who){ var canvas=this.canvases[who]; var dataURL=canvas.toDataURL('image/png'); Utils.setVal(who==='tec'?'assinaturaTecnicoData':'assinaturaClienteData',dataURL); Utils.showToast('Assinatura salva'); State.hasUnsavedChanges=true; }, loadFromData:function(who,dataUrl){ if(!dataUrl)return; var canvas=this.canvases[who], ctx=canvas.getContext('2d'), img=new Image(); img.onload=function(){ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0); Utils.setVal(who==='tec'?'assinaturaTecnicoData':'assinaturaClienteData',dataUrl); }; img.src=dataUrl; } };
 var Fotos = { compress:function(b64){ return new Promise((resolve,reject)=>{ var img=new Image(); img.src=b64; img.onload=function(){ var canvas=document.createElement('canvas'); var w=img.width, h=img.height, tw=Config.photoSize.width, th=Config.photoSize.height, ratio=Math.min(tw/w,th/h); w=Math.round(w*ratio); h=Math.round(h*ratio); canvas.width=w; canvas.height=h; var ctx=canvas.getContext('2d'); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,w,h); ctx.drawImage(img,0,0,w,h); resolve(canvas.toDataURL('image/jpeg',Config.photoSize.quality)); }; img.onerror=()=>reject(new Error('Falha ao carregar')); }); }, init:function(){ var self=this; Utils.$('fotoHorimetroInput').addEventListener('change',async function(e){ var file=e.target.files[0]; if(file){ if(file.size>10*1024*1024){ Utils.showToast('Arquivo grande (max 10MB)',true); return; } var reader=new FileReader(); reader.onload=async function(ev){ try{ State.fotoHorimetro=await self.compress(ev.target.result); Utils.$('fotoHorimetroPreview').innerHTML='<div class="photo-item"><img src="'+State.fotoHorimetro+'"><div class="photo-remove" onclick="Fotos.removeHorimetro()">x</div></div>'; State.hasUnsavedChanges=true; Utils.showToast('Foto carregada'); }catch(err){ Utils.showToast('Erro ao processar',true); } }; reader.readAsDataURL(file); } }); Utils.$('fotosServico').addEventListener('change',async function(e){ var files=Array.from(e.target.files); if(State.photos.length+files.length>4){ Utils.showToast('Máximo de 4 fotos.',true); return; } var preview=Utils.$('fotosPreview'); for(var i=0;i<files.length;i++){ var file=files[i]; if(file.size>10*1024*1024)continue; var reader=new FileReader(); await new Promise(resolve=>{ reader.onload=async function(ev){ try{ var compressed=await self.compress(ev.target.result); State.photos.push(compressed); var div=document.createElement('div'); div.className='photo-item'; div.innerHTML='<img src="'+compressed+'"><div class="photo-remove" onclick="Fotos.remove(this)">x</div>'; preview.appendChild(div); }catch(err){ console.error(err); } resolve(); }; reader.readAsDataURL(file); }); } e.target.value=''; State.hasUnsavedChanges=true; }); }, removeHorimetro:function(){ State.fotoHorimetro=null; Utils.$('fotoHorimetroInput').value=''; Utils.$('fotoHorimetroPreview').innerHTML=''; }, remove:function(el){ var container=el.parentNode.parentNode; var idx=Array.from(container.children).indexOf(el.parentNode); if(idx!==-1){ State.photos.splice(idx,1); el.parentNode.remove(); } } };
-// Checklist (mantido)
 var Checklist = { total:0, checked:0, render:function(){ var container=Utils.$('checklistSections'); container.innerHTML=''; this.total=0; var self=this; Config.checklist.forEach(section=>{ self.total+=section.items.length; var div=document.createElement('div'); div.className='checklist-card p-5 mb-4'; var itemsHtml=section.items.map(item=>'<div class="checklist-item"><label><input type="checkbox" data-check="true" id="'+item.id+'" onchange="Checklist.updateProgress()"><span class="text-sm">'+item.label+'</span></label><select class="form-input w-20 text-xs" id="'+item.id+'_status"><option value="ok">OK</option><option value="atencao">Atencao</option><option value="critico">Critico</option><option value="na">N/A</option></select></div>').join(''); div.innerHTML='<div class="flex justify-between items-center mb-3"><h3 class="font-display text-xl">'+section.title+'</h3><button type="button" class="btn btn-secondary text-xs" onclick="Checklist.selectAll(\''+section.id+'\')">Selecionar Todos</button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-2">'+itemsHtml+'</div>'; container.appendChild(div); }); this.updateProgress(); }, selectAll:function(sectionId){ var section=Config.checklist.find(s=>s.id===sectionId); if(section) section.items.forEach(item=>{ var cb=Utils.$(item.id); if(cb) cb.checked=true; }); this.updateProgress(); }, updateProgress:function(){ var checkboxes=document.querySelectorAll('input[data-check="true"]'); this.checked=Array.from(checkboxes).filter(cb=>cb.checked).length; var pct=this.total>0?Math.round((this.checked/this.total)*100):0; Utils.$('progressText').textContent=pct+'%'; Utils.$('progressFill').style.width=pct+'%'; } };
-// Clientes (adicionado combustível)
-var Clientes = {
-  load:async function(){ State.clients=await DB.getAll('clientes'); this.renderTable(); },
-  renderTable:function(){ var tbody=Utils.$('cad_tableBody'); tbody.innerHTML=''; State.clients.forEach(c=>{ var row=tbody.insertRow(); row.innerHTML='<td class="p-2">'+c.nome+'</td><td class="p-2">'+(c.cidade||'-')+'</td><td class="p-2">'+(c.equipamentos||[]).length+'</td><td class="p-2"><button onclick="Clientes.select('+c.id+')" class="btn btn-primary text-xs py-1 px-2">Selecionar</button> <i class="fas fa-edit text-blue-400 cursor-pointer ml-2" onclick="Clientes.edit('+c.id+')"></i> <i class="fas fa-trash text-red-400 cursor-pointer ml-2" onclick="Clientes.delete('+c.id+')"></i></td>'; }); },
-  addEquipField:function(marca,modelo,serie,qtd,combustivel){ marca=marca||''; modelo=modelo||''; serie=serie||''; qtd=qtd||1; combustivel=combustivel||''; var container=Utils.$('equipamentosList'); var div=document.createElement('div'); div.className='equip-item'; var options=Config.marcas.map(m=>'<option value="'+m+'"'+(marca===m?' selected':'')+'>'+m+'</option>').join(''); div.innerHTML='<select class="form-input w-24 equip-marca">'+options+'<option value="OUTRA">OUTRA</option></select><div class="outra-marca-container" style="display:none"><input type="text" placeholder="Outra marca" class="form-input w-24 outra-marca"></div><input type="text" placeholder="Modelo" class="form-input w-24 equip-modelo" value="'+modelo+'"><input type="text" placeholder="Serie" class="form-input w-24 equip-serie" value="'+serie+'"><input type="number" placeholder="Qtd" class="form-input w-20 equip-qtd" value="'+qtd+'"><select class="form-input w-28 equip-combustivel"><option value="">Combustível</option><option value="eletrico" '+(combustivel==='eletrico'?'selected':'')+'>Elétrico</option><option value="diesel" '+(combustivel==='diesel'?'selected':'')+'>Diesel</option><option value="gasolina" '+(combustivel==='gasolina'?'selected':'')+'>Gasolina</option><option value="glp" '+(combustivel==='glp'?'selected':'')+'>GLP</option></select><button type="button" class="text-red-500" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>'; container.appendChild(div); var select=div.querySelector('.equip-marca'); var outraDiv=div.querySelector('.outra-marca-container'); select.addEventListener('change',function(){ outraDiv.style.display=select.value==='OUTRA'?'block':'none'; }); if(marca&&Config.marcas.indexOf(marca)===-1){ select.value='OUTRA'; div.querySelector('.outra-marca').value=marca; outraDiv.style.display='block'; } },
-  save:async function(){ var nome=Utils.getVal('cad_nome').trim(); if(!nome){ Utils.showToast('Nome do cliente obrigatório',true); return; } var equipamentos=[]; Utils.$('equipamentosList').querySelectorAll('.equip-item').forEach(item=>{ var marca=item.querySelector('.equip-marca').value; var outra=item.querySelector('.outra-marca')?item.querySelector('.outra-marca').value:''; equipamentos.push({ marca:marca==='OUTRA'?outra.toUpperCase():marca, modelo:item.querySelector('.equip-modelo').value, serie:item.querySelector('.equip-serie').value, qtd:parseInt(item.querySelector('.equip-qtd').value)||1, combustivel:item.querySelector('.equip-combustivel').value }); }); var cliente={ id:State.editingClientId||Date.now(), nome:nome, cnpj:Utils.getVal('cad_cnpj'), endereco:Utils.getVal('cad_endereco'), cidade:Utils.getVal('cad_cidade'), telefone:Utils.getVal('cad_telefone'), whatsapp:Utils.getVal('cad_whatsapp'), equipamentos:equipamentos }; await DB.put('clientes',cliente); if(State.editingClientId){ var idx=State.clients.findIndex(c=>c.id===State.editingClientId); if(idx>=0) State.clients[idx]=cliente; State.editingClientId=null; Utils.$('cad_btnCancelar').style.display='none'; }else{ State.clients.push(cliente); } this.renderTable(); this.clearForm(); Utils.showToast('Cliente salvo'); },
-  select:function(id){ var c=State.clients.find(c=>c.id===id); if(!c)return; Utils.setVal('cliente',c.nome); Utils.setVal('cnpj',c.cnpj); Utils.setVal('cidadeCliente',c.cidade); Utils.setVal('endereco',c.endereco); Utils.setVal('whatsappCliente',c.whatsapp); if(c.equipamentos&&c.equipamentos.length){ var eq=c.equipamentos[0]; var select=Utils.$('marcaSelect'); if(Config.marcas.indexOf(eq.marca)!==-1){ select.value=eq.marca; Utils.$('marcaOutraDiv').style.display='none'; }else if(eq.marca){ select.value='OUTRA'; Utils.setVal('marcaOutra',eq.marca); Utils.$('marcaOutraDiv').style.display='block'; } Utils.setVal('modelo',eq.modelo); Utils.setVal('numSerie',eq.serie); if(eq.combustivel) Utils.setVal('combustivel',eq.combustivel); } Utils.showToast('Cliente carregado'); },
-  edit:function(id){ var c=State.clients.find(c=>c.id===id); if(!c)return; State.editingClientId=id; Utils.setVal('cad_nome',c.nome); Utils.setVal('cad_cnpj',c.cnpj); Utils.setVal('cad_endereco',c.endereco); Utils.setVal('cad_cidade',c.cidade); Utils.setVal('cad_telefone',c.telefone); Utils.setVal('cad_whatsapp',c.whatsapp); Utils.$('equipamentosList').innerHTML=''; if(c.equipamentos&&c.equipamentos.length) c.equipamentos.forEach(eq=>this.addEquipField(eq.marca,eq.modelo,eq.serie,eq.qtd,eq.combustivel)); Utils.$('cad_btnCancelar').style.display='inline-flex'; Utils.showToast('Editando cliente'); },
-  delete:async function(id){ if(!confirm('Excluir este cliente?'))return; await DB.delete('clientes',id); State.clients=State.clients.filter(c=>c.id!==id); this.renderTable(); Utils.showToast('Cliente excluido'); },
-  cancelEdit:function(){ State.editingClientId=null; this.clearForm(); Utils.$('cad_btnCancelar').style.display='none'; },
-  clearForm:function(){ ['cad_nome','cad_cnpj','cad_endereco','cad_cidade','cad_telefone','cad_whatsapp'].forEach(id=>Utils.setVal(id,'')); Utils.$('equipamentosList').innerHTML=''; }
-};
-// Historico (mantido)
-var Historico = { load:async function(){ State.osHistory=await DB.getAll('os_history'); this.render(); }, render:function(){ var search=Utils.getVal('historicoSearch').toLowerCase(); var tipo=Utils.getVal('historicoFiltroTipo'); var statusFiltro=Utils.getVal('historicoFiltroStatus'); var filtered=State.osHistory.filter(os=>{ var matchSearch=!search||(os.numeroOS&&os.numeroOS.toLowerCase().indexOf(search)!==-1)||(os.cliente&&os.cliente.toLowerCase().indexOf(search)!==-1); var matchTipo=!tipo||os.tipoChamado===tipo; var matchStatus=!statusFiltro||os.status===statusFiltro; return matchSearch&&matchTipo&&matchStatus; }); var tbody=Utils.$('historicoTableBody'), empty=Utils.$('historicoEmpty'); tbody.innerHTML=''; if(filtered.length===0){ empty.classList.remove('hidden'); return; } empty.classList.add('hidden'); filtered.forEach(os=>{ var row=tbody.insertRow(); var statusClass='status-'+(os.status||'abertura'); var statusText=Utils.formatStatus(os.status); row.innerHTML='<td class="p-2 font-mono font-bold">'+(os.numeroOS||'-')+'</td><td class="p-2">'+(os.dataOS||'-')+'</td><td class="p-2">'+(os.cliente||'-').toUpperCase()+'</td><td class="p-2"><span class="status-badge '+statusClass+'">'+statusText+'</span></td><td class="p-2 font-mono font-bold text-[var(--success)]">'+(os.horasTotais||'-')+'</td><td class="p-2"><button onclick="Historico.view(\''+os.numeroOS+'\')" class="text-blue-400"><i class="fas fa-eye"></i></button> <button onclick="Historico.edit(\''+os.numeroOS+'\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="Historico.delete(\''+os.numeroOS+'\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button></td>'; }); }, view:async function(num){ var os=await DB.get('os_history',num); if(!os)return; State.currentStatus=os.status||'abertura'; document.querySelectorAll('#tab-os input, #tab-os select, #tab-os textarea').forEach(el=>{ if(el.id&&el.type!=='file') el.value=''; }); Object.keys(os).forEach(key=>{ if(['fotosBase64','fotoHorimetro','assinaturaTecnico','assinaturaCliente'].indexOf(key)===-1) Utils.setVal(key,os[key]); }); if(os.fotoHorimetro){ State.fotoHorimetro=os.fotoHorimetro; Utils.$('fotoHorimetroPreview').innerHTML='<div class="photo-item"><img src="'+os.fotoHorimetro+'"><div class="photo-remove" onclick="Fotos.removeHorimetro()">x</div></div>'; }else Fotos.removeHorimetro(); if(os.fotosBase64&&os.fotosBase64.length){ State.photos=os.fotosBase64; var preview=Utils.$('fotosPreview'); preview.innerHTML=''; os.fotosBase64.forEach(src=>{ var div=document.createElement('div'); div.className='photo-item'; div.innerHTML='<img src="'+src+'"><div class="photo-remove" onclick="Fotos.remove(this)">x</div>'; preview.appendChild(div); }); }else{ State.photos=[]; Utils.$('fotosPreview').innerHTML=''; } Signature.loadFromData('tec',os.assinaturaTecnico); Signature.loadFromData('cli',os.assinaturaCliente); document.querySelectorAll('input[data-check="true"]').forEach(cb=>{ cb.checked=os[cb.id]===true; }); App.updateUI(); Utils.showToast('OS carregada'); document.querySelector('.tab-button[data-tab="tab-os"]').click(); }, edit:function(num){ this.view(num); }, delete:async function(num){ if(!confirm('Excluir OS '+num+'?'))return; await DB.delete('os_history',num); State.osHistory=State.osHistory.filter(o=>o.numeroOS!==num); this.render(); Utils.showToast('OS excluida'); }, exportCSV:function(){ var csv='OS,Data,Cliente,Status,Tipo,Horas,Total Geral\n'; State.osHistory.forEach(o=>{ csv+=(o.numeroOS||'')+','+(o.dataOS||'')+',"'+ (o.cliente||'')+'",'+Utils.formatStatus(o.status)+','+(o.tipoChamado||'')+','+(o.horasTotais||'')+','+(o.totalGeral||'')+'\n'; }); var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='historico_os_'+new Date().toISOString().split('T')[0]+'.csv'; a.click(); Utils.showToast('CSV exportado'); }, clear:async function(){ if(!confirm('Limpar TODO o historico?'))return; await DB.clear('os_history'); State.osHistory=[]; this.render(); Utils.showToast('Historico limpo'); } };
-// APP principal (com validação horímetro)
+// Clientes com combustível
+var Clientes = { load:async function(){ State.clients=await DB.getAll('clientes'); this.renderTable(); }, renderTable:function(){ var tbody=Utils.$('cad_tableBody'); tbody.innerHTML=''; State.clients.forEach(c=>{ var row=tbody.insertRow(); row.innerHTML='<td class="p-2">'+c.nome+'</td><td class="p-2">'+(c.cidade||'-')+'</td><td class="p-2">'+(c.equipamentos||[]).length+'</td><td class="p-2"><button onclick="Clientes.select('+c.id+')" class="btn btn-primary text-xs py-1 px-2">Selecionar</button> <i class="fas fa-edit text-blue-400 cursor-pointer ml-2" onclick="Clientes.edit('+c.id+')"></i> <i class="fas fa-trash text-red-400 cursor-pointer ml-2" onclick="Clientes.delete('+c.id+')"></i></td>'; }); }, addEquipField:function(marca,modelo,serie,qtd,combustivel){ marca=marca||''; modelo=modelo||''; serie=serie||''; qtd=qtd||1; combustivel=combustivel||''; var container=Utils.$('equipamentosList'); var div=document.createElement('div'); div.className='equip-item'; var options=Config.marcas.map(m=>'<option value="'+m+'"'+(marca===m?' selected':'')+'>'+m+'</option>').join(''); div.innerHTML='<select class="form-input w-24 equip-marca">'+options+'<option value="OUTRA">OUTRA</option></select><div class="outra-marca-container" style="display:none"><input type="text" placeholder="Outra marca" class="form-input w-24 outra-marca"></div><input type="text" placeholder="Modelo" class="form-input w-24 equip-modelo" value="'+modelo+'"><input type="text" placeholder="Serie" class="form-input w-24 equip-serie" value="'+serie+'"><input type="number" placeholder="Qtd" class="form-input w-20 equip-qtd" value="'+qtd+'"><select class="form-input w-28 equip-combustivel"><option value="">Combustível</option><option value="eletrico" '+(combustivel==='eletrico'?'selected':'')+'>Elétrico</option><option value="diesel" '+(combustivel==='diesel'?'selected':'')+'>Diesel</option><option value="gasolina" '+(combustivel==='gasolina'?'selected':'')+'>Gasolina</option><option value="glp" '+(combustivel==='glp'?'selected':'')+'>GLP</option></select><button type="button" class="text-red-500" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>'; container.appendChild(div); var select=div.querySelector('.equip-marca'); var outraDiv=div.querySelector('.outra-marca-container'); select.addEventListener('change',function(){ outraDiv.style.display=select.value==='OUTRA'?'block':'none'; }); if(marca&&Config.marcas.indexOf(marca)===-1){ select.value='OUTRA'; div.querySelector('.outra-marca').value=marca; outraDiv.style.display='block'; } }, save:async function(){ var nome=Utils.getVal('cad_nome').trim(); if(!nome){ Utils.showToast('Nome do cliente obrigatório',true); return; } var equipamentos=[]; Utils.$('equipamentosList').querySelectorAll('.equip-item').forEach(item=>{ var marca=item.querySelector('.equip-marca').value; var outra=item.querySelector('.outra-marca')?item.querySelector('.outra-marca').value:''; equipamentos.push({ marca:marca==='OUTRA'?outra.toUpperCase():marca, modelo:item.querySelector('.equip-modelo').value, serie:item.querySelector('.equip-serie').value, qtd:parseInt(item.querySelector('.equip-qtd').value)||1, combustivel:item.querySelector('.equip-combustivel').value }); }); var cliente={ id:State.editingClientId||Date.now(), nome:nome, cnpj:Utils.getVal('cad_cnpj'), endereco:Utils.getVal('cad_endereco'), cidade:Utils.getVal('cad_cidade'), telefone:Utils.getVal('cad_telefone'), whatsapp:Utils.getVal('cad_whatsapp'), equipamentos:equipamentos }; await DB.put('clientes',cliente); if(State.editingClientId){ var idx=State.clients.findIndex(c=>c.id===State.editingClientId); if(idx>=0) State.clients[idx]=cliente; State.editingClientId=null; Utils.$('cad_btnCancelar').style.display='none'; }else{ State.clients.push(cliente); } this.renderTable(); this.clearForm(); Utils.showToast('Cliente salvo'); }, select:function(id){ var c=State.clients.find(c=>c.id===id); if(!c)return; Utils.setVal('cliente',c.nome); Utils.setVal('cnpj',c.cnpj); Utils.setVal('cidadeCliente',c.cidade); Utils.setVal('endereco',c.endereco); Utils.setVal('whatsappCliente',c.whatsapp); if(c.equipamentos&&c.equipamentos.length){ var eq=c.equipamentos[0]; var select=Utils.$('marcaSelect'); if(Config.marcas.indexOf(eq.marca)!==-1){ select.value=eq.marca; Utils.$('marcaOutraDiv').style.display='none'; }else if(eq.marca){ select.value='OUTRA'; Utils.setVal('marcaOutra',eq.marca); Utils.$('marcaOutraDiv').style.display='block'; } Utils.setVal('modelo',eq.modelo); Utils.setVal('numSerie',eq.serie); if(eq.combustivel) Utils.setVal('combustivel',eq.combustivel); } Utils.showToast('Cliente carregado'); }, edit:function(id){ var c=State.clients.find(c=>c.id===id); if(!c)return; State.editingClientId=id; Utils.setVal('cad_nome',c.nome); Utils.setVal('cad_cnpj',c.cnpj); Utils.setVal('cad_endereco',c.endereco); Utils.setVal('cad_cidade',c.cidade); Utils.setVal('cad_telefone',c.telefone); Utils.setVal('cad_whatsapp',c.whatsapp); Utils.$('equipamentosList').innerHTML=''; if(c.equipamentos&&c.equipamentos.length) c.equipamentos.forEach(eq=>this.addEquipField(eq.marca,eq.modelo,eq.serie,eq.qtd,eq.combustivel)); Utils.$('cad_btnCancelar').style.display='inline-flex'; Utils.showToast('Editando cliente'); }, delete:async function(id){ if(!confirm('Excluir este cliente?'))return; await DB.delete('clientes',id); State.clients=State.clients.filter(c=>c.id!==id); this.renderTable(); Utils.showToast('Cliente excluido'); }, cancelEdit:function(){ State.editingClientId=null; this.clearForm(); Utils.$('cad_btnCancelar').style.display='none'; }, clearForm:function(){ ['cad_nome','cad_cnpj','cad_endereco','cad_cidade','cad_telefone','cad_whatsapp'].forEach(id=>Utils.setVal(id,'')); Utils.$('equipamentosList').innerHTML=''; } };
+var Historico = { load:async function(){ State.osHistory=await DB.getAll('os_history'); this.render(); }, render:function(){ var search=Utils.getVal('historicoSearch').toLowerCase(); var tipo=Utils.getVal('historicoFiltroTipo'); var statusFiltro=Utils.getVal('historicoFiltroStatus'); var filtered=State.osHistory.filter(os=>{ var matchSearch=!search||(os.numeroOS&&os.numeroOS.toLowerCase().indexOf(search)!==-1)||(os.cliente&&os.cliente.toLowerCase().indexOf(search)!==-1); var matchTipo=!tipo||os.tipoChamado===tipo; var matchStatus=!statusFiltro||os.status===statusFiltro; return matchSearch&&matchTipo&&matchStatus; }); var tbody=Utils.$('historicoTableBody'), empty=Utils.$('historicoEmpty'); tbody.innerHTML=''; if(filtered.length===0){ empty.classList.remove('hidden'); return; } empty.classList.add('hidden'); filtered.forEach(os=>{ var row=tbody.insertRow(); var statusClass='status-'+(os.status||'abertura'); var statusText=Utils.formatStatus(os.status); row.innerHTML='<td class="p-2 font-mono font-bold">'+(os.numeroOS||'-')+'</td><td class="p-2">'+(os.dataOS||'-')+'</td><td class="p-2">'+(os.cliente||'-').toUpperCase()+'</td><td class="p-2"><span class="status-badge '+statusClass+'">'+statusText+'</span></td><td class="p-2 font-mono font-bold text-[var(--success)]">'+(os.horasTotais||'-')+'</td><td class="p-2"><button onclick="Historico.view(\''+os.numeroOS+'\')" class="text-blue-400"><i class="fas fa-eye"></i></button> <button onclick="Historico.edit(\''+os.numeroOS+'\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="Historico.delete(\''+os.numeroOS+'\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button></td>'; }); }, view:async function(num){ var os=await DB.get('os_history',num); if(!os)return; State.currentStatus=os.status||'abertura'; document.querySelectorAll('#tab-os input, #tab-os select, #tab-os textarea').forEach(el=>{ if(el.id&&el.type!=='file') el.value=''; }); Object.keys(os).forEach(key=>{ if(['fotosBase64','fotoHorimetro','assinaturaTecnico','assinaturaCliente'].indexOf(key)===-1) Utils.setVal(key,os[key]); }); if(os.fotoHorimetro){ State.fotoHorimetro=os.fotoHorimetro; Utils.$('fotoHorimetroPreview').innerHTML='<div class="photo-item"><img src="'+os.fotoHorimetro+'"><div class="photo-remove" onclick="Fotos.removeHorimetro()">x</div></div>'; }else Fotos.removeHorimetro(); if(os.fotosBase64&&os.fotosBase64.length){ State.photos=os.fotosBase64; var preview=Utils.$('fotosPreview'); preview.innerHTML=''; os.fotosBase64.forEach(src=>{ var div=document.createElement('div'); div.className='photo-item'; div.innerHTML='<img src="'+src+'"><div class="photo-remove" onclick="Fotos.remove(this)">x</div>'; preview.appendChild(div); }); }else{ State.photos=[]; Utils.$('fotosPreview').innerHTML=''; } Signature.loadFromData('tec',os.assinaturaTecnico); Signature.loadFromData('cli',os.assinaturaCliente); document.querySelectorAll('input[data-check="true"]').forEach(cb=>{ cb.checked=os[cb.id]===true; }); App.updateUI(); Utils.showToast('OS carregada'); document.querySelector('.tab-button[data-tab="tab-os"]').click(); }, edit:function(num){ this.view(num); }, delete:async function(num){ if(!confirm('Excluir OS '+num+'?'))return; await DB.delete('os_history',num); State.osHistory=State.osHistory.filter(o=>o.numeroOS!==num); this.render(); Utils.showToast('OS excluida'); }, exportCSV:function(){ var csv='OS,Data,Cliente,Status,Tipo,Horas,Total Geral\n'; State.osHistory.forEach(o=>{ csv+=(o.numeroOS||'')+','+(o.dataOS||'')+',"'+(o.cliente||'')+'",'+Utils.formatStatus(o.status)+','+(o.tipoChamado||'')+','+(o.horasTotais||'')+','+(o.totalGeral||'')+'\n'; }); var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='historico_os_'+new Date().toISOString().split('T')[0]+'.csv'; a.click(); Utils.showToast('CSV exportado'); }, clear:async function(){ if(!confirm('Limpar TODO o historico?'))return; await DB.clear('os_history'); State.osHistory=[]; this.render(); Utils.showToast('Historico limpo'); } };
 var App = {
   init:async function(){ try{ await DB.init(); await DB.migrateFromLocalStorage(); await Clientes.load(); await Historico.load(); this.populateMarcas(); Checklist.render(); Signature.init(); Fotos.init(); Horas.initListeners(); await Utils.generateOSNumber(); Utils.setDefaultDate(); this.setupTabs(); this.setupMarcaSelect(); this.setupProtection(); this.setupSearch(); State.currentStatus='abertura'; this.updateUI(); Utils.$('loadingOverlay').style.display='none'; Utils.$('appContainer').style.display='block'; }catch(e){ console.error(e); Utils.$('loadingOverlay').innerHTML='<div class="text-center"><i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i><p class="text-red-400">Erro ao carregar</p><p class="text-sm text-[var(--muted)] mt-2">'+e+'</p></div>'; } },
-  populateMarcas:function(){ var select=Utils.$('marcaSelect'); select.innerHTML='<option value="">Selecione</option>'; Config.marcas.forEach(m=>{ select.innerHTML+='<option value="'+m+'">'+m+'</option>'; }); },
-  setupMarcaSelect:function(){ var select=Utils.$('marcaSelect'), div=Utils.$('marcaOutraDiv'), input=Utils.$('marcaOutra'); select.addEventListener('change',function(){ div.style.display=select.value==='OUTRA'?'block':'none'; if(select.value==='OUTRA') input.focus(); Utils.setVal('marca',select.value==='OUTRA'?input.value.toUpperCase():select.value); }); input.addEventListener('input',function(){ Utils.setVal('marca',input.value.toUpperCase()); }); },
+  populateMarcas:function(){ var select=Utils.$('marcaSelect'); if(!select) return; select.innerHTML='<option value="">Selecione</option>'; Config.marcas.forEach(m=>{ select.innerHTML+='<option value="'+m+'">'+m+'</option>'; }); },
+  setupMarcaSelect:function(){ var select=Utils.$('marcaSelect'), div=Utils.$('marcaOutraDiv'), input=Utils.$('marcaOutra'); if(!select||!div||!input) return; select.addEventListener('change',function(){ div.style.display=select.value==='OUTRA'?'block':'none'; if(select.value==='OUTRA') input.focus(); Utils.setVal('marca',select.value==='OUTRA'?input.value.toUpperCase():select.value); }); input.addEventListener('input',function(){ Utils.setVal('marca',input.value.toUpperCase()); }); },
   setupTabs:function(){ var tabs=document.querySelectorAll('.tab-button'), contents=document.querySelectorAll('.tab-content'); tabs.forEach(tab=>{ tab.addEventListener('click',function(){ var targetId=this.getAttribute('data-tab'); if(!targetId)return; tabs.forEach(t=>t.classList.remove('active')); contents.forEach(c=>c.classList.remove('active')); this.classList.add('active'); document.getElementById(targetId).classList.add('active'); }); }); },
   setupProtection:function(){ window.addEventListener('beforeunload',function(e){ if(State.hasUnsavedChanges){ e.preventDefault(); e.returnValue='Há alterações não salvas.'; } }); },
   setupSearch:function(){ var historicoHandler=Utils.debounce(()=>Historico.render(),300); Utils.$('historicoSearch').addEventListener('input',historicoHandler); Utils.$('historicoFiltroTipo').addEventListener('change',()=>Historico.render()); Utils.$('historicoFiltroStatus').addEventListener('change',()=>Historico.render()); var clientesHandler=Utils.debounce(function(e){ var search=e.target.value.toLowerCase(); var filtered=State.clients.filter(c=>c.nome.toLowerCase().indexOf(search)!==-1||(c.cidade&&c.cidade.toLowerCase().indexOf(search)!==-1)); var original=State.clients; State.clients=filtered; Clientes.renderTable(); State.clients=original; },300); Utils.$('cad_searchInput').addEventListener('input',clientesHandler); },
