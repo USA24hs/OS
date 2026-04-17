@@ -220,7 +220,7 @@ var Utils = {
   formatTipoChamado:function(tipo){ var map={normal:'NORMAL',emergencial:'EMERGENCIAL',garantia:'GARANTIA',preventiva:'PREVENTIVA',corretiva:'CORRETIVA'}; return map[tipo]||tipo.toUpperCase(); }
 };
 
-// Timer, Horas, Signature, Fotos (mesmo código funcional - omitido por brevidade, mas completo no sistema)
+// Timer, Horas, Signature, Fotos (mesmo código funcional)
 var Timer = { interval:null, seconds:0, running:false, paused:false, control:function(a){ if(a==='start')this.start(); else if(a==='pause')this.pause(); else if(a==='stop')this.stop(); }, start:function(){ if(this.running&&!this.paused)return; if(this.paused){ this.paused=false; this.running=true; }else{ this.running=true; this.paused=false; if(this.seconds===0)this.reset(); } if(!Utils.getVal('horaInicio')){ var n=new Date(); Utils.setVal('horaInicio',n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})); } if(this.interval)clearInterval(this.interval); this.interval=setInterval(()=>{ if(!this.paused&&this.running){ this.seconds++; this.updateDisplay(); } },1000); }, pause:function(){ if(!this.running)return; this.paused=true; if(!Utils.getVal('horaAlmocoSaida')){ var n=new Date(); Utils.setVal('horaAlmocoSaida',n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})); } }, stop:function(){ if(!this.running)return; clearInterval(this.interval); this.running=false; this.paused=false; if(!Utils.getVal('horaTermino')){ var n=new Date(); Utils.setVal('horaTermino',n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})); } Horas.calcular(); }, reset:function(){ this.seconds=0; var disp=Utils.$('timerDisplay'); if(disp) disp.textContent='00:00:00'; }, updateDisplay:function(){ var h=Math.floor(this.seconds/3600), m=Math.floor((this.seconds%3600)/60), s=this.seconds%60; var disp=Utils.$('timerDisplay'); if(disp) disp.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); } };
 var Horas = { calcular:function(){ var i=Utils.getVal('horaInicio'), t=Utils.getVal('horaTermino'); if(!i||!t)return 0; var total=Utils.timeDiff(i,t); var saida=Utils.getVal('horaAlmocoSaida'), retorno=Utils.getVal('horaAlmocoRetorno'); if(saida&&retorno) total-=Utils.timeDiff(saida,retorno); var horas=Math.ceil(total/60); if(horas<1)horas=1; Utils.setVal('horasTotais',horas+'h'); this.updateTotal(); return horas; }, updateTotal:function(){ var hs=Utils.getVal('horasTotais'); var min=0; if(hs){ var m=hs.match(/(\d+)h/); if(m) min=parseInt(m[1])*60; } var extra=Utils.timeToMinutes(Utils.getVal('horasExtras')), not=Utils.timeToMinutes(Utils.getVal('adicionalNoturno')); var total=min+extra+not; var h=Math.floor(total/60), m=total%60; Utils.setVal('totalGeral',String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')); }, initListeners:function(){ var self=this; ['horaInicio','horaTermino','horaAlmocoSaida','horaAlmocoRetorno'].forEach(id=>{ var el=Utils.$(id); if(el) el.addEventListener('change',()=>self.calcular()); }); var extras=Utils.$('horasExtras'); if(extras) extras.addEventListener('input',()=>this.updateTotal()); var noturno=Utils.$('adicionalNoturno'); if(noturno) noturno.addEventListener('input',()=>this.updateTotal()); } };
 var Signature = { canvases:{}, drawing:{tec:false,cli:false}, init:function(){ this.canvases.tec=Utils.$('sigTecnicoCanvas'); this.canvases.cli=Utils.$('sigClienteCanvas'); this.setupCanvas('tec'); this.setupCanvas('cli'); this.clear('tec'); this.clear('cli'); }, setupCanvas:function(who){ var self=this, canvas=this.canvases[who]; if(!canvas) return; var ctx=canvas.getContext('2d'); ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2; ctx.lineCap='round'; ctx.lineJoin='round'; var draw=function(e){ if(!self.drawing[who])return; var rect=canvas.getBoundingClientRect(), scaleX=canvas.width/rect.width, scaleY=canvas.height/rect.height; var cx=e.touches?e.touches[0].clientX:e.clientX, cy=e.touches?e.touches[0].clientY:e.clientY; var x=(cx-rect.left)*scaleX, y=(cy-rect.top)*scaleY; ctx.lineTo(x,y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x,y); }; var start=function(e){ self.drawing[who]=true; ctx.beginPath(); draw(e); }; var stop=function(){ self.drawing[who]=false; ctx.beginPath(); }; canvas.addEventListener('mousedown',start); canvas.addEventListener('mousemove',draw); canvas.addEventListener('mouseup',stop); canvas.addEventListener('mouseleave',stop); canvas.addEventListener('touchstart',e=>{ e.preventDefault(); start(e.touches[0]); },{passive:false}); canvas.addEventListener('touchmove',e=>{ e.preventDefault(); draw(e.touches[0]); },{passive:false}); canvas.addEventListener('touchend',stop); }, clear:function(who){ var canvas=this.canvases[who]; if(!canvas) return; var ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2; Utils.setVal(who==='tec'?'assinaturaTecnicoData':'assinaturaClienteData',''); }, save:function(who){ var canvas=this.canvases[who]; if(!canvas) return; var dataURL=canvas.toDataURL('image/png'); Utils.setVal(who==='tec'?'assinaturaTecnicoData':'assinaturaClienteData',dataURL); Utils.showToast('Assinatura salva'); State.hasUnsavedChanges=true; }, loadFromData:function(who,dataUrl){ if(!dataUrl) return; var canvas=this.canvases[who]; if(!canvas) return; var ctx=canvas.getContext('2d'), img=new Image(); img.onload=function(){ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0); Utils.setVal(who==='tec'?'assinaturaTecnicoData':'assinaturaClienteData',dataUrl); }; img.src=dataUrl; } };
@@ -244,12 +244,15 @@ var App = {
   finalizarServico:function(){ if(State.currentStatus!=='execucao')return; var horimetro=Utils.getVal('horimetro'); if(!horimetro){ Utils.showToast('Preencha o campo Horímetro antes de finalizar o serviço.',true); return; } Timer.control('stop'); Horas.calcular(); this.mudarStatus('finalizacao'); Utils.showToast('Serviço finalizado'); },
   fecharOS:async function(){ if(State.currentStatus!=='finalizacao')return; var descricao=Utils.getVal('descricaoServico').trim(); if(!descricao){ Utils.showToast('Descreva o serviço realizado antes de fechar a OS.',true); return; } var horimetro=Utils.getVal('horimetro'); if(!horimetro){ Utils.showToast('Campo Horímetro obrigatório.',true); return; } Horas.calcular(); if(!confirm('Fechar esta OS? Após fechada, os dados não poderão ser alterados.'))return; await this.mudarStatus('fechada'); Utils.showToast('OS fechada'); },
   gerarRelatorioFinal:function(){ if(State.currentStatus!=='aprovada'){ Utils.showToast('Somente OS aprovadas geram relatório.',true); return; } var win=window.open(); var tipoChamado = Utils.getVal('tipoChamado') || 'normal'; var tipoChamadoFormatado = Utils.formatTipoChamado(tipoChamado);
+  var endereco = Utils.getVal('endereco');
+  var mapaLink = endereco ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(endereco) : '#';
+  var mapaHtml = endereco ? '<div style="margin-top:8px;"><a href="'+mapaLink+'" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#f97316; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold;"><i class="fas fa-map-marker-alt"></i> 📍 Ver localização no Google Maps</a></div>' : '';
+  
   var fotosHtml=State.photos.length?'<div style="margin-top:20px;"><h3>📸 Registro Fotográfico</h3><div style="display:flex;flex-wrap:wrap;gap:10px;">'+State.photos.map(src=>'<img src="'+src+'" style="max-width:200px;max-height:200px;border-radius:8px;border:1px solid #ccc;">').join('')+'</div></div>':'';
   var horimetroImg=State.fotoHorimetro?'<div><h3>📊 Horímetro</h3><img src="'+State.fotoHorimetro+'" style="max-width:180px;border:1px solid #ccc;border-radius:8px;"></div>':'';
   var checklistItems=[]; document.querySelectorAll('input[data-check="true"]').forEach(cb=>{ if(cb.checked) checklistItems.push(cb.parentElement.innerText.trim()); });
   var checklistHtml=checklistItems.length?'<div><h3>✅ Itens Verificados</h3><ul style="columns:2;">'+checklistItems.map(i=>'<li style="margin:3px 0;">'+i+'</li>').join('')+'</ul></div>':'';
   
-  // Horas em uma única linha formatada
   var horasCobradas = Utils.getVal('horasTotais') || '0h';
   var horasExtras = Utils.getVal('horasExtras') || '00:00';
   var adicionalNoturno = Utils.getVal('adicionalNoturno') || '00:00';
@@ -278,7 +281,9 @@ var App = {
     '.section{margin-bottom:20px;}' +
     'p{margin:5px 0;}' +
     '.status-aprovada{background:#22c55e20;color:#16a34a;padding:5px 12px;border-radius:20px;font-weight:bold;display:inline-block;}' +
-    '.info-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:10px;}' +
+    '.info-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:10px;gap:10px;}' +
+    '.cliente-linha{background:#f8fafc;padding:12px;border-radius:8px;margin:10px 0;border-left:4px solid #f97316;}' +
+    '.equip-linha{background:#f1f5f9;padding:12px;border-radius:8px;margin:10px 0;border-left:4px solid #10b981;}' +
     '</style></head><body>' +
     '<div class="header">' +
     '<div class="logo-area">' +
@@ -289,8 +294,18 @@ var App = {
     '<p><strong>Data de Emissão:</strong> '+new Date().toLocaleString('pt-BR')+'</p>' +
     '<div class="info-row"><span class="status-aprovada">✅ APROVADA PELO CLIENTE</span> <span style="background:#f9731620; color:#f97316; padding:5px 12px; border-radius:20px; font-weight:bold;">📋 TIPO: '+tipoChamadoFormatado+'</span></div>' +
     '</div>' +
-    '<div class="section"><h3>📋 Dados do Cliente</h3><p><strong>Cliente:</strong> '+Utils.getVal('cliente')+'</p><p><strong>CNPJ/CPF:</strong> '+Utils.getVal('cnpj')+'</p><p><strong>Endereço:</strong> '+Utils.getVal('endereco')+'</p><p><strong>Cidade:</strong> '+Utils.getVal('cidadeCliente')+'</p></div>' +
-    '<div class="section"><h3>🏗️ Equipamento</h3><p><strong>Marca/Modelo:</strong> '+Utils.getVal('marca')+' '+Utils.getVal('modelo')+'</p><p><strong>Nº Série:</strong> '+Utils.getVal('numSerie')+'</p><p><strong>Horímetro:</strong> '+Utils.getVal('horimetro')+'h</p>'+horimetroImg+'</div>' +
+    
+    '<div class="section"><h3>📋 Dados do Cliente</h3>' +
+    '<div class="cliente-linha"><strong>👤 Cliente:</strong> '+Utils.getVal('cliente')+'  |  <strong>📄 CNPJ/CPF:</strong> '+Utils.getVal('cnpj')+'</div>' +
+    '<div><strong>📍 Endereço:</strong> '+Utils.getVal('endereco')+' - '+Utils.getVal('cidadeCliente')+'</div>' +
+    mapaHtml +
+    '</div>' +
+    
+    '<div class="section"><h3>🏗️ Equipamento</h3>' +
+    '<div class="equip-linha"><strong>🔧 Marca:</strong> '+Utils.getVal('marca')+'  |  <strong>📐 Modelo:</strong> '+Utils.getVal('modelo')+'  |  <strong>🔢 Nº Série:</strong> '+Utils.getVal('numSerie')+'  |  <strong>⏱️ Horímetro:</strong> '+Utils.getVal('horimetro')+'h</div>' +
+    horimetroImg +
+    '</div>' +
+    
     '<div class="section"><h3>🔧 Serviço Executado</h3><p><strong>Diagnóstico:</strong><br>'+Utils.getVal('descricaoServico').replace(/\n/g,'<br>')+'</p><p><strong>Peças Aplicadas:</strong><br>'+Utils.getVal('pecasAplicadas').replace(/\n/g,'<br>')+'</p><p><strong>Pendências:</strong><br>'+Utils.getVal('pendencias').replace(/\n/g,'<br>')+'</p></div>' +
     checklistHtml +
     fotosHtml +
