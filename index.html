@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Marlift Empilhadeiras - OS Profissional v4.3</title>
+  <title>Marlift Empilhadeiras - OS Profissional v4.4</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -101,7 +101,7 @@
         <div class="w-12 h-12 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] rounded-xl flex items-center justify-center shadow-lg">
           <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
         </div>
-        <div><h1 class="font-display text-2xl tracking-wide text-[var(--accent)]">MARLIFT EMPILHADEIRAS</h1><p class="text-xs text-[var(--muted)]">Sistema de O.S - v4.3</p></div>
+        <div><h1 class="font-display text-2xl tracking-wide text-[var(--accent)]">MARLIFT EMPILHADEIRAS</h1><p class="text-xs text-[var(--muted)]">Sistema de O.S - v4.4</p></div>
       </div>
       <div class="flex flex-wrap gap-2">
         <button onclick="App.gerarRelatorioFinal()" id="btnRelatorioFinal" class="btn btn-primary text-sm" disabled><i class="fas fa-file-pdf"></i> Relatório</button>
@@ -194,7 +194,7 @@
     <div id="tab-clientes" class="tab-content">
       <div class="stats-grid no-print" id="clientesStats">
         <div class="stat-card"><div class="stat-value" id="statTotalClientes">0</div><div class="stat-label">Total Clientes</div></div>
-        <div class="stat-card"><div class="stat-value" id="statTotalEquipamentos">0</div><div class="stat-label">Equipamentos</div></div>
+        <div class="stat-card"><div class="stat-value" id="statTotalMarcas">0</div><div class="stat-label">Total Marcas</div></div>
         <div class="stat-card"><div class="stat-value" id="statClientesComOS">0</div><div class="stat-label">Clientes c/ OS</div></div>
         <div class="stat-card"><div class="stat-value" id="statTotalOSClientes">0</div><div class="stat-label">Total OS</div></div>
         <div class="stat-card"><div class="stat-value" id="statOSAbertasCliente">0</div><div class="stat-label">OS em Aberto</div></div>
@@ -206,7 +206,7 @@
         <div class="mt-4"><label class="font-semibold text-sm">Equipamentos do Cliente</label><div id="equipamentosList"></div><button type="button" onclick="Clientes.addEquipField()" class="btn btn-secondary text-sm mt-2"><i class="fas fa-plus"></i> Adicionar Equipamento</button></div>
         <div class="flex gap-3 mt-5"><button class="btn btn-primary" onclick="Clientes.save()"><i class="fas fa-save"></i> Salvar Cliente</button><button id="cad_btnCancelar" class="btn btn-secondary" style="display:none;" onclick="Clientes.cancelEdit()">Cancelar</button><button class="btn btn-secondary" onclick="Clientes.exportCSV()"><i class="fas fa-file-csv"></i> Exportar CSV</button><button class="btn btn-secondary" onclick="Clientes.importCSV()"><i class="fas fa-upload"></i> Importar CSV</button></div>
       </div>
-      <div class="mt-5"><input type="text" id="cad_searchInput" placeholder="Buscar cliente..." class="form-input w-full md:w-64 mb-3"><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-[var(--bg-secondary)]"><tr><th class="p-3 text-left">Nome</th><th class="p-3 text-left">Cidade</th><th class="p-3 text-left">Equip.</th><th class="p-3 text-left">Ações</th></tr></thead><tbody id="cad_tableBody"></tbody></table></div></div>
+      <div class="mt-5"><input type="text" id="cad_searchInput" placeholder="Buscar cliente..." class="form-input w-full md:w-64 mb-3"><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-[var(--bg-secondary)]"><tr><th class="p-3 text-left">Nome</th><th class="p-3 text-left">Cidade</th><th class="p-3 text-left">Marcas</th><th class="p-3 text-left">Ações</th></tr></thead><tbody id="cad_tableBody"></tbody></table></div></div>
     </div>
     <div id="tab-historico" class="tab-content">
       <div class="stats-grid no-print">
@@ -234,7 +234,7 @@
   <div id="toastCenter" class="toast-center"><i class="fas fa-check-circle text-green-500 text-2xl"></i><span id="toastMessage">Operação realizada</span></div>
 </div>
 <script>
-// ==================== SISTEMA COMPLETO v4.3 ====================
+// ==================== SISTEMA COMPLETO v4.4 ====================
 var Config = {
   marcas: ["TOYOTA","CLARK","BYD","PALETRANS","LINDE","HYSTER","YALE","CATERPILLAR","KOMATSU","MITSUBISHI","NISSAN","STILL","CROWN","JUNGHEINRICH","TCM","HYUNDAI","DOOSAN","HELI","HANGCHA","LONKING","OUTRA"],
   checklist: [ { id:'motor', title:'Motor e Componentes', items:[{id:'motor_oleo',label:'Nivel de oleo do motor'},{id:'motor_filtro_oleo',label:'Filtro de oleo'},{id:'motor_filtro_ar',label:'Filtro de ar'},{id:'motor_filtro_comb',label:'Filtro de combustivel'},{id:'motor_correias',label:'Correias'},{id:'motor_radiador',label:'Radiador'}] }, { id:'eletrico', title:'Sistema Eletrico', items:[{id:'eletr_bateria',label:'Bateria'},{id:'eletr_terminais',label:'Terminais'},{id:'eletr_alternador',label:'Alternador'},{id:'eletr_partida',label:'Motor de partida'},{id:'eletr_farois',label:'Farois'},{id:'eletr_buzina',label:'Buzina'}] }, { id:'hidraulico', title:'Sistema Hidraulico', items:[{id:'hidr_oleo',label:'Nivel oleo hidraulico'},{id:'hidr_bomba',label:'Bomba hidraulica'},{id:'hidr_cilindros',label:'Cilindros'},{id:'hidr_vazamentos',label:'Vazamentos'},{id:'hidr_mangueiras',label:'Mangueiras'}] }, { id:'transmissao', title:'Transmissao e Freios', items:[{id:'trans_oleo',label:'Oleo transmissao'},{id:'freio_servico',label:'Freio de servico'},{id:'freio_estac',label:'Freio de estacionamento'},{id:'freio_pastilhas',label:'Pastilhas/Lonas'}] }, { id:'direcao', title:'Direcao', items:[{id:'dir_volante',label:'Volante'},{id:'dir_caixa',label:'Caixa de direcao'},{id:'dir_hidraulica',label:'Direcao hidraulica'}] }, { id:'estrutura', title:'Estrutura e Garfos', items:[{id:'est_mastros',label:'Mastros'},{id:'est_correntes',label:'Correntes'},{id:'est_garfos',label:'Garfos'},{id:'est_roletes',label:'Roletes'}] }, { id:'seguranca', title:'Seguranca', items:[{id:'seg_cinto',label:'Cinto de seguranca'},{id:'seg_extintor',label:'Extintor'},{id:'seg_espelhos',label:'Espelhos'},{id:'seg_alarme',label:'Alarme de re'}] } ],
@@ -671,9 +671,9 @@ var Clientes = {
   },
   updateStats: function() {
     var totalClientes = State.clients.length;
-    var totalEquipamentos = 0;
+    var totalMarcas = 0;
     State.clients.forEach(function(c) {
-      totalEquipamentos += (c.equipamentos || []).length;
+      totalMarcas += (c.equipamentos || []).length;
     });
     var clientesComOS = new Set();
     var totalOS = 0;
@@ -688,7 +688,7 @@ var Clientes = {
       if (os.status === 'aprovada') osAprovadas++;
     });
     $('statTotalClientes').innerText = totalClientes;
-    $('statTotalEquipamentos').innerText = totalEquipamentos;
+    $('statTotalMarcas').innerText = totalMarcas;
     $('statClientesComOS').innerText = clientesComOS.size;
     $('statTotalOSClientes').innerText = totalOS;
     $('statOSAbertasCliente').innerText = osAbertas;
@@ -700,7 +700,8 @@ var Clientes = {
     tbody.innerHTML = '';
     State.clients.forEach(function(c) {
       var row = tbody.insertRow();
-      row.innerHTML = '<td class="p-2">' + c.nome + '<td><td class="p-2">' + (c.cidade || '-') + '<td><td class="p-2">' + (c.equipamentos || []).length + '<td><td class="p-2"><button onclick="Clientes.select(' + c.id + ')" class="btn btn-primary text-xs py-1 px-2">Selecionar</button> <i class="fas fa-edit text-blue-400 cursor-pointer ml-2" onclick="Clientes.edit(' + c.id + ')"></i> <i class="fas fa-trash text-red-400 cursor-pointer ml-2" onclick="Clientes.delete(' + c.id + ')"></i></td>';
+      var marcasLista = (c.equipamentos || []).map(function(eq) { return eq.marca; }).join(', ');
+      row.innerHTML = '<td class="p-2 font-medium">' + c.nome + '</td><td class="p-2">' + (c.cidade || '-') + '</td><td class="p-2">' + (marcasLista || '-') + '</td><td class="p-2"><button onclick="Clientes.select(' + c.id + ')" class="btn btn-primary text-xs py-1 px-2">Selecionar</button> <i class="fas fa-edit text-blue-400 cursor-pointer ml-2" onclick="Clientes.edit(' + c.id + ')"></i> <i class="fas fa-trash text-red-400 cursor-pointer ml-2" onclick="Clientes.delete(' + c.id + ')"></i></td>';
     });
   },
   addEquipField: function(marca, modelo, serie, qtd, combustivel) {
@@ -848,9 +849,10 @@ var Clientes = {
     if (container) container.innerHTML = '';
   },
   exportCSV: function() {
-    var csv = "Nome,CNPJ,Endereco,Cidade,Telefone,WhatsApp,Email,Responsavel,TelefoneResponsavel\n";
+    var csv = "Nome,CNPJ,Endereco,Cidade,Telefone,WhatsApp,Email,Responsavel,TelefoneResponsavel,Marcas\n";
     State.clients.forEach(function(c) {
-      csv += '"' + c.nome + '",' + (c.cnpj || '') + ',"' + (c.endereco || '') + '","' + (c.cidade || '') + '",' + (c.telefone || '') + ',' + (c.whatsapp || '') + ',' + (c.email || '') + ',' + (c.responsavel_nome || '') + ',' + (c.responsavel_telefone || '') + '\n';
+      var marcasLista = (c.equipamentos || []).map(function(eq) { return eq.marca; }).join('; ');
+      csv += '"' + c.nome + '",' + (c.cnpj || '') + ',"' + (c.endereco || '') + '","' + (c.cidade || '') + '",' + (c.telefone || '') + ',' + (c.whatsapp || '') + ',' + (c.email || '') + ',' + (c.responsavel_nome || '') + ',' + (c.responsavel_telefone || '') + ',"' + marcasLista + '"\n';
     });
     var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
     var a = document.createElement('a');
@@ -969,7 +971,7 @@ var Historico = {
       var row = tbody.insertRow();
       var statusClass = 'status-' + (os.status || 'abertura');
       var statusText = Utils.formatStatus(os.status);
-      row.innerHTML = '<td class="p-2 font-mono font-bold">' + (os.numeroOS || '-') + '<tr><td class="p-2">' + (os.dataOS || '-') + '<tr><td class="p-2">' + (os.cliente || '-').toUpperCase() + '<td><td class="p-2"><span class="status-badge ' + statusClass + '">' + statusText + '</span></td><td class="p-2 font-mono font-bold text-[var(--success)]">' + (os.horasTotais || '-') + '</td><td class="p-2"><button onclick="Historico.view(\'' + os.numeroOS + '\')" class="text-blue-400"><i class="fas fa-eye"></i></button> <button onclick="Historico.edit(\'' + os.numeroOS + '\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="Historico.delete(\'' + os.numeroOS + '\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button></td>';
+      row.innerHTML = '<td class="p-2 font-mono font-bold">' + (os.numeroOS || '-') + '<tr><td class="p-2">' + (os.dataOS || '-') + '</td><td class="p-2">' + (os.cliente || '-').toUpperCase() + '</td><td class="p-2"><span class="status-badge ' + statusClass + '">' + statusText + '</span></td><td class="p-2 font-mono font-bold text-[var(--success)]">' + (os.horasTotais || '-') + '</td><td class="p-2"><button onclick="Historico.view(\'' + os.numeroOS + '\')" class="text-blue-400"><i class="fas fa-eye"></i></button> <button onclick="Historico.edit(\'' + os.numeroOS + '\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="Historico.delete(\'' + os.numeroOS + '\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button></td>';
     });
   },
   view: async function(num) {
