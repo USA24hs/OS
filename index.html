@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Marlift Empilhadeiras - OS Profissional v4.4</title>
+  <title>Marlift Empilhadeiras - OS Profissional v4.5</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -101,7 +101,7 @@
         <div class="w-12 h-12 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] rounded-xl flex items-center justify-center shadow-lg">
           <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
         </div>
-        <div><h1 class="font-display text-2xl tracking-wide text-[var(--accent)]">MARLIFT EMPILHADEIRAS</h1><p class="text-xs text-[var(--muted)]">Sistema de O.S - v4.4</p></div>
+        <div><h1 class="font-display text-2xl tracking-wide text-[var(--accent)]">MARLIFT EMPILHADEIRAS</h1><p class="text-xs text-[var(--muted)]">Sistema de O.S - v4.5</p></div>
       </div>
       <div class="flex flex-wrap gap-2">
         <button onclick="App.gerarRelatorioFinal()" id="btnRelatorioFinal" class="btn btn-primary text-sm" disabled><i class="fas fa-file-pdf"></i> Relatório</button>
@@ -131,7 +131,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div><label class="block text-xs text-[var(--muted)] mb-1">N° O.S</label><input type="text" id="numeroOS" class="form-input font-mono font-bold text-lg" readonly placeholder="Clique em Nova OS"></div>
           <div><label class="block text-xs text-[var(--muted)] mb-1">Data</label><input type="date" id="dataOS" class="form-input"></div>
-          <div><label class="block text-xs text-[var(--muted)] mb-1">Tipo de Chamado</label><select id="tipoChamado" class="form-input"><option value="normal">Normal</option><option value="emergencial">Emergencial</option><option value="garantia">Garantia</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option></select></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Tipo de Chamado</label><select id="tipoChamado" class="form-input"><option value="normal">Normal</option><option value="emergencial">Emergencial</option><option value="garantia">Garantia</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option><option value="avaliacao">Avaliação</option><option value="orcamento">Orçamento</option></select></div>
         </div>
         <div><label class="block text-xs text-[var(--muted)] mb-1">Relato do Cliente</label><textarea id="relatoCliente" class="form-input" rows="2" placeholder="Descreva o problema..."></textarea></div>
         <div class="action-buttons no-print">
@@ -221,11 +221,13 @@
         <div class="stat-card"><div class="stat-value text-[#ef4444]" id="statTipoCorretiva">0</div><div class="stat-label">Corretivas</div></div>
         <div class="stat-card"><div class="stat-value text-[#8b5cf6]" id="statTipoGarantia">0</div><div class="stat-label">Garantia</div></div>
         <div class="stat-card"><div class="stat-value text-[#06b6d4]" id="statTipoNormal">0</div><div class="stat-label">Normal</div></div>
+        <div class="stat-card"><div class="stat-value text-[#ec4899]" id="statTipoAvaliacao">0</div><div class="stat-label">Avaliações</div></div>
+        <div class="stat-card"><div class="stat-value text-[#f59e0b]" id="statTipoOrcamento">0</div><div class="stat-label">Orçamentos</div></div>
         <div class="stat-card"><div class="stat-value" id="statEsteMes">0</div><div class="stat-label">OS este Mês</div></div>
       </div>
       <div class="checklist-card p-5">
         <h2 class="font-display text-xl mb-3">Histórico de O.S</h2>
-        <div class="flex flex-wrap gap-3 mb-4"><input type="text" id="historicoSearch" placeholder="Buscar..." class="form-input w-64"><select id="historicoFiltroTipo" class="form-input w-40"><option value="">Todos os Tipos</option><option value="emergencial">Emergencial</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option><option value="garantia">Garantia</option><option value="normal">Normal</option></select><select id="historicoFiltroStatus" class="form-input w-36"><option value="">Todos Status</option><option value="abertura">Abertura</option><option value="execucao">Execução</option><option value="finalizacao">Finalizando</option><option value="fechada">Fechada</option><option value="aprovada">Aprovada</option></select><button onclick="Historico.exportCSV()" class="btn btn-secondary text-sm"><i class="fas fa-file-csv"></i> CSV</button><button onclick="Historico.clear()" class="btn btn-secondary text-sm text-red-400"><i class="fas fa-trash"></i> Limpar</button></div>
+        <div class="flex flex-wrap gap-3 mb-4"><input type="text" id="historicoSearch" placeholder="Buscar..." class="form-input w-64"><select id="historicoFiltroTipo" class="form-input w-40"><option value="">Todos os Tipos</option><option value="emergencial">Emergencial</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option><option value="garantia">Garantia</option><option value="normal">Normal</option><option value="avaliacao">Avaliação</option><option value="orcamento">Orçamento</option></select><select id="historicoFiltroStatus" class="form-input w-36"><option value="">Todos Status</option><option value="abertura">Abertura</option><option value="execucao">Execução</option><option value="finalizacao">Finalizando</option><option value="fechada">Fechada</option><option value="aprovada">Aprovada</option></select><button onclick="Historico.exportCSV()" class="btn btn-secondary text-sm"><i class="fas fa-file-csv"></i> CSV</button><button onclick="Historico.clear()" class="btn btn-secondary text-sm text-red-400"><i class="fas fa-trash"></i> Limpar</button></div>
         <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-[var(--bg-secondary)]"><tr><th class="p-2 text-left">O.S</th><th class="p-2 text-left">Data</th><th class="p-2 text-left">Cliente</th><th class="p-2 text-left">Status</th><th class="p-2 text-left">Horas</th><th class="p-2 text-left">Ações</th></tr></thead><tbody id="historicoTableBody"></tbody></table></div>
         <div id="historicoEmpty" class="text-center py-8 text-[var(--muted)] hidden">Nenhuma O.S encontrada</div>
       </div>
@@ -234,7 +236,7 @@
   <div id="toastCenter" class="toast-center"><i class="fas fa-check-circle text-green-500 text-2xl"></i><span id="toastMessage">Operação realizada</span></div>
 </div>
 <script>
-// ==================== SISTEMA COMPLETO v4.4 ====================
+// ==================== SISTEMA COMPLETO v4.5 ====================
 var Config = {
   marcas: ["TOYOTA","CLARK","BYD","PALETRANS","LINDE","HYSTER","YALE","CATERPILLAR","KOMATSU","MITSUBISHI","NISSAN","STILL","CROWN","JUNGHEINRICH","TCM","HYUNDAI","DOOSAN","HELI","HANGCHA","LONKING","OUTRA"],
   checklist: [ { id:'motor', title:'Motor e Componentes', items:[{id:'motor_oleo',label:'Nivel de oleo do motor'},{id:'motor_filtro_oleo',label:'Filtro de oleo'},{id:'motor_filtro_ar',label:'Filtro de ar'},{id:'motor_filtro_comb',label:'Filtro de combustivel'},{id:'motor_correias',label:'Correias'},{id:'motor_radiador',label:'Radiador'}] }, { id:'eletrico', title:'Sistema Eletrico', items:[{id:'eletr_bateria',label:'Bateria'},{id:'eletr_terminais',label:'Terminais'},{id:'eletr_alternador',label:'Alternador'},{id:'eletr_partida',label:'Motor de partida'},{id:'eletr_farois',label:'Farois'},{id:'eletr_buzina',label:'Buzina'}] }, { id:'hidraulico', title:'Sistema Hidraulico', items:[{id:'hidr_oleo',label:'Nivel oleo hidraulico'},{id:'hidr_bomba',label:'Bomba hidraulica'},{id:'hidr_cilindros',label:'Cilindros'},{id:'hidr_vazamentos',label:'Vazamentos'},{id:'hidr_mangueiras',label:'Mangueiras'}] }, { id:'transmissao', title:'Transmissao e Freios', items:[{id:'trans_oleo',label:'Oleo transmissao'},{id:'freio_servico',label:'Freio de servico'},{id:'freio_estac',label:'Freio de estacionamento'},{id:'freio_pastilhas',label:'Pastilhas/Lonas'}] }, { id:'direcao', title:'Direcao', items:[{id:'dir_volante',label:'Volante'},{id:'dir_caixa',label:'Caixa de direcao'},{id:'dir_hidraulica',label:'Direcao hidraulica'}] }, { id:'estrutura', title:'Estrutura e Garfos', items:[{id:'est_mastros',label:'Mastros'},{id:'est_correntes',label:'Correntes'},{id:'est_garfos',label:'Garfos'},{id:'est_roletes',label:'Roletes'}] }, { id:'seguranca', title:'Seguranca', items:[{id:'seg_cinto',label:'Cinto de seguranca'},{id:'seg_extintor',label:'Extintor'},{id:'seg_espelhos',label:'Espelhos'},{id:'seg_alarme',label:'Alarme de re'}] } ],
@@ -338,7 +340,7 @@ var Utils = {
     return map[st] || (st || '').toUpperCase();
   },
   formatTipoChamado: function(tipo) {
-    var map = {normal:'NORMAL', emergencial:'EMERGENCIAL', garantia:'GARANTIA', preventiva:'PREVENTIVA', corretiva:'CORRETIVA'};
+    var map = {normal:'NORMAL', emergencial:'EMERGENCIAL', garantia:'GARANTIA', preventiva:'PREVENTIVA', corretiva:'CORRETIVA', avaliacao:'AVALIAÇÃO', orcamento:'ORÇAMENTO'};
     return map[tipo] || tipo.toUpperCase();
   },
   timeDiff: function(s, e) {
@@ -912,7 +914,7 @@ var Historico = {
   updateStats: function() {
     var total = State.osHistory.length;
     var statusAbertura = 0, statusExecucao = 0, statusFinalizacao = 0, statusFechada = 0, statusAprovada = 0;
-    var tipoEmergencial = 0, tipoPreventiva = 0, tipoCorretiva = 0, tipoGarantia = 0, tipoNormal = 0;
+    var tipoEmergencial = 0, tipoPreventiva = 0, tipoCorretiva = 0, tipoGarantia = 0, tipoNormal = 0, tipoAvaliacao = 0, tipoOrcamento = 0;
     var esteMes = 0;
     var now = new Date();
     var mesAtual = now.getMonth(), anoAtual = now.getFullYear();
@@ -929,6 +931,8 @@ var Historico = {
       else if (os.tipoChamado === 'corretiva') tipoCorretiva++;
       else if (os.tipoChamado === 'garantia') tipoGarantia++;
       else if (os.tipoChamado === 'normal') tipoNormal++;
+      else if (os.tipoChamado === 'avaliacao') tipoAvaliacao++;
+      else if (os.tipoChamado === 'orcamento') tipoOrcamento++;
       
       if (os.dataOS) {
         var d = new Date(os.dataOS);
@@ -947,6 +951,8 @@ var Historico = {
     $('statTipoCorretiva').innerText = tipoCorretiva;
     $('statTipoGarantia').innerText = tipoGarantia;
     $('statTipoNormal').innerText = tipoNormal;
+    $('statTipoAvaliacao').innerText = tipoAvaliacao;
+    $('statTipoOrcamento').innerText = tipoOrcamento;
     $('statEsteMes').innerText = esteMes;
   },
   render: function() {
@@ -971,7 +977,7 @@ var Historico = {
       var row = tbody.insertRow();
       var statusClass = 'status-' + (os.status || 'abertura');
       var statusText = Utils.formatStatus(os.status);
-      row.innerHTML = '<td class="p-2 font-mono font-bold">' + (os.numeroOS || '-') + '<tr><td class="p-2">' + (os.dataOS || '-') + '</td><td class="p-2">' + (os.cliente || '-').toUpperCase() + '</td><td class="p-2"><span class="status-badge ' + statusClass + '">' + statusText + '</span></td><td class="p-2 font-mono font-bold text-[var(--success)]">' + (os.horasTotais || '-') + '</td><td class="p-2"><button onclick="Historico.view(\'' + os.numeroOS + '\')" class="text-blue-400"><i class="fas fa-eye"></i></button> <button onclick="Historico.edit(\'' + os.numeroOS + '\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="Historico.delete(\'' + os.numeroOS + '\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button></td>';
+      row.innerHTML = '<td class="p-2 font-mono font-bold">' + (os.numeroOS || '-') + '</td><td class="p-2">' + (os.dataOS || '-') + '</td><td class="p-2">' + (os.cliente || '-').toUpperCase() + '</td><td class="p-2"><span class="status-badge ' + statusClass + '">' + statusText + '</span></td><td class="p-2 font-mono font-bold text-[var(--success)]">' + (os.horasTotais || '-') + '</td><td class="p-2"><button onclick="Historico.view(\'' + os.numeroOS + '\')" class="text-blue-400"><i class="fas fa-eye"></i></button> <button onclick="Historico.edit(\'' + os.numeroOS + '\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="Historico.delete(\'' + os.numeroOS + '\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button></td>';
     });
   },
   view: async function(num) {
