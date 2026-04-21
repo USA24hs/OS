@@ -156,7 +156,17 @@
     .toast-center { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card); border: 2px solid var(--success); color: var(--fg); padding: 24px 48px; border-radius: 16px; font-weight: bold; font-size: 1.1rem; z-index: 2000; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); display: none; align-items: center; gap: 14px; white-space: nowrap; }
     .toast-center.show { display: flex; animation: fadeInOut 2.5s ease forwards; }
     @keyframes fadeInOut { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } 10% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } }
-    .tab-button { padding: 12px 24px; font-weight: 600; background: transparent; border: none; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; font-size: 14px; }
+    .tab-button { 
+      padding: 12px 24px; 
+      font-weight: 600; 
+      background: transparent; 
+      border: none; 
+      color: var(--muted); 
+      cursor: pointer; 
+      border-bottom: 2px solid transparent; 
+      transition: all 0.2s; 
+      font-size: 14px;
+    }
     .tab-button:hover { color: var(--fg); background: var(--bg-secondary); }
     .tab-button.active { color: var(--accent); border-bottom-color: var(--accent); background: transparent; }
     .tabs-container {
@@ -166,7 +176,7 @@
       flex-wrap: wrap;
       gap: 4px;
     }
-    .tab-content { display: none; animation: fadeIn 0.3s ease; }
+    .tab-content { display: none; }
     .tab-content.active { display: block; }
     .photo-preview { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
     .photo-item { position: relative; width: 120px; height: 120px; border-radius: 8px; border: 2px solid var(--border); overflow: hidden; background: var(--bg); }
@@ -369,7 +379,25 @@
       <div class="flex gap-3 justify-center mb-8 no-print"><button id="btnSalvarOS" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Progresso</button></div>
     </div>
     
-    <div id="tab-checklist" class="tab-content"><div class="checklist-card p-4 mb-5"><div class="flex justify-between items-center"><span class="font-semibold">Progresso do Checklist</span><span id="progressText" class="font-mono text-[var(--accent)] text-lg">0%</span></div><div class="progress-bar mt-2"><div id="progressFill" class="progress-fill" style="width:0%"></div></div></div><div id="checklistSections"></div></div>
+    <div id="tab-checklist" class="tab-content">
+      <div class="checklist-card p-4 mb-5">
+        <div class="flex justify-between items-center"><span class="font-semibold">Progresso do Checklist</span><span id="progressText" class="font-mono text-[var(--accent)] text-lg">0%</span></div>
+        <div class="progress-bar mt-2"><div id="progressFill" class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div id="checklistSections">
+        <div class="checklist-card p-5 mb-4">
+          <div class="flex justify-between items-center mb-3"><h3 class="font-display text-xl">Motor e Componentes</h3></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="checklist-item"><label><input type="checkbox" data-check="true"><span class="text-sm">Nivel de oleo do motor</span></label><select class="form-input w-20 text-xs"><option>OK</option><option>Atencao</option><option>Critico</option><option>N/A</option></select></div>
+            <div class="checklist-item"><label><input type="checkbox" data-check="true"><span class="text-sm">Filtro de oleo</span></label><select class="form-input w-20 text-xs"><option>OK</option><option>Atencao</option><option>Critico</option><option>N/A</option></select></div>
+            <div class="checklist-item"><label><input type="checkbox" data-check="true"><span class="text-sm">Filtro de ar</span></label><select class="form-input w-20 text-xs"><option>OK</option><option>Atencao</option><option>Critico</option><option>N/A</option></select></div>
+            <div class="checklist-item"><label><input type="checkbox" data-check="true"><span class="text-sm">Filtro de combustivel</span></label><select class="form-input w-20 text-xs"><option>OK</option><option>Atencao</option><option>Critico</option><option>N/A</option></select></div>
+            <div class="checklist-item"><label><input type="checkbox" data-check="true"><span class="text-sm">Correias</span></label><select class="form-input w-20 text-xs"><option>OK</option><option>Atencao</option><option>Critico</option><option>N/A</option></select></div>
+            <div class="checklist-item"><label><input type="checkbox" data-check="true"><span class="text-sm">Radiador</span></label><select class="form-input w-20 text-xs"><option>OK</option><option>Atencao</option><option>Critico</option><option>N/A</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
     
     <div id="tab-clientes" class="tab-content">
       <div class="stats-grid no-print" id="clientesStats">
@@ -452,7 +480,7 @@
 </div>
 
 <script>
-// ==================== SISTEMA DE LOGIN SIMPLIFICADO ====================
+// ==================== SISTEMA DE LOGIN ====================
 var usuarioAtual = null;
 
 var usuariosCadastrados = [
@@ -592,11 +620,52 @@ function adicionarUsuario() {
   mostrarToast('Usuário adicionado!');
 }
 
+// ==================== INICIALIZAÇÃO DAS ABAS ====================
+function inicializarAbas() {
+  var tabs = document.querySelectorAll('.tab-button');
+  var contents = document.querySelectorAll('.tab-content');
+  
+  console.log('Abas encontradas:', tabs.length);
+  console.log('Conteúdos encontrados:', contents.length);
+  
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      var targetId = this.getAttribute('data-tab');
+      console.log('Clicou na aba:', targetId);
+      
+      // Remove active de todas as abas
+      tabs.forEach(function(t) {
+        t.classList.remove('active');
+      });
+      
+      // Remove active de todos os conteúdos
+      contents.forEach(function(c) {
+        c.classList.remove('active');
+      });
+      
+      // Adiciona active na aba clicada
+      this.classList.add('active');
+      
+      // Mostra o conteúdo correspondente
+      var targetContent = document.getElementById(targetId);
+      if (targetContent) {
+        targetContent.classList.add('active');
+        console.log('Conteúdo ativado:', targetId);
+      } else {
+        console.log('Conteúdo não encontrado:', targetId);
+      }
+    });
+  });
+}
+
 // ==================== INICIALIZAÇÃO ====================
 document.addEventListener('DOMContentLoaded', function() {
   verificarSessao();
+  inicializarAbas();
   
-  // Configurar eventos básicos
+  // Configurar eventos dos botões
   document.getElementById('btnLogout').onclick = logout;
   document.getElementById('btnWhatsApp').onclick = function() { mostrarToast('Função WhatsApp - Em desenvolvimento', false); };
   document.getElementById('btnMapa').onclick = function() { mostrarToast('Função Mapa - Em desenvolvimento', false); };
@@ -658,19 +727,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('marcaSelect').onchange = function() {
     document.getElementById('marcaOutraDiv').style.display = this.value === 'OUTRA' ? 'block' : 'none';
   };
-  
-  // Abas
-  var tabs = document.querySelectorAll('.tab-button');
-  var contents = document.querySelectorAll('.tab-content');
-  tabs.forEach(tab => {
-    tab.onclick = function() {
-      var targetId = this.getAttribute('data-tab');
-      tabs.forEach(t => t.classList.remove('active'));
-      contents.forEach(c => c.classList.remove('active'));
-      this.classList.add('active');
-      document.getElementById(targetId).classList.add('active');
-    };
-  });
   
   document.getElementById('loadingOverlay').style.display = 'none';
 });
