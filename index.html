@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Marlift Empilhadeiras - OS Profissional v6.0</title>
+  <title>Marlift Empilhadeiras - OS Profissional v7.0</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -43,6 +43,8 @@
     .btn-info { background: var(--info); color: white; }
     .btn-yellow { background: #eab308; color: #1e293b; border: none; }
     .btn-yellow:hover:not(:disabled) { background: #ca8a04; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(234, 179, 8, 0.3); }
+    .btn-sync { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+    .btn-sync:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); }
     .signature-canvas { border: 2px dashed var(--border); border-radius: 8px; background: white; width: 100%; height: 140px; cursor: crosshair; touch-action: none; }
     .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); transition: width 0.5s ease; }
@@ -92,6 +94,9 @@
     .modal-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 16px; color: var(--accent); }
     .equip-option { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
     .equip-option:hover { border-color: var(--accent); background: var(--card); transform: translateX(5px); }
+    .sync-status { position: fixed; bottom: 20px; right: 20px; background: var(--card); border-radius: 30px; padding: 8px 16px; font-size: 12px; border: 1px solid var(--border); z-index: 100; display: flex; align-items: center; gap: 8px; }
+    .sync-status.online { border-color: var(--success); color: var(--success); }
+    .sync-status.offline { border-color: var(--danger); color: var(--danger); }
     @media print { .no-print { display: none !important; } body { background: white; color: black; } }
     @media (max-width: 768px) { .step { font-size: 9px; padding: 8px 4px; } .timer-display { font-size: 1.8rem; } .btn { padding: 8px 12px; font-size: 12px; } .photo-item { width: 100px; height: 100px; } .stat-value { font-size: 1.2rem; } }
   </style>
@@ -102,7 +107,6 @@
   <p class="mt-4 text-[var(--accent)] font-display text-xl">Carregando Sistema...</p>
 </div>
 
-<!-- Modal para selecionar equipamento -->
 <div id="equipModal" class="modal">
   <div class="modal-content">
     <div class="modal-title"><i class="fas fa-forklift"></i> Selecione o Equipamento</div>
@@ -118,13 +122,15 @@
         <div class="w-12 h-12 bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] rounded-xl flex items-center justify-center shadow-lg">
           <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
         </div>
-        <div><h1 class="font-display text-2xl tracking-wide text-[var(--accent)]">MARLIFT EMPILHADEIRAS</h1><p class="text-xs text-[var(--muted)]">Sistema de O.S - v6.0</p></div>
+        <div><h1 class="font-display text-2xl tracking-wide text-[var(--accent)]">MARLIFT EMPILHADEIRAS</h1><p class="text-xs text-[var(--muted)]">Sistema de O.S - v7.0</p></div>
       </div>
       <div class="flex flex-wrap gap-2">
         <button onclick="App.gerarPreviaPDF()" id="btnPreviaPDF" class="btn btn-primary text-sm" disabled><i class="fas fa-file-pdf"></i> Visualizar PDF</button>
         <button onclick="App.enviarEmailComResumo()" id="btnEnviarEmail" class="btn btn-secondary text-sm" disabled><i class="fas fa-envelope"></i> Enviar E-mail</button>
         <button onclick="App.sendWhatsAppMessage()" class="btn btn-secondary text-sm"><i class="fab fa-whatsapp text-green-500"></i> WhatsApp</button>
         <button onclick="App.novaOS()" class="btn btn-yellow text-sm"><i class="fas fa-plus"></i> Nova O.S</button>
+        <button onclick="GoogleSheetsSync.fullSync()" class="btn btn-sync text-sm"><i class="fas fa-cloud-upload-alt"></i> Sincronizar</button>
+        <button onclick="GoogleSheetsSync.fetchFromSheet()" class="btn btn-secondary text-sm"><i class="fas fa-cloud-download-alt"></i> Baixar</button>
       </div>
     </div>
   </header>
@@ -142,7 +148,7 @@
       <button class="tab-button" data-tab="tab-clientes">Clientes</button>
       <button class="tab-button" data-tab="tab-historico">Histórico</button>
     </div>
-    <!-- Tab OS -->
+    
     <div id="tab-os" class="tab-content active">
       <div class="checklist-card p-5 mb-5">
         <div class="flex flex-wrap justify-between items-center gap-3 mb-4"><h2 class="font-display text-xl">Informações da O.S</h2><div><span class="status-badge" id="statusBadge">EM ABERTURA</span></div></div>
@@ -209,7 +215,9 @@
       </div>
       <div class="flex gap-3 justify-center mb-8 no-print"><button onclick="App.salvarOSManual()" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Progresso</button></div>
     </div>
+    
     <div id="tab-checklist" class="tab-content"><div class="checklist-card p-4 mb-5"><div class="flex justify-between items-center"><span class="font-semibold">Progresso do Checklist</span><span id="progressText" class="font-mono text-[var(--accent)] text-lg">0%</span></div><div class="progress-bar mt-2"><div id="progressFill" class="progress-fill" style="width:0%"></div></div></div><div id="checklistSections"></div></div>
+    
     <div id="tab-clientes" class="tab-content">
       <div class="stats-grid no-print" id="clientesStats">
         <div class="stat-card"><div class="stat-value" id="statTotalClientes">0</div><div class="stat-label">Total Clientes</div></div>
@@ -227,6 +235,7 @@
       </div>
       <div class="mt-5"><input type="text" id="cad_searchInput" placeholder="Buscar cliente..." class="form-input w-full md:w-64 mb-3"><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-[var(--bg-secondary)]"><tr><th class="p-3 text-left">Nome</th><th class="p-3 text-left">Cidade</th><th class="p-3 text-left">Marcas</th><th class="p-3 text-left">Ações</th></tr></thead><tbody id="cad_tableBody"></tbody></table></div></div>
     </div>
+    
     <div id="tab-historico" class="tab-content">
       <div class="stats-grid no-print">
         <div class="stat-card"><div class="stat-value" id="statTotalOS">0</div><div class="stat-label">Total de OS</div></div>
@@ -258,10 +267,11 @@
     </div>
   </main>
   <div id="toastCenter" class="toast-center"><i class="fas fa-check-circle text-green-500 text-2xl"></i><span id="toastMessage">Operação realizada</span></div>
+  <div class="sync-status" id="syncStatus"><i class="fas fa-cloud-upload-alt"></i> <span id="syncStatusText">Pronto</span></div>
 </div>
 
 <script>
-// ==================== SISTEMA v6.0 COM LOCALSTORAGE ====================
+// ==================== SISTEMA v7.0 COM SINCRONIZAÇÃO BIDIRECIONAL ====================
 var Config = {
   marcas: ["TOYOTA","CLARK","BYD","PALETRANS","LINDE","HYSTER","YALE","CATERPILLAR","KOMATSU","MITSUBISHI","NISSAN","STILL","CROWN","JUNGHEINRICH","TCM","HYUNDAI","DOOSAN","HELI","HANGCHA","LONKING","OUTRA"],
   checklist: [ { id:'motor', title:'Motor e Componentes', items:[{id:'motor_oleo',label:'Nivel de oleo do motor'},{id:'motor_filtro_oleo',label:'Filtro de oleo'},{id:'motor_filtro_ar',label:'Filtro de ar'},{id:'motor_filtro_comb',label:'Filtro de combustivel'},{id:'motor_correias',label:'Correias'},{id:'motor_radiador',label:'Radiador'}] }, { id:'eletrico', title:'Sistema Eletrico', items:[{id:'eletr_bateria',label:'Bateria'},{id:'eletr_terminais',label:'Terminais'},{id:'eletr_alternador',label:'Alternador'},{id:'eletr_partida',label:'Motor de partida'},{id:'eletr_farois',label:'Farois'},{id:'eletr_buzina',label:'Buzina'}] }, { id:'hidraulico', title:'Sistema Hidraulico', items:[{id:'hidr_oleo',label:'Nivel oleo hidraulico'},{id:'hidr_bomba',label:'Bomba hidraulica'},{id:'hidr_cilindros',label:'Cilindros'},{id:'hidr_vazamentos',label:'Vazamentos'},{id:'hidr_mangueiras',label:'Mangueiras'}] }, { id:'transmissao', title:'Transmissao e Freios', items:[{id:'trans_oleo',label:'Oleo transmissao'},{id:'freio_servico',label:'Freio de servico'},{id:'freio_estac',label:'Freio de estacionamento'},{id:'freio_pastilhas',label:'Pastilhas/Lonas'}] }, { id:'direcao', title:'Direcao', items:[{id:'dir_volante',label:'Volante'},{id:'dir_caixa',label:'Caixa de direcao'},{id:'dir_hidraulica',label:'Direcao hidraulica'}] }, { id:'estrutura', title:'Estrutura e Garfos', items:[{id:'est_mastros',label:'Mastros'},{id:'est_correntes',label:'Correntes'},{id:'est_garfos',label:'Garfos'},{id:'est_roletes',label:'Roletes'}] }, { id:'seguranca', title:'Seguranca', items:[{id:'seg_cinto',label:'Cinto de seguranca'},{id:'seg_extintor',label:'Extintor'},{id:'seg_espelhos',label:'Espelhos'},{id:'seg_alarme',label:'Alarme de re'}] } ],
@@ -452,12 +462,110 @@ var Checklist = {
   updateProgress: function() { var checkboxes = document.querySelectorAll('input[data-check="true"]'); this.checked = Array.from(checkboxes).filter(function(cb) { return cb.checked; }).length; var pct = this.total > 0 ? Math.round((this.checked / this.total) * 100) : 0; var progText = $('progressText'); if (progText) progText.textContent = pct + '%'; var fill = $('progressFill'); if (fill) fill.style.width = pct + '%'; }
 };
 
+function adicionarCampoEquipamento(marca, modelo, serie, qtd, combustivel) {
+  marca = marca || '';
+  modelo = modelo || '';
+  serie = serie || '';
+  qtd = qtd || 1;
+  combustivel = combustivel || '';
+  var container = $('equipamentosList');
+  if (!container) return;
+  var div = document.createElement('div');
+  div.className = 'equip-item';
+  
+  var options = '<option value="">Selecione</option>';
+  Config.marcas.forEach(function(m) {
+    if (m !== 'OUTRA') {
+      options += '<option value="' + m + '"' + (marca === m ? ' selected' : '') + '>' + m + '</option>';
+    }
+  });
+  options += '<option value="OUTRA"' + (marca === 'OUTRA' ? ' selected' : '') + '>OUTRA</option>';
+  
+  div.innerHTML = `
+    <select class="form-input w-28 equip-marca">${options}</select>
+    <div class="outra-marca-container" style="display:${marca === 'OUTRA' ? 'block' : 'none'}">
+      <input type="text" placeholder="Digite a marca" class="form-input w-28 outra-marca" value="${marca === 'OUTRA' ? '' : marca}">
+    </div>
+    <input type="text" placeholder="Modelo" class="form-input w-28 equip-modelo" value="${modelo}">
+    <input type="text" placeholder="Série" class="form-input w-28 equip-serie" value="${serie}">
+    <input type="number" placeholder="Qtd" class="form-input w-20 equip-qtd" value="${qtd}">
+    <select class="form-input w-28 equip-combustivel">
+      <option value="">Combustível</option>
+      <option value="eletrico" ${combustivel === 'eletrico' ? 'selected' : ''}>Elétrico</option>
+      <option value="diesel" ${combustivel === 'diesel' ? 'selected' : ''}>Diesel</option>
+      <option value="gasolina" ${combustivel === 'gasolina' ? 'selected' : ''}>Gasolina</option>
+      <option value="glp" ${combustivel === 'glp' ? 'selected' : ''}>GLP</option>
+    </select>
+    <button type="button" class="text-red-500" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+  `;
+  container.appendChild(div);
+  
+  var select = div.querySelector('.equip-marca');
+  var outraDiv = div.querySelector('.outra-marca-container');
+  select.addEventListener('change', function() {
+    outraDiv.style.display = select.value === 'OUTRA' ? 'block' : 'none';
+    if (select.value !== 'OUTRA') {
+      var outraInput = div.querySelector('.outra-marca');
+      if (outraInput) outraInput.value = '';
+    }
+  });
+}
+
 var Clientes = { 
   load: function() { State.clients = Storage.loadClients(); this.renderTable(); this.updateStats(); },
   updateStats: function() { var totalClientes = State.clients.length; var totalMarcas = 0; State.clients.forEach(function(c) { totalMarcas += (c.equipamentos || []).length; }); var clientesComOS = new Set(); var totalOS = 0; var osAbertas = 0; var osAprovadas = 0; State.osHistory.forEach(function(os) { if (os.cliente) { clientesComOS.add(os.cliente); totalOS++; } if (os.status === 'abertura' || os.status === 'execucao' || os.status === 'finalizacao') osAbertas++; if (os.status === 'aprovada') osAprovadas++; }); $('statTotalClientes').innerText = totalClientes; $('statTotalMarcas').innerText = totalMarcas; $('statClientesComOS').innerText = clientesComOS.size; $('statTotalOSClientes').innerText = totalOS; $('statOSAbertasCliente').innerText = osAbertas; $('statOSAprovadasCliente').innerText = osAprovadas; },
-  renderTable: function() { var tbody = $('cad_tableBody'); if (!tbody) return; tbody.innerHTML = ''; if (!State.clients || State.clients.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-[var(--muted)]">Nenhum cliente cadastrado</td></tr>'; return; } State.clients.forEach(function(c) { var row = tbody.insertRow(); var marcasLista = (c.equipamentos || []).map(function(eq) { return eq.marca; }).join(', '); row.innerHTML = '<td class="p-2 font-medium">' + c.nome + '<\/td><td class="p-2">' + (c.cidade || '-') + '<\/td><td class="p-2">' + (marcasLista || '-') + '<\/td><td class="p-2"><button onclick="Clientes.select(' + c.id + ')" class="btn btn-primary text-xs py-1 px-2">Selecionar</button> <i class="fas fa-edit text-blue-400 cursor-pointer ml-2" onclick="Clientes.edit(' + c.id + ')"></i> <i class="fas fa-trash text-red-400 cursor-pointer ml-2" onclick="Clientes.delete(' + c.id + ')"></i><\/td>'; }); },
-  addEquipField: function(marca, modelo, serie, qtd, combustivel) { marca = marca || ''; modelo = modelo || ''; serie = serie || ''; qtd = qtd || 1; combustivel = combustivel || ''; var container = $('equipamentosList'); if (!container) return; var div = document.createElement('div'); div.className = 'equip-item'; var options = Config.marcas.map(function(m) { return '<option value="' + m + '"' + (marca === m ? ' selected' : '') + '>' + m + '</option>'; }).join(''); div.innerHTML = '<select class="form-input w-24 equip-marca">' + options + '<option value="OUTRA">OUTRA</option></select><div class="outra-marca-container" style="display:none"><input type="text" placeholder="Outra marca" class="form-input w-24 outra-marca"></div><input type="text" placeholder="Modelo" class="form-input w-24 equip-modelo" value="' + modelo + '"><input type="text" placeholder="Serie" class="form-input w-24 equip-serie" value="' + serie + '"><input type="number" placeholder="Qtd" class="form-input w-20 equip-qtd" value="' + qtd + '"><select class="form-input w-28 equip-combustivel"><option value="">Combustível</option><option value="eletrico" ' + (combustivel === 'eletrico' ? 'selected' : '') + '>Elétrico</option><option value="diesel" ' + (combustivel === 'diesel' ? 'selected' : '') + '>Diesel</option><option value="gasolina" ' + (combustivel === 'gasolina' ? 'selected' : '') + '>Gasolina</option><option value="glp" ' + (combustivel === 'glp' ? 'selected' : '') + '>GLP</option></select><button type="button" class="text-red-500" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>'; container.appendChild(div); var select = div.querySelector('.equip-marca'); var outraDiv = div.querySelector('.outra-marca-container'); select.addEventListener('change', function() { outraDiv.style.display = select.value === 'OUTRA' ? 'block' : 'none'; }); if (marca && Config.marcas.indexOf(marca) === -1) { select.value = 'OUTRA'; div.querySelector('.outra-marca').value = marca; outraDiv.style.display = 'block'; } },
-  save: function() { var nome = Utils.getVal('cad_nome').trim(); if (!nome) { showToast('Nome do cliente obrigatório', true); return; } var equipamentos = []; var container = $('equipamentosList'); if (container) { container.querySelectorAll('.equip-item').forEach(function(item) { var marca = item.querySelector('.equip-marca').value; var outra = item.querySelector('.outra-marca') ? item.querySelector('.outra-marca').value : ''; equipamentos.push({ marca: marca === 'OUTRA' ? outra.toUpperCase() : marca, modelo: item.querySelector('.equip-modelo').value, serie: item.querySelector('.equip-serie').value, qtd: parseInt(item.querySelector('.equip-qtd').value) || 1, combustivel: item.querySelector('.equip-combustivel').value }); }); } var cliente = { id: State.editingClientId || Date.now(), nome: nome, cnpj: Utils.getVal('cad_cnpj'), endereco: Utils.getVal('cad_endereco'), cidade: Utils.getVal('cad_cidade'), telefone: Utils.getVal('cad_telefone'), whatsapp: Utils.getVal('cad_whatsapp'), email: Utils.getVal('cad_email'), responsavel_nome: Utils.getVal('cad_responsavel_nome'), responsavel_telefone: Utils.getVal('cad_responsavel_telefone'), equipamentos: equipamentos }; if (State.editingClientId) { var idx = State.clients.findIndex(function(c) { return c.id === State.editingClientId; }); if (idx >= 0) State.clients[idx] = cliente; State.editingClientId = null; var cancelBtn = $('cad_btnCancelar'); if (cancelBtn) cancelBtn.style.display = 'none'; } else { State.clients.push(cliente); } Storage.saveClients(); this.renderTable(); this.clearForm(); this.updateStats(); showToast('Cliente salvo'); },
+  renderTable: function() { var tbody = $('cad_tableBody'); if (!tbody) return; tbody.innerHTML = ''; if (!State.clients || State.clients.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-[var(--muted)]">Nenhum cliente cadastrado</td></tr>'; return; } State.clients.forEach(function(c) { var row = tbody.insertRow(); var marcasLista = (c.equipamentos || []).map(function(eq) { return eq.marca; }).join(', '); row.innerHTML = '<td class="p-2 font-medium">' + (c.nome || '-') + '</td><td class="p-2">' + (c.cidade || '-') + '</td><td class="p-2">' + (marcasLista || '-') + '</td><td class="p-2"><button onclick="Clientes.select(' + c.id + ')" class="btn btn-primary text-xs py-1 px-2">Selecionar</button> <i class="fas fa-edit text-blue-400 cursor-pointer ml-2" onclick="Clientes.edit(' + c.id + ')"></i> <i class="fas fa-trash text-red-400 cursor-pointer ml-2" onclick="Clientes.delete(' + c.id + ')"></i></td>'; }); },
+  addEquipField: function(marca, modelo, serie, qtd, combustivel) { adicionarCampoEquipamento(marca, modelo, serie, qtd, combustivel); },
+  save: async function() { 
+    var nome = Utils.getVal('cad_nome').trim(); 
+    if (!nome) { showToast('Nome do cliente obrigatório', true); return; } 
+    var equipamentos = []; 
+    var container = $('equipamentosList'); 
+    if (container) { 
+      container.querySelectorAll('.equip-item').forEach(function(item) { 
+        var marcaSelect = item.querySelector('.equip-marca').value; 
+        var outraInput = item.querySelector('.outra-marca'); 
+        var marca = marcaSelect === 'OUTRA' ? (outraInput ? outraInput.value.toUpperCase() : '') : marcaSelect; 
+        if (marca) { 
+          equipamentos.push({ 
+            marca: marca, 
+            modelo: item.querySelector('.equip-modelo').value || '', 
+            serie: item.querySelector('.equip-serie').value || '', 
+            qtd: parseInt(item.querySelector('.equip-qtd').value) || 1, 
+            combustivel: item.querySelector('.equip-combustivel').value || '' 
+          }); 
+        } 
+      }); 
+    } 
+    var cliente = { 
+      id: State.editingClientId || Date.now(), 
+      nome: nome, 
+      cnpj: Utils.getVal('cad_cnpj'), 
+      endereco: Utils.getVal('cad_endereco'), 
+      cidade: Utils.getVal('cad_cidade'), 
+      telefone: Utils.getVal('cad_telefone'), 
+      whatsapp: Utils.getVal('cad_whatsapp'), 
+      email: Utils.getVal('cad_email'), 
+      responsavel_nome: Utils.getVal('cad_responsavel_nome'), 
+      responsavel_telefone: Utils.getVal('cad_responsavel_telefone'), 
+      equipamentos: equipamentos 
+    }; 
+    if (State.editingClientId) { 
+      var idx = State.clients.findIndex(function(c) { return c.id === State.editingClientId; }); 
+      if (idx >= 0) State.clients[idx] = cliente; 
+      State.editingClientId = null; 
+      var cancelBtn = $('cad_btnCancelar'); 
+      if (cancelBtn) cancelBtn.style.display = 'none'; 
+    } else { 
+      State.clients.push(cliente); 
+    } 
+    Storage.saveClients(); 
+    this.renderTable(); 
+    this.clearForm(); 
+    this.updateStats(); 
+    showToast('Cliente salvo'); 
+    await GoogleSheetsSync.syncSingleCliente(cliente);
+  },
   select: function(id) { 
     var c = State.clients.find(function(c) { return c.id === id; });
     if (!c) return;
@@ -474,24 +582,162 @@ var Clientes = {
       if (tabOsBtn) tabOsBtn.click();
     }
   },
-  edit: function(id) { var c = State.clients.find(function(c) { return c.id === id; }); if (!c) return; State.editingClientId = id; Utils.setVal('cad_nome', c.nome); Utils.setVal('cad_cnpj', c.cnpj); Utils.setVal('cad_endereco', c.endereco); Utils.setVal('cad_cidade', c.cidade); Utils.setVal('cad_telefone', c.telefone); Utils.setVal('cad_whatsapp', c.whatsapp); Utils.setVal('cad_email', c.email || ''); Utils.setVal('cad_responsavel_nome', c.responsavel_nome || ''); Utils.setVal('cad_responsavel_telefone', c.responsavel_telefone || ''); var container = $('equipamentosList'); if (container) container.innerHTML = ''; if (c.equipamentos && c.equipamentos.length) { c.equipamentos.forEach(function(eq) { Clientes.addEquipField(eq.marca, eq.modelo, eq.serie, eq.qtd, eq.combustivel); }); } var cancelBtn = $('cad_btnCancelar'); if (cancelBtn) cancelBtn.style.display = 'inline-flex'; showToast('Editando cliente'); },
+  edit: function(id) { var c = State.clients.find(function(c) { return c.id === id; }); if (!c) return; State.editingClientId = id; Utils.setVal('cad_nome', c.nome); Utils.setVal('cad_cnpj', c.cnpj); Utils.setVal('cad_endereco', c.endereco); Utils.setVal('cad_cidade', c.cidade); Utils.setVal('cad_telefone', c.telefone); Utils.setVal('cad_whatsapp', c.whatsapp); Utils.setVal('cad_email', c.email || ''); Utils.setVal('cad_responsavel_nome', c.responsavel_nome || ''); Utils.setVal('cad_responsavel_telefone', c.responsavel_telefone || ''); var container = $('equipamentosList'); if (container) container.innerHTML = ''; if (c.equipamentos && c.equipamentos.length) { c.equipamentos.forEach(function(eq) { adicionarCampoEquipamento(eq.marca, eq.modelo, eq.serie, eq.qtd, eq.combustivel); }); } var cancelBtn = $('cad_btnCancelar'); if (cancelBtn) cancelBtn.style.display = 'inline-flex'; showToast('Editando cliente'); },
   delete: function(id) { if (!confirm('Excluir este cliente?')) return; State.clients = State.clients.filter(function(c) { return c.id !== id; }); Storage.saveClients(); this.renderTable(); this.updateStats(); showToast('Cliente excluido'); },
   cancelEdit: function() { State.editingClientId = null; this.clearForm(); var cancelBtn = $('cad_btnCancelar'); if (cancelBtn) cancelBtn.style.display = 'none'; },
   clearForm: function() { ['cad_nome','cad_cnpj','cad_endereco','cad_cidade','cad_telefone','cad_whatsapp','cad_email','cad_responsavel_nome','cad_responsavel_telefone'].forEach(function(id) { Utils.setVal(id, ''); }); var container = $('equipamentosList'); if (container) container.innerHTML = ''; },
-  exportCSV: function() { var csv = "Nome,CNPJ,Endereco,Cidade,Telefone,WhatsApp,Email,Responsavel,TelefoneResponsavel,Marcas\n"; State.clients.forEach(function(c) { var marcasLista = (c.equipamentos || []).map(function(eq) { return eq.marca; }).join('; '); csv += '"' + c.nome + '",' + (c.cnpj || '') + ',"' + (c.endereco || '') + '","' + (c.cidade || '') + '",' + (c.telefone || '') + ',' + (c.whatsapp || '') + ',' + (c.email || '') + ',' + (c.responsavel_nome || '') + ',' + (c.responsavel_telefone || '') + ',"' + marcasLista + '"\n'; }); var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'}); var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'clientes_' + new Date().toISOString().split('T')[0] + '.csv'; a.click(); showToast('Clientes exportados'); },
+  exportCSV: function() { var csv = "Nome,CNPJ,Endereco,Cidade,Telefone,WhatsApp,Email,Responsavel,TelefoneResponsavel,Marcas\n"; State.clients.forEach(function(c) { var marcasLista = (c.equipamentos || []).map(function(eq) { return eq.marca; }).join('; '); csv += '"' + (c.nome || '') + '",' + (c.cnpj || '') + ',"' + (c.endereco || '') + '","' + (c.cidade || '') + '",' + (c.telefone || '') + ',' + (c.whatsapp || '') + ',' + (c.email || '') + ',' + (c.responsavel_nome || '') + ',' + (c.responsavel_telefone || '') + ',"' + marcasLista + '"\n'; }); var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'}); var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'clientes_' + new Date().toISOString().split('T')[0] + '.csv'; a.click(); showToast('Clientes exportados'); },
   importCSV: function() { var input = document.createElement('input'); input.type = 'file'; input.accept = '.csv'; input.onchange = function(e) { var file = e.target.files[0]; var reader = new FileReader(); reader.onload = function(ev) { var lines = ev.target.result.split('\n'); for (var i = 1; i < lines.length; i++) { if (!lines[i].trim()) continue; var parts = lines[i].split(','); if (parts[0]) { var nome = parts[0].replace(/"/g, ''); var cliente = { id: Date.now() + i, nome: nome, cnpj: parts[1] || '', endereco: (parts[2] || '').replace(/"/g, ''), cidade: (parts[3] || '').replace(/"/g, ''), telefone: parts[4] || '', whatsapp: parts[5] || '', email: parts[6] || '', responsavel_nome: parts[7] || '', responsavel_telefone: parts[8] || '', equipamentos: [] }; State.clients.push(cliente); } } Storage.saveClients(); Clientes.renderTable(); Clientes.updateStats(); showToast('Importação concluída'); }; reader.readAsText(file, 'UTF-8'); }; input.click(); }
 };
 
 var Historico = { 
   load: function() { State.osHistory = Storage.loadOSHistory(); this.render(); this.updateStats(); Clientes.updateStats(); },
   updateStats: function() { var total = State.osHistory.length; var statusAbertura = 0, statusExecucao = 0, statusFinalizacao = 0, statusFechada = 0, statusAprovada = 0; var tipoEmergencial = 0, tipoPreventiva = 0, tipoCorretiva = 0, tipoGarantia = 0, tipoNormal = 0, tipoAvaliacao = 0, tipoOrcamento = 0; var esteMes = 0; var now = new Date(); var mesAtual = now.getMonth(), anoAtual = now.getFullYear(); State.osHistory.forEach(function(os) { if (os.status === 'abertura') statusAbertura++; else if (os.status === 'execucao') statusExecucao++; else if (os.status === 'finalizacao') statusFinalizacao++; else if (os.status === 'fechada') statusFechada++; else if (os.status === 'aprovada') statusAprovada++; if (os.tipoChamado === 'emergencial') tipoEmergencial++; else if (os.tipoChamado === 'preventiva') tipoPreventiva++; else if (os.tipoChamado === 'corretiva') tipoCorretiva++; else if (os.tipoChamado === 'garantia') tipoGarantia++; else if (os.tipoChamado === 'normal') tipoNormal++; else if (os.tipoChamado === 'avaliacao') tipoAvaliacao++; else if (os.tipoChamado === 'orcamento') tipoOrcamento++; if (os.dataOS) { var d = new Date(os.dataOS); if (d.getMonth() === mesAtual && d.getFullYear() === anoAtual) esteMes++; } }); $('statTotalOS').innerText = total; $('statStatusAbertura').innerText = statusAbertura; $('statStatusExecucao').innerText = statusExecucao; $('statStatusFinalizacao').innerText = statusFinalizacao; $('statStatusFechada').innerText = statusFechada; $('statStatusAprovada').innerText = statusAprovada; $('statTipoEmergencial').innerText = tipoEmergencial; $('statTipoPreventiva').innerText = tipoPreventiva; $('statTipoCorretiva').innerText = tipoCorretiva; $('statTipoGarantia').innerText = tipoGarantia; $('statTipoNormal').innerText = tipoNormal; $('statTipoAvaliacao').innerText = tipoAvaliacao; $('statTipoOrcamento').innerText = tipoOrcamento; $('statEsteMes').innerText = esteMes; },
-  render: function() { var search = Utils.getVal('historicoSearch').toLowerCase(); var tipo = Utils.getVal('historicoFiltroTipo'); var statusFiltro = Utils.getVal('historicoFiltroStatus'); var filtered = State.osHistory.filter(function(os) { var matchSearch = !search || (os.numeroOS && os.numeroOS.toLowerCase().indexOf(search) !== -1) || (os.cliente && os.cliente.toLowerCase().indexOf(search) !== -1); var matchTipo = !tipo || os.tipoChamado === tipo; var matchStatus = !statusFiltro || os.status === statusFiltro; return matchSearch && matchTipo && matchStatus; }); var tbody = $('historicoTableBody'), empty = $('historicoEmpty'); if (!tbody) return; tbody.innerHTML = ''; if (filtered.length === 0) { if (empty) empty.classList.remove('hidden'); return; } if (empty) empty.classList.add('hidden'); filtered.forEach(function(os) { var row = tbody.insertRow(); var statusClass = 'status-' + (os.status || 'abertura'); var statusText = Utils.formatStatus(os.status); row.innerHTML = '<td class="font-mono font-bold">' + (os.numeroOS || '-') + '<\/td><td class="p-2">' + (os.dataOS || '-') + '<\/td><td class="font-medium">' + (os.cliente || '-').toUpperCase() + '<\/td><td class="p-2"><span class="status-badge ' + statusClass + '">' + statusText + '<\/span><\/td><td class="font-mono font-bold text-[var(--success)]">' + (os.horasTotais || '-') + '<\/td><td class="p-2"><button onclick="Historico.view(\'' + os.numeroOS + '\')" class="text-blue-400"><i class="fas fa-eye"></i></button> <button onclick="Historico.edit(\'' + os.numeroOS + '\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="Historico.delete(\'' + os.numeroOS + '\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button><\/td>'; }); },
+  render: function() { var search = Utils.getVal('historicoSearch').toLowerCase(); var tipo = Utils.getVal('historicoFiltroTipo'); var statusFiltro = Utils.getVal('historicoFiltroStatus'); var filtered = State.osHistory.filter(function(os) { var matchSearch = !search || (os.numeroOS && os.numeroOS.toLowerCase().indexOf(search) !== -1) || (os.cliente && os.cliente.toLowerCase().indexOf(search) !== -1); var matchTipo = !tipo || os.tipoChamado === tipo; var matchStatus = !statusFiltro || os.status === statusFiltro; return matchSearch && matchTipo && matchStatus; }); var tbody = $('historicoTableBody'), empty = $('historicoEmpty'); if (!tbody) return; tbody.innerHTML = ''; if (filtered.length === 0) { if (empty) empty.classList.remove('hidden'); return; } if (empty) empty.classList.add('hidden'); filtered.forEach(function(os) { var row = tbody.insertRow(); var statusClass = 'status-' + (os.status || 'abertura'); var statusText = Utils.formatStatus(os.status); row.innerHTML = '<td class="font-mono font-bold">' + (os.numeroOS || '-') + '</td><td class="p-2">' + (os.dataOS || '-') + '</td><td class="font-medium">' + (os.cliente || '-').toUpperCase() + '</td><td class="p-2"><span class="status-badge ' + statusClass + '">' + statusText + '<\/span></td><td class="font-mono font-bold text-[var(--success)]">' + (os.horasTotais || '-') + '</td><td class="p-2"><button onclick="Historico.view(\'' + os.numeroOS + '\')" class="text-blue-400"><i class="fas fa-eye"></i></button> <button onclick="Historico.edit(\'' + os.numeroOS + '\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="Historico.delete(\'' + os.numeroOS + '\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button></td>'; }); },
   view: function(num) { var os = State.osHistory.find(function(o) { return o.numeroOS === num; }); if (!os) return; State.currentStatus = os.status || 'abertura'; document.querySelectorAll('#tab-os input, #tab-os select, #tab-os textarea').forEach(function(el) { if (el.id && el.type !== 'file') el.value = ''; }); for (var key in os) { if (['fotosBase64','fotoHorimetro','fotosPendencias','assinaturaTecnico','assinaturaCliente'].indexOf(key) === -1) Utils.setVal(key, os[key]); } if (os.fotoHorimetro) { State.fotoHorimetro = os.fotoHorimetro; var preview = $('fotoHorimetroPreview'); if (preview) preview.innerHTML = '<div class="photo-item"><img src="' + os.fotoHorimetro + '"><div class="photo-remove" onclick="Fotos.removeHorimetro()">x</div></div>'; } else Fotos.removeHorimetro(); if (os.fotosBase64 && os.fotosBase64.length) { State.fotosServico = os.fotosBase64; var preview = $('fotosPreview'); if (preview) preview.innerHTML = ''; os.fotosBase64.forEach(function(src) { if (preview) { var div = document.createElement('div'); div.className = 'photo-item'; div.innerHTML = '<img src="' + src + '"><div class="photo-remove" onclick="Fotos.removeServico(this)">x</div>'; preview.appendChild(div); } }); } else { State.fotosServico = []; var preview = $('fotosPreview'); if (preview) preview.innerHTML = ''; } if (os.fotosPendencias && os.fotosPendencias.length) { State.fotosPendencias = os.fotosPendencias; var preview = $('fotosPendenciasPreview'); if (preview) preview.innerHTML = ''; os.fotosPendencias.forEach(function(src) { if (preview) { var div = document.createElement('div'); div.className = 'photo-item'; div.innerHTML = '<img src="' + src + '"><div class="photo-remove" onclick="Fotos.removePendencia(this)">x</div>'; preview.appendChild(div); } }); } else { State.fotosPendencias = []; var preview = $('fotosPendenciasPreview'); if (preview) preview.innerHTML = ''; } Signature.loadFromData('tec', os.assinaturaTecnico); Signature.loadFromData('cli', os.assinaturaCliente); document.querySelectorAll('input[data-check="true"]').forEach(function(cb) { cb.checked = os[cb.id] === true; }); App.updateUI(); showToast('OS carregada'); var tabOsBtn = document.querySelector('.tab-button[data-tab="tab-os"]'); if (tabOsBtn) tabOsBtn.click(); },
   edit: function(num) { this.view(num); },
   delete: function(num) { if (!confirm('Excluir OS ' + num + '?')) return; State.osHistory = State.osHistory.filter(function(o) { return o.numeroOS !== num; }); Storage.saveOSHistory(); this.render(); this.updateStats(); Clientes.updateStats(); showToast('OS excluida'); },
   exportCSV: function() { var csv = 'OS,Data,Cliente,Status,Tipo,Horas,Total Geral\n'; State.osHistory.forEach(function(o) { csv += (o.numeroOS || '') + ',' + (o.dataOS || '') + ',"' + (o.cliente || '') + '",' + Utils.formatStatus(o.status) + ',' + (o.tipoChamado || '') + ',' + (o.horasTotais || '') + ',' + (o.totalGeral || '') + '\n'; }); var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'}); var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'historico_os_' + new Date().toISOString().split('T')[0] + '.csv'; a.click(); showToast('CSV exportado'); },
   importCSV: function() { var input = document.createElement('input'); input.type = 'file'; input.accept = '.csv'; input.onchange = function(e) { var file = e.target.files[0]; var reader = new FileReader(); reader.onload = function(ev) { var lines = ev.target.result.split('\n'); for (var i = 1; i < lines.length; i++) { if (!lines[i].trim()) continue; var parts = lines[i].split(','); if (parts[0]) { var os = { numeroOS: parts[0] || 'OS-' + Date.now() + '-' + i, dataOS: parts[1] || '', cliente: (parts[2] || '').replace(/"/g, ''), status: (parts[3] || '').toLowerCase() || 'abertura', tipoChamado: (parts[4] || '').toLowerCase() || 'normal', horasTotais: parts[5] || '0h', totalGeral: parts[6] || '00:00', descricaoServico: '', pecasAplicadas: '', pendencias: '', relatoCliente: '', marca: '', modelo: '', numSerie: '', horimetro: '', combustivel: '', whatsappCliente: '', cnpj: '', cidadeCliente: '', endereco: '', tecnico: 'LEONARDO MARTINS', recebedor: '', fotosBase64: [], fotoHorimetro: null, fotosPendencias: [], assinaturaTecnico: '', assinaturaCliente: '' }; State.osHistory.push(os); } } Storage.saveOSHistory(); Historico.render(); Historico.updateStats(); Clientes.updateStats(); showToast('Importação concluída'); }; reader.readAsText(file, 'UTF-8'); }; input.click(); },
   clear: function() { if (!confirm('Limpar TODO o historico?')) return; State.osHistory = []; Storage.saveOSHistory(); this.render(); this.updateStats(); Clientes.updateStats(); showToast('Historico limpo'); }
+};
+
+// ==================== SINCRONIZAÇÃO BIDIRECIONAL COM GOOGLE SHEETS ====================
+const GoogleSheetsSync = {
+  webAppUrl: 'https://script.google.com/macros/s/AKfycbxbDRx57y4CnRW4e-3hW1eG3n3vX6HxJGV-oG3a59wul2Jx6ATr5g1XZaAiDRpUQI7U/exec',
+  
+  async syncAllClientes() {
+    try {
+      this.setStatus('Enviando clientes...');
+      await fetch(this.webAppUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'syncClientes',
+          clientes: State.clients
+        })
+      });
+      this.setStatus('Clientes sincronizados!', true);
+      return true;
+    } catch (error) {
+      console.error('Erro ao sincronizar:', error);
+      this.setStatus('Erro na sincronização', false);
+      return false;
+    }
+  },
+  
+  async syncSingleCliente(cliente) {
+    try {
+      await fetch(this.webAppUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'syncSingleCliente',
+          cliente: cliente
+        })
+      });
+      return true;
+    } catch (error) {
+      console.error('Erro:', error);
+      return false;
+    }
+  },
+  
+  async syncAllOS() {
+    try {
+      this.setStatus('Enviando OS...');
+      await fetch(this.webAppUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'syncOS',
+          os: State.osHistory
+        })
+      });
+      this.setStatus('OS sincronizadas!', true);
+      return true;
+    } catch (error) {
+      console.error('Erro:', error);
+      this.setStatus('Erro na sincronização', false);
+      return false;
+    }
+  },
+  
+  async syncSingleOS(os) {
+    try {
+      await fetch(this.webAppUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'syncSingleOS',
+          os: os
+        })
+      });
+      return true;
+    } catch (error) {
+      console.error('Erro:', error);
+      return false;
+    }
+  },
+  
+  async fetchFromSheet() {
+    try {
+      this.setStatus('Baixando dados...');
+      const response = await fetch(this.webAppUrl);
+      const data = await response.json();
+      
+      if (data.success) {
+        if (data.clientes && data.clientes.length) {
+          State.clients = data.clientes;
+          Storage.saveClients();
+          Clientes.renderTable();
+          Clientes.updateStats();
+        }
+        
+        if (data.os && data.os.length) {
+          State.osHistory = data.os;
+          Storage.saveOSHistory();
+          Historico.render();
+          Historico.updateStats();
+        }
+        
+        this.setStatus(`${data.clientes?.length || 0} clientes, ${data.os?.length || 0} OS`, true);
+        showToast(`✅ Dados sincronizados da planilha!`);
+        return true;
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+      this.setStatus('Erro ao baixar', false);
+      showToast('❌ Erro ao carregar dados da planilha', true);
+      return false;
+    }
+  },
+  
+  async fullSync() {
+    await this.syncAllClientes();
+    await this.syncAllOS();
+    showToast('✅ Sincronização completa realizada!');
+  },
+  
+  setStatus(message, success = null) {
+    const statusDiv = $('syncStatus');
+    const statusText = $('syncStatusText');
+    if (statusText) statusText.textContent = message;
+    if (statusDiv && success !== null) {
+      statusDiv.classList.remove('online', 'offline');
+      statusDiv.classList.add(success ? 'online' : 'offline');
+      setTimeout(() => {
+        statusDiv.classList.remove('online', 'offline');
+        if (statusText) statusText.textContent = 'Pronto';
+      }, 3000);
+    }
+  }
 };
 
 var App = { 
@@ -511,6 +757,11 @@ var App = {
       this.setupSearch(); 
       State.currentStatus = 'abertura'; 
       this.updateUI(); 
+      
+      setTimeout(function() {
+        GoogleSheetsSync.fetchFromSheet();
+      }, 2000);
+      
       var loading = $('loadingOverlay'); 
       if (loading) loading.style.display = 'none'; 
       var container = $('appContainer'); 
@@ -525,17 +776,36 @@ var App = {
     var modal = $('equipModal');
     var equipList = $('equipList');
     equipList.innerHTML = '';
-    cliente.equipamentos.forEach(function(eq, idx) {
-      var div = document.createElement('div');
-      div.className = 'equip-option';
-      div.innerHTML = '<div><strong><i class="fas fa-forklift"></i> ' + eq.marca + ' ' + eq.modelo + '</strong></div>' +
-        '<div class="text-sm text-[var(--muted)]">Série: ' + (eq.serie || 'N/A') + ' | Qtd: ' + eq.qtd + ' | Combustível: ' + (eq.combustivel || 'N/A') + '</div>';
-      div.onclick = function() {
-        App.carregarEquipamento(eq, cliente);
+    if (cliente.equipamentos && cliente.equipamentos.length > 0) {
+      cliente.equipamentos.forEach(function(eq, idx) {
+        var div = document.createElement('div');
+        div.className = 'equip-option';
+        div.innerHTML = '<div><strong><i class="fas fa-forklift"></i> ' + (eq.marca || 'N/A') + ' ' + (eq.modelo || '') + '</strong></div>' +
+          '<div class="text-sm text-[var(--muted)]">Série: ' + (eq.serie || 'N/A') + ' | Qtd: ' + (eq.qtd || 1) + ' | Combustível: ' + (eq.combustivel || 'N/A') + '</div>';
+        div.onclick = function() {
+          App.carregarEquipamento(eq, cliente);
+          modal.style.display = 'none';
+        };
+        equipList.appendChild(div);
+      });
+    } else {
+      equipList.innerHTML = '<div class="text-center py-4 text-[var(--muted)]">Nenhum equipamento cadastrado.</div>';
+      var btnSimples = document.createElement('button');
+      btnSimples.className = 'btn btn-primary w-full mt-2';
+      btnSimples.innerHTML = 'Carregar apenas dados do cliente';
+      btnSimples.onclick = function() {
+        Utils.setVal('cliente', cliente.nome);
+        Utils.setVal('cnpj', cliente.cnpj);
+        Utils.setVal('cidadeCliente', cliente.cidade);
+        Utils.setVal('endereco', cliente.endereco);
+        Utils.setVal('whatsappCliente', cliente.whatsapp);
+        showToast('Cliente carregado');
         modal.style.display = 'none';
+        var tabOsBtn = document.querySelector('.tab-button[data-tab="tab-os"]');
+        if (tabOsBtn) tabOsBtn.click();
       };
-      equipList.appendChild(div);
-    });
+      equipList.appendChild(btnSimples);
+    }
     modal.style.display = 'flex';
   },
   carregarEquipamento: function(equip, cliente) {
@@ -546,34 +816,74 @@ var App = {
     Utils.setVal('whatsappCliente', cliente.whatsapp);
     var selectMarca = $('marcaSelect');
     if (selectMarca) {
-      if (Config.marcas.indexOf(equip.marca) !== -1) {
-        selectMarca.value = equip.marca;
+      var marcaEquip = equip.marca || '';
+      if (Config.marcas.indexOf(marcaEquip) !== -1) {
+        selectMarca.value = marcaEquip;
         var outraDiv = $('marcaOutraDiv');
         if (outraDiv) outraDiv.style.display = 'none';
-      } else if (equip.marca) {
+      } else if (marcaEquip) {
         selectMarca.value = 'OUTRA';
-        Utils.setVal('marcaOutra', equip.marca);
+        Utils.setVal('marcaOutra', marcaEquip);
         var outraDiv = $('marcaOutraDiv');
         if (outraDiv) outraDiv.style.display = 'block';
       }
     }
-    Utils.setVal('modelo', equip.modelo);
-    Utils.setVal('numSerie', equip.serie);
+    Utils.setVal('modelo', equip.modelo || '');
+    Utils.setVal('numSerie', equip.serie || '');
     if (equip.combustivel) Utils.setVal('combustivel', equip.combustivel);
-    showToast('Equipamento carregado: ' + equip.marca + ' ' + equip.modelo);
+    showToast('Equipamento carregado: ' + (equip.marca || '') + ' ' + (equip.modelo || ''));
     var tabOsBtn = document.querySelector('.tab-button[data-tab="tab-os"]');
     if (tabOsBtn) tabOsBtn.click();
   },
   fecharModalEquip: function() { $('equipModal').style.display = 'none'; },
-  populateMarcas: function() { var select = $('marcaSelect'); if (!select) return; select.innerHTML = '<option value="">Selecione</option>'; Config.marcas.forEach(function(m) { select.innerHTML += '<option value="' + m + '">' + m + '</option>'; }); },
+  populateMarcas: function() { var select = $('marcaSelect'); if (!select) return; select.innerHTML = '<option value="">Selecione</option>'; Config.marcas.forEach(function(m) { if (m !== 'OUTRA') select.innerHTML += '<option value="' + m + '">' + m + '</option>'; }); select.innerHTML += '<option value="OUTRA">OUTRA</option>'; },
   setupMarcaSelect: function() { var select = $('marcaSelect'), div = $('marcaOutraDiv'), input = $('marcaOutra'); if (!select || !div || !input) return; select.addEventListener('change', function() { div.style.display = select.value === 'OUTRA' ? 'block' : 'none'; if (select.value === 'OUTRA') input.focus(); Utils.setVal('marca', select.value === 'OUTRA' ? input.value.toUpperCase() : select.value); }); input.addEventListener('input', function() { Utils.setVal('marca', input.value.toUpperCase()); }); },
   setupTabs: function() { var tabs = document.querySelectorAll('.tab-button'); var contents = document.querySelectorAll('.tab-content'); tabs.forEach(function(tab) { tab.addEventListener('click', function() { var targetId = this.getAttribute('data-tab'); if (!targetId) return; tabs.forEach(function(t) { t.classList.remove('active'); }); contents.forEach(function(c) { c.classList.remove('active'); }); this.classList.add('active'); var target = document.getElementById(targetId); if (target) target.classList.add('active'); }); }); },
-  setupSearch: function() { var histSearch = $('historicoSearch'); if (histSearch) histSearch.addEventListener('input', function() { Historico.render(); }); var tipoFiltro = $('historicoFiltroTipo'); if (tipoFiltro) tipoFiltro.addEventListener('change', function() { Historico.render(); }); var statusFiltro = $('historicoFiltroStatus'); if (statusFiltro) statusFiltro.addEventListener('change', function() { Historico.render(); }); var searchInput = $('cad_searchInput'); if (searchInput) { searchInput.addEventListener('input', function(e) { var search = e.target.value.toLowerCase(); var filtered = State.clients.filter(function(c) { return c.nome.toLowerCase().indexOf(search) !== -1 || (c.cidade && c.cidade.toLowerCase().indexOf(search) !== -1); }); var original = State.clients; State.clients = filtered; Clientes.renderTable(); State.clients = original; }); } },
+  setupSearch: function() { var histSearch = $('historicoSearch'); if (histSearch) histSearch.addEventListener('input', function() { Historico.render(); }); var tipoFiltro = $('historicoFiltroTipo'); if (tipoFiltro) tipoFiltro.addEventListener('change', function() { Historico.render(); }); var statusFiltro = $('historicoFiltroStatus'); if (statusFiltro) statusFiltro.addEventListener('change', function() { Historico.render(); }); var searchInput = $('cad_searchInput'); if (searchInput) { searchInput.addEventListener('input', function(e) { var search = e.target.value.toLowerCase(); var filtered = State.clients.filter(function(c) { return (c.nome && c.nome.toLowerCase().indexOf(search) !== -1) || (c.cidade && c.cidade.toLowerCase().indexOf(search) !== -1); }); var original = State.clients; State.clients = filtered; Clientes.renderTable(); State.clients = original; }); } },
   updateUI: function() { var isAbertura = State.currentStatus === 'abertura'; var isExecucao = State.currentStatus === 'execucao'; var isFinalizacao = State.currentStatus === 'finalizacao'; var isFechada = State.currentStatus === 'fechada'; var isAprovada = State.currentStatus === 'aprovada'; var btnIniciar = $('btnIniciarExecucao'); if (btnIniciar) btnIniciar.disabled = !isAbertura; var btnFinalizar = $('btnFinalizar'); if (btnFinalizar) btnFinalizar.disabled = !isExecucao; var btnFechar = $('btnFecharOS'); if (btnFechar) btnFechar.disabled = !isFinalizacao; var btnAprovar = $('btnAprovar'); if (btnAprovar) btnAprovar.disabled = !isFechada; var btnPDF = $('btnPreviaPDF'); var btnEmail = $('btnEnviarEmail'); if (btnPDF) btnPDF.disabled = !isAprovada; if (btnEmail) btnEmail.disabled = !isAprovada; var editFields = ['descricaoServico','pecasAplicadas','pendencias','horasExtras','adicionalNoturno','modelo','numSerie','horimetro']; editFields.forEach(function(id) { var el = $(id); if (el) el.disabled = isFechada || isAprovada; }); var marcaSelect = $('marcaSelect'); if (marcaSelect) marcaSelect.disabled = isFechada || isAprovada; var badge = $('statusBadge'); if (badge) { badge.className = 'status-badge'; var statusConfig = { abertura: {text:'EM ABERTURA', class:'status-abertura'}, execucao: {text:'EM EXECUCAO', class:'status-execucao'}, finalizacao: {text:'FINALIZANDO', class:'status-finalizacao'}, fechada: {text:'FECHADA', class:'status-fechada'}, aprovada: {text:'APROVADA', class:'status-aprovada'} }; var cfg = statusConfig[State.currentStatus]; badge.textContent = cfg.text; badge.classList.add(cfg.class); } var steps = ['abertura','execucao','finalizacao','fechada','aprovada']; document.querySelectorAll('.step').forEach(function(step, idx) { step.classList.remove('active','completed','locked'); if (steps[idx] === State.currentStatus) step.classList.add('active'); else if (steps.indexOf(State.currentStatus) > idx) step.classList.add(steps[idx] === 'fechada' && State.currentStatus === 'aprovada' ? 'locked' : 'completed'); }); },
   coletarDados: function() { var data = {}; document.querySelectorAll('#tab-os input, #tab-os select, #tab-os textarea').forEach(function(el) { if (el.id && el.type !== 'file') data[el.id] = el.value; }); document.querySelectorAll('input[data-check="true"]').forEach(function(cb) { data[cb.id] = cb.checked; }); document.querySelectorAll('#checklistSections select').forEach(function(sel) { data[sel.id] = sel.value; }); var marcaSelect = $('marcaSelect').value, marcaOutra = $('marcaOutra').value; data.marca = marcaSelect === 'OUTRA' ? marcaOutra.toUpperCase() : marcaSelect; return data; },
-  salvar: function() { Signature.save('tec'); Signature.save('cli'); var data = this.coletarDados(); data.status = State.currentStatus; data.fotosBase64 = State.fotosServico; data.fotoHorimetro = State.fotoHorimetro; data.fotosPendencias = State.fotosPendencias; data.assinaturaTecnico = Utils.getVal('assinaturaTecnicoData'); data.assinaturaCliente = Utils.getVal('assinaturaClienteData'); Horas.calcular(); data.horasTotais = Utils.getVal('horasTotais'); data.totalGeral = Utils.getVal('totalGeral'); if (!data.numeroOS) { data.numeroOS = Utils.generateOSNumber(); } try { var idx = State.osHistory.findIndex(function(os) { return os.numeroOS === data.numeroOS; }); if (idx >= 0) { State.osHistory[idx] = data; } else { State.osHistory.unshift(data); } Storage.saveOSHistory(); State.hasUnsavedChanges = false; Historico.updateStats(); Clientes.updateStats(); return true; } catch (e) { showToast('Erro ao salvar', true); return false; } },
-  salvarOSManual: function() { var ok = this.salvar(); if (ok) { showToast('OS salva com sucesso'); Historico.render(); } },
-  mudarStatus: function(novoStatus) { 
+  salvar: async function() { 
+    Signature.save('tec'); 
+    Signature.save('cli'); 
+    var data = this.coletarDados(); 
+    data.status = State.currentStatus; 
+    data.fotosBase64 = State.fotosServico; 
+    data.fotoHorimetro = State.fotoHorimetro; 
+    data.fotosPendencias = State.fotosPendencias; 
+    data.assinaturaTecnico = Utils.getVal('assinaturaTecnicoData'); 
+    data.assinaturaCliente = Utils.getVal('assinaturaClienteData'); 
+    Horas.calcular(); 
+    data.horasTotais = Utils.getVal('horasTotais'); 
+    data.totalGeral = Utils.getVal('totalGeral'); 
+    if (!data.numeroOS) { 
+      data.numeroOS = Utils.generateOSNumber(); 
+    } 
+    try { 
+      var idx = State.osHistory.findIndex(function(os) { return os.numeroOS === data.numeroOS; }); 
+      if (idx >= 0) { 
+        State.osHistory[idx] = data; 
+      } else { 
+        State.osHistory.unshift(data); 
+      } 
+      Storage.saveOSHistory(); 
+      State.hasUnsavedChanges = false; 
+      Historico.updateStats(); 
+      Clientes.updateStats(); 
+      await GoogleSheetsSync.syncSingleOS(data);
+      return true; 
+    } catch (e) { 
+      showToast('Erro ao salvar', true); 
+      return false; 
+    } 
+  },
+  salvarOSManual: async function() { 
+    var ok = await this.salvar(); 
+    if (ok) { 
+      showToast('OS salva com sucesso'); 
+      Historico.render(); 
+    } 
+  },
+  mudarStatus: async function(novoStatus) { 
     if (novoStatus === 'abertura') { if (!Utils.getVal('numeroOS')) { showToast('Clique em Nova OS primeiro.', true); return; } if (!Utils.getVal('cliente').trim()) { showToast('Cliente obrigatório para abrir a OS.', true); return; } } 
     if (novoStatus === 'execucao' && State.currentStatus !== 'abertura') { showToast('A OS precisa estar EM ABERTURA para iniciar execução.', true); return; } 
     if (novoStatus === 'finalizacao' && State.currentStatus !== 'execucao') { showToast('A OS precisa estar EM EXECUÇÃO para finalizar.', true); return; } 
@@ -581,8 +891,12 @@ var App = {
     if (novoStatus === 'aprovada') { if (State.currentStatus !== 'fechada') { showToast('A OS precisa estar FECHADA para aprovação.', true); return; } if (!Utils.getVal('assinaturaClienteData')) { showToast('O cliente deve assinar digitalmente.', true); return; } if (!Utils.getVal('recebedor').trim()) { showToast('Informe o nome do recebedor.', true); return; } } 
     State.currentStatus = novoStatus; 
     if (novoStatus === 'finalizacao' || novoStatus === 'fechada') Horas.calcular(); 
-    var ok = this.salvar(); 
-    if (ok) { this.updateUI(); Historico.render(); showToast('Status: ' + Utils.formatStatus(novoStatus)); } 
+    var ok = await this.salvar(); 
+    if (ok) { 
+      this.updateUI(); 
+      Historico.render(); 
+      showToast('Status: ' + Utils.formatStatus(novoStatus)); 
+    } 
   },
   iniciarExecucao: function() { if (State.currentStatus !== 'abertura') return; this.mudarStatus('execucao'); Timer.control('start'); showToast('Execução iniciada'); },
   finalizarServico: function() { if (State.currentStatus !== 'execucao') return; var horimetro = Utils.getVal('horimetro'); if (!horimetro) { showToast('Preencha o campo Horímetro antes de finalizar o serviço.', true); return; } Timer.control('stop'); Horas.calcular(); this.mudarStatus('finalizacao'); showToast('Serviço finalizado'); },
