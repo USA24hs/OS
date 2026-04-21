@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Marlift Empilhadeiras - OS Profissional v8.0</title>
+  <title>Marlift Empilhadeiras - OS Profissional</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -28,7 +28,6 @@
     .font-display { font-family: 'Bebas Neue', sans-serif; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
     
-    /* Tela de Login */
     .login-container {
       min-height: 100vh;
       display: flex;
@@ -111,7 +110,6 @@
     .user-badge.tecnico { border-left: 3px solid #3b82f6; }
     .user-badge.visualizador { border-left: 3px solid #10b981; }
     
-    /* Toolbar */
     .toolbar {
       background: var(--bg-secondary);
       border-radius: 12px;
@@ -248,15 +246,7 @@
   <p class="mt-4 text-[var(--accent)] font-display text-xl">Carregando Sistema...</p>
 </div>
 
-<div id="equipModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-title"><i class="fas fa-forklift"></i> Selecione o Equipamento</div>
-    <div id="equipList"></div>
-    <button onclick="fecharModalEquip()" class="btn btn-secondary w-full mt-3">Cancelar</button>
-  </div>
-</div>
-
-<div class="min-h-screen" id="appContainer" style="display:none;">
+<div id="appContainer" style="display:none;">
   <header class="no-print border-b border-[var(--border)] bg-[var(--bg)]/95 backdrop-blur-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-3">
       <div class="flex flex-wrap justify-between items-center gap-3">
@@ -276,16 +266,15 @@
         </div>
       </div>
       
-      <!-- TOOLBAR - Barra de ferramentas abaixo do badge -->
       <div class="toolbar mt-3">
         <div class="toolbar-buttons">
-          <button onclick="gerarPreviaPDF()" id="btnPreviaPDF" class="btn btn-primary text-sm" disabled><i class="fas fa-file-pdf"></i> PDF</button>
-          <button onclick="enviarEmailComResumo()" id="btnEnviarEmail" class="btn btn-secondary text-sm" disabled><i class="fas fa-envelope"></i> E-mail</button>
-          <button onclick="sendWhatsAppMessage()" class="btn btn-secondary text-sm"><i class="fab fa-whatsapp text-green-500"></i> WhatsApp</button>
-          <button onclick="novaOS()" id="btnNovaOS" class="btn btn-yellow text-sm"><i class="fas fa-plus"></i> Nova O.S</button>
-          <button onclick="fullSync()" id="btnSync" class="btn btn-sync text-sm"><i class="fas fa-cloud-upload-alt"></i> Sincronizar</button>
-          <button onclick="fetchFromSheet()" id="btnDownload" class="btn btn-secondary text-sm"><i class="fas fa-cloud-download-alt"></i> Baixar</button>
-          <button onclick="logout()" class="btn btn-danger text-sm"><i class="fas fa-sign-out-alt"></i> Sair</button>
+          <button id="btnPreviaPDF" class="btn btn-primary text-sm" disabled><i class="fas fa-file-pdf"></i> PDF</button>
+          <button id="btnEnviarEmail" class="btn btn-secondary text-sm" disabled><i class="fas fa-envelope"></i> E-mail</button>
+          <button id="btnWhatsApp" class="btn btn-secondary text-sm"><i class="fab fa-whatsapp text-green-500"></i> WhatsApp</button>
+          <button id="btnNovaOS" class="btn btn-yellow text-sm"><i class="fas fa-plus"></i> Nova O.S</button>
+          <button id="btnSync" class="btn btn-sync text-sm"><i class="fas fa-cloud-upload-alt"></i> Sincronizar</button>
+          <button id="btnDownload" class="btn btn-secondary text-sm"><i class="fas fa-cloud-download-alt"></i> Baixar</button>
+          <button id="btnLogout" class="btn btn-danger text-sm"><i class="fas fa-sign-out-alt"></i> Sair</button>
         </div>
       </div>
     </div>
@@ -300,7 +289,6 @@
       <div class="step" data-step="aprovada">Aprovada</div>
     </div>
     
-    <!-- ABAS -->
     <div class="tabs-container no-print">
       <button class="tab-button active" data-tab="tab-os"><i class="fas fa-clipboard-list"></i> O.S</button>
       <button class="tab-button" data-tab="tab-checklist"><i class="fas fa-check-square"></i> Checklist</button>
@@ -319,49 +307,54 @@
         </div>
         <div><label class="block text-xs text-[var(--muted)] mb-1">Relato do Cliente</label><textarea id="relatoCliente" class="form-input" rows="2" placeholder="Descreva o problema..."></textarea></div>
         <div class="action-buttons no-print">
-          <button id="btnAbrirOS" class="btn btn-primary" onclick="mudarStatus('abertura')"><i class="fas fa-plus-circle"></i> Abrir O.S</button>
-          <button id="btnIniciarExecucao" class="btn btn-info" onclick="iniciarExecucao()"><i class="fas fa-play"></i> Iniciar Execucao</button>
-          <button id="btnFinalizar" class="btn btn-warning" onclick="finalizarServico()"><i class="fas fa-stop"></i> Finalizar Serviço</button>
-          <button id="btnFecharOS" class="btn btn-danger" onclick="fecharOS()"><i class="fas fa-lock"></i> Fechar O.S</button>
-          <button id="btnAprovar" class="btn btn-success" onclick="mudarStatus('aprovada')"><i class="fas fa-stamp"></i> Aprovar com Assinatura</button>
+          <button id="btnAbrirOS" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Abrir O.S</button>
+          <button id="btnIniciarExecucao" class="btn btn-info"><i class="fas fa-play"></i> Iniciar Execucao</button>
+          <button id="btnFinalizar" class="btn btn-warning"><i class="fas fa-stop"></i> Finalizar Serviço</button>
+          <button id="btnFecharOS" class="btn btn-danger"><i class="fas fa-lock"></i> Fechar O.S</button>
+          <button id="btnAprovar" class="btn btn-success"><i class="fas fa-stamp"></i> Aprovar com Assinatura</button>
         </div>
       </div>
+      
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Dados do Equipamento</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div><label class="block text-xs text-[var(--muted)] mb-1">Marca</label><select id="marcaSelect" class="form-input"></select><div id="marcaOutraDiv" style="display:none;" class="mt-1"><input type="text" id="marcaOutra" class="form-input" placeholder="Digite a marca"></div><input type="hidden" id="marca"></div>
           <div><label class="block text-xs text-[var(--muted)] mb-1">Modelo</label><input type="text" id="modelo" class="form-input"></div>
           <div><label class="block text-xs text-[var(--muted)] mb-1">N° Série</label><input type="text" id="numSerie" class="form-input"></div>
-          <div><label class="block text-xs text-[var(--muted)] mb-1">Horímetro <span class="text-red-400">*</span></label><input type="text" id="horimetro" class="form-input" placeholder="Ex: 1250h" required></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Horímetro</label><input type="text" id="horimetro" class="form-input" placeholder="Ex: 1250h"></div>
           <div><label class="block text-xs text-[var(--muted)] mb-1">Combustível</label><select id="combustivel" class="form-input"><option value="">Selecione</option><option value="eletrico">Elétrico</option><option value="diesel">Diesel</option><option value="gasolina">Gasolina</option><option value="glp">GLP</option></select></div>
           <div><label class="block text-xs text-[var(--muted)] mb-1">WhatsApp Cliente</label><input type="text" id="whatsappCliente" class="form-input" placeholder="(00) 00000-0000"></div>
         </div>
         <div class="grid md:grid-cols-3 gap-4 mt-4">
-          <div><label class="block text-xs text-[var(--muted)] mb-1">Cliente</label><input type="text" id="cliente" class="form-input" required></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Cliente</label><input type="text" id="cliente" class="form-input"></div>
           <div><label class="block text-xs text-[var(--muted)] mb-1">CNPJ/CPF</label><input type="text" id="cnpj" class="form-input"></div>
           <div><label class="block text-xs text-[var(--muted)] mb-1">Cidade</label><input type="text" id="cidadeCliente" class="form-input"></div>
         </div>
-        <div class="mt-4"><label class="block text-xs text-[var(--muted)] mb-1">Endereco</label><div class="flex gap-2"><input type="text" id="endereco" class="form-input flex-1"><button type="button" onclick="abrirMapa()" class="btn btn-secondary"><i class="fas fa-map-marker-alt"></i></button></div></div>
+        <div class="mt-4"><label class="block text-xs text-[var(--muted)] mb-1">Endereco</label><div class="flex gap-2"><input type="text" id="endereco" class="form-input flex-1"><button type="button" id="btnMapa" class="btn btn-secondary"><i class="fas fa-map-marker-alt"></i></button></div></div>
       </div>
+      
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Serviço Realizado</h2>
         <div><label class="block text-xs text-[var(--muted)] mb-1">Diagnóstico / Serviços executados</label><textarea id="descricaoServico" class="form-input min-h-24" placeholder="Descreva o diagnostico..."></textarea></div>
         <div class="mt-3"><label class="block text-xs text-[var(--muted)] mb-1">Peças / Materiais Aplicados</label><textarea id="pecasAplicadas" class="form-input min-h-20" placeholder="Liste as pecas..."></textarea></div>
         <div class="mt-3"><label class="block text-xs text-[var(--muted)] mb-1">Pendencias / Itens Críticos</label><textarea id="pendencias" class="form-input min-h-20" placeholder="Pendencias..."></textarea></div>
       </div>
+      
       <div class="checklist-card p-5 mb-5"><h2 class="font-display text-xl mb-2"><i class="fas fa-camera"></i> Foto do Horímetro</h2><input type="file" id="fotoHorimetroInput" accept="image/*" class="form-input"><div id="fotoHorimetroPreview" class="photo-preview"></div></div>
       <div class="checklist-card p-5 mb-5"><h2 class="font-display text-xl mb-2">Fotos do Servico (max. 10)</h2><input type="file" id="fotosServico" multiple accept="image/*" class="form-input"><div id="fotosPreview" class="photo-preview"></div></div>
       <div class="checklist-card p-5 mb-5"><h2 class="font-display text-xl mb-2"><i class="fas fa-exclamation-triangle"></i> Fotos das Pendências (max. 10)</h2><input type="file" id="fotosPendenciasInput" multiple accept="image/*" class="form-input"><div id="fotosPendenciasPreview" class="photo-preview"></div></div>
+      
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Assinaturas Digitais</h2>
         <div class="grid md:grid-cols-2 gap-6">
-          <div><label class="block text-xs text-[var(--muted)] mb-1">Técnico</label><canvas id="sigTecnicoCanvas" class="signature-canvas" width="400" height="140"></canvas><div class="flex gap-2 mt-2"><button type="button" onclick="limparAssinatura('tec')" class="btn btn-secondary text-xs">Limpar</button><button type="button" onclick="salvarAssinatura('tec')" class="btn btn-primary text-xs">Salvar</button></div><input type="hidden" id="assinaturaTecnicoData"><input type="text" id="tecnico" placeholder="Marlift Empilhadeiras" class="form-input mt-2"></div>
-          <div><label class="block text-xs text-[var(--muted)] mb-1">Cliente / Recebedor</label><canvas id="sigClienteCanvas" class="signature-canvas" width="400" height="140"></canvas><div class="flex gap-2 mt-2"><button type="button" onclick="limparAssinatura('cli')" class="btn btn-secondary text-xs">Limpar</button><button type="button" onclick="salvarAssinatura('cli')" class="btn btn-primary text-xs">Salvar</button></div><input type="hidden" id="assinaturaClienteData"><input type="text" id="recebedor" placeholder="Nome do recebedor" class="form-input mt-2"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Técnico</label><canvas id="sigTecnicoCanvas" class="signature-canvas" width="400" height="140"></canvas><div class="flex gap-2 mt-2"><button type="button" id="btnLimparTec" class="btn btn-secondary text-xs">Limpar</button><button type="button" id="btnSalvarTec" class="btn btn-primary text-xs">Salvar</button></div><input type="hidden" id="assinaturaTecnicoData"><input type="text" id="tecnico" placeholder="Marlift Empilhadeiras" class="form-input mt-2"></div>
+          <div><label class="block text-xs text-[var(--muted)] mb-1">Cliente / Recebedor</label><canvas id="sigClienteCanvas" class="signature-canvas" width="400" height="140"></canvas><div class="flex gap-2 mt-2"><button type="button" id="btnLimparCli" class="btn btn-secondary text-xs">Limpar</button><button type="button" id="btnSalvarCli" class="btn btn-primary text-xs">Salvar</button></div><input type="hidden" id="assinaturaClienteData"><input type="text" id="recebedor" placeholder="Nome do recebedor" class="form-input mt-2"></div>
         </div>
       </div>
+      
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Controle de Horas</h2>
-        <div class="text-center mb-4"><div class="timer-display" id="timerDisplay">00:00:00</div><div class="flex gap-2 justify-center mt-3"><button type="button" onclick="controlarTimer('start')" class="btn btn-success text-sm">Iniciar</button><button type="button" onclick="controlarTimer('pause')" class="btn btn-warning text-sm">Pausar</button><button type="button" onclick="controlarTimer('stop')" class="btn btn-danger text-sm">Parar</button></div></div>
+        <div class="text-center mb-4"><div class="timer-display" id="timerDisplay">00:00:00</div><div class="flex gap-2 justify-center mt-3"><button type="button" id="btnTimerStart" class="btn btn-success text-sm">Iniciar</button><button type="button" id="btnTimerPause" class="btn btn-warning text-sm">Pausar</button><button type="button" id="btnTimerStop" class="btn btn-danger text-sm">Parar</button></div></div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div><label class="block text-xs text-[var(--muted)] mb-1">Início</label><input type="time" id="horaInicio" class="form-input"></div>
           <div><label class="block text-xs text-[var(--muted)] mb-1">Saída Almoço</label><input type="time" id="horaAlmocoSaida" class="form-input"></div>
@@ -373,7 +366,7 @@
           <div><label class="block text-xs text-[var(--muted)] mb-1">Total Geral</label><input type="text" id="totalGeral" class="form-input font-mono font-bold text-[var(--success)]" readonly></div>
         </div>
       </div>
-      <div class="flex gap-3 justify-center mb-8 no-print"><button onclick="salvarOSManual()" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Progresso</button></div>
+      <div class="flex gap-3 justify-center mb-8 no-print"><button id="btnSalvarOS" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Progresso</button></div>
     </div>
     
     <div id="tab-checklist" class="tab-content"><div class="checklist-card p-4 mb-5"><div class="flex justify-between items-center"><span class="font-semibold">Progresso do Checklist</span><span id="progressText" class="font-mono text-[var(--accent)] text-lg">0%</span></div><div class="progress-bar mt-2"><div id="progressFill" class="progress-fill" style="width:0%"></div></div></div><div id="checklistSections"></div></div>
@@ -390,8 +383,8 @@
       <div class="checklist-card p-5 mb-5">
         <h2 class="font-display text-xl mb-3">Cadastro de Cliente</h2>
         <div class="grid md:grid-cols-2 gap-3"><input type="text" id="cad_nome" placeholder="Nome*" class="form-input"><input type="text" id="cad_cnpj" placeholder="CNPJ" class="form-input"><input type="text" id="cad_endereco" placeholder="Endereço" class="form-input"><input type="text" id="cad_cidade" placeholder="Cidade" class="form-input"><input type="text" id="cad_telefone" placeholder="Telefone" class="form-input"><input type="text" id="cad_whatsapp" placeholder="WhatsApp" class="form-input"><input type="email" id="cad_email" placeholder="E-mail" class="form-input"><input type="text" id="cad_responsavel_nome" placeholder="Responsável (Nome)" class="form-input"><input type="text" id="cad_responsavel_telefone" placeholder="Telefone do Responsável" class="form-input"></div>
-        <div class="mt-4"><label class="font-semibold text-sm">Equipamentos do Cliente</label><div id="equipamentosList"></div><button type="button" onclick="adicionarCampoEquipamentoVazio()" class="btn btn-secondary text-sm mt-2"><i class="fas fa-plus"></i> Adicionar Equipamento</button></div>
-        <div class="flex gap-3 mt-5"><button class="btn btn-primary" onclick="salvarCliente()"><i class="fas fa-save"></i> Salvar Cliente</button><button id="cad_btnCancelar" class="btn btn-secondary" style="display:none;" onclick="cancelarEdicaoCliente()">Cancelar</button><button class="btn btn-secondary" onclick="exportarClientesCSV()"><i class="fas fa-file-csv"></i> Exportar CSV</button><button class="btn btn-secondary" onclick="importarClientesCSV()"><i class="fas fa-upload"></i> Importar CSV</button></div>
+        <div class="mt-4"><label class="font-semibold text-sm">Equipamentos do Cliente</label><div id="equipamentosList"></div><button type="button" id="btnAddEquip" class="btn btn-secondary text-sm mt-2"><i class="fas fa-plus"></i> Adicionar Equipamento</button></div>
+        <div class="flex gap-3 mt-5"><button id="btnSalvarCliente" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Cliente</button><button id="cad_btnCancelar" class="btn btn-secondary" style="display:none;">Cancelar</button><button id="btnExportClientes" class="btn btn-secondary"><i class="fas fa-file-csv"></i> Exportar CSV</button><button id="btnImportClientes" class="btn btn-secondary"><i class="fas fa-upload"></i> Importar CSV</button></div>
       </div>
       <div class="mt-5"><input type="text" id="cad_searchInput" placeholder="Buscar cliente..." class="form-input w-full md:w-64 mb-3"><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-[var(--bg-secondary)]"><tr><th class="p-3 text-left">Nome</th><th class="p-3 text-left">Cidade</th><th class="p-3 text-left">Marcas</th><th class="p-3 text-left">Ações</th></tr></thead><tbody id="cad_tableBody"></tbody></table></div></div>
     </div>
@@ -415,7 +408,7 @@
       </div>
       <div class="checklist-card p-5">
         <h2 class="font-display text-xl mb-3">Histórico de O.S</h2>
-        <div class="flex flex-wrap gap-3 mb-4"><input type="text" id="historicoSearch" placeholder="Buscar..." class="form-input w-64"><select id="historicoFiltroTipo" class="form-input w-40"><option value="">Todos os Tipos</option><option value="emergencial">Emergencial</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option><option value="garantia">Garantia</option><option value="normal">Normal</option><option value="avaliacao">Avaliação</option><option value="orcamento">Orçamento</option></select><select id="historicoFiltroStatus" class="form-input w-36"><option value="">Todos Status</option><option value="abertura">Abertura</option><option value="execucao">Execução</option><option value="finalizacao">Finalizando</option><option value="fechada">Fechada</option><option value="aprovada">Aprovada</option></select><button onclick="exportarHistoricoCSV()" class="btn btn-secondary text-sm"><i class="fas fa-file-csv"></i> Exportar CSV</button><button onclick="importarHistoricoCSV()" class="btn btn-secondary text-sm"><i class="fas fa-upload"></i> Restaurar CSV</button><button onclick="limparHistorico()" class="btn btn-secondary text-sm text-red-400"><i class="fas fa-trash"></i> Limpar</button></div>
+        <div class="flex flex-wrap gap-3 mb-4"><input type="text" id="historicoSearch" placeholder="Buscar..." class="form-input w-64"><select id="historicoFiltroTipo" class="form-input w-40"><option value="">Todos os Tipos</option><option value="emergencial">Emergencial</option><option value="preventiva">Preventiva</option><option value="corretiva">Corretiva</option><option value="garantia">Garantia</option><option value="normal">Normal</option><option value="avaliacao">Avaliação</option><option value="orcamento">Orçamento</option></select><select id="historicoFiltroStatus" class="form-input w-36"><option value="">Todos Status</option><option value="abertura">Abertura</option><option value="execucao">Execução</option><option value="finalizacao">Finalizando</option><option value="fechada">Fechada</option><option value="aprovada">Aprovada</option></select><button id="btnExportHistorico" class="btn btn-secondary text-sm"><i class="fas fa-file-csv"></i> Exportar CSV</button><button id="btnImportHistorico" class="btn btn-secondary text-sm"><i class="fas fa-upload"></i> Restaurar CSV</button><button id="btnLimparHistorico" class="btn btn-secondary text-sm text-red-400"><i class="fas fa-trash"></i> Limpar</button></div>
         <div class="overflow-x-auto">
           <table class="table-os">
             <thead><tr><th class="w-28">O.S</th><th class="w-28">Data</th><th>Cliente</th><th class="w-28">Status</th><th class="w-20">Horas</th><th class="w-28">Ações</th></tr></thead>
@@ -426,7 +419,6 @@
       </div>
     </div>
     
-    <!-- Aba de Gerenciamento de Usuários (Só Admin) -->
     <div id="tab-usuarios" class="tab-content">
       <div class="checklist-card p-5">
         <h2 class="font-display text-xl mb-3"><i class="fas fa-users-cog"></i> Gerenciamento de Usuários</h2>
@@ -442,7 +434,7 @@
               <option value="admin">👑 Administrador</option>
             </select>
           </div>
-          <button onclick="adicionarUsuario()" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Usuário</button>
+          <button id="btnAddUser" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Usuário</button>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
@@ -460,84 +452,23 @@
 </div>
 
 <script>
-// ==================== VARIÁVEIS GLOBAIS ====================
-var currentUser = null;
-var currentStatus = 'abertura';
-var fotosServico = [];
-var fotoHorimetro = null;
-var fotosPendencias = [];
-var clients = [];
-var osHistory = [];
-var editingClientId = null;
-var hasUnsavedChanges = false;
-var osCounter = 0;
+// ==================== SISTEMA DE LOGIN SIMPLIFICADO ====================
+var usuarioAtual = null;
 
-var timerInterval = null;
-var timerSeconds = 0;
-var timerRunning = false;
-var timerPaused = false;
-
-var signatureCanvases = { tec: null, cli: null };
-var signatureDrawing = { tec: false, cli: false };
-
-// Configurações
-var marcasLista = ["TOYOTA","CLARK","BYD","PALETRANS","LINDE","HYSTER","YALE","CATERPILLAR","KOMATSU","MITSUBISHI","NISSAN","STILL","CROWN","JUNGHEINRICH","TCM","HYUNDAI","DOOSAN","HELI","HANGCHA","LONKING","OUTRA"];
-
-var checklistConfig = [
-  { id:'motor', title:'Motor e Componentes', items:[{id:'motor_oleo',label:'Nivel de oleo do motor'},{id:'motor_filtro_oleo',label:'Filtro de oleo'},{id:'motor_filtro_ar',label:'Filtro de ar'},{id:'motor_filtro_comb',label:'Filtro de combustivel'},{id:'motor_correias',label:'Correias'},{id:'motor_radiador',label:'Radiador'}] },
-  { id:'eletrico', title:'Sistema Eletrico', items:[{id:'eletr_bateria',label:'Bateria'},{id:'eletr_terminais',label:'Terminais'},{id:'eletr_alternador',label:'Alternador'},{id:'eletr_partida',label:'Motor de partida'},{id:'eletr_farois',label:'Farois'},{id:'eletr_buzina',label:'Buzina'}] },
-  { id:'hidraulico', title:'Sistema Hidraulico', items:[{id:'hidr_oleo',label:'Nivel oleo hidraulico'},{id:'hidr_bomba',label:'Bomba hidraulica'},{id:'hidr_cilindros',label:'Cilindros'},{id:'hidr_vazamentos',label:'Vazamentos'},{id:'hidr_mangueiras',label:'Mangueiras'}] },
-  { id:'transmissao', title:'Transmissao e Freios', items:[{id:'trans_oleo',label:'Oleo transmissao'},{id:'freio_servico',label:'Freio de servico'},{id:'freio_estac',label:'Freio de estacionamento'},{id:'freio_pastilhas',label:'Pastilhas/Lonas'}] },
-  { id:'direcao', title:'Direcao', items:[{id:'dir_volante',label:'Volante'},{id:'dir_caixa',label:'Caixa de direcao'},{id:'dir_hidraulica',label:'Direcao hidraulica'}] },
-  { id:'estrutura', title:'Estrutura e Garfos', items:[{id:'est_mastros',label:'Mastros'},{id:'est_correntes',label:'Correntes'},{id:'est_garfos',label:'Garfos'},{id:'est_roletes',label:'Roletes'}] },
-  { id:'seguranca', title:'Seguranca', items:[{id:'seg_cinto',label:'Cinto de seguranca'},{id:'seg_extintor',label:'Extintor'},{id:'seg_espelhos',label:'Espelhos'},{id:'seg_alarme',label:'Alarme de re'}] }
-];
-
-// ==================== FUNÇÕES AUXILIARES ====================
-function $(id) { return document.getElementById(id); }
-
-function showToast(msg, isError) {
-  var t = $('toastCenter');
-  if (!t) return;
-  var msgSpan = $('toastMessage');
-  if (msgSpan) msgSpan.textContent = msg;
-  t.style.borderColor = isError ? '#ef4444' : '#10b981';
-  t.classList.add('show');
-  setTimeout(function() { if (t) t.classList.remove('show'); }, 2500);
-}
-
-function getVal(id) { var e = $(id); return e ? e.value : ''; }
-function setVal(id, v) { var e = $(id); if (e) e.value = v || ''; }
-
-function formatStatus(st) { var map = {abertura:'ABERTURA', execucao:'EM EXECUCAO', finalizacao:'FINALIZANDO', fechada:'FECHADA', aprovada:'APROVADA'}; return map[st] || (st || '').toUpperCase(); }
-
-// ==================== STORAGE ====================
-function salvarClientesStorage() { localStorage.setItem('marlift_clientes', JSON.stringify(clients)); }
-function carregarClientesStorage() { var data = localStorage.getItem('marlift_clientes'); clients = data ? JSON.parse(data) : []; return clients; }
-function salvarOSHistoryStorage() { localStorage.setItem('marlift_os_history', JSON.stringify(osHistory)); }
-function carregarOSHistoryStorage() { var data = localStorage.getItem('marlift_os_history'); osHistory = data ? JSON.parse(data) : []; return osHistory; }
-function salvarCounterStorage() { localStorage.setItem('marlift_os_counter', osCounter); }
-function carregarCounterStorage() { var data = localStorage.getItem('marlift_os_counter'); osCounter = data ? parseInt(data) : 0; return osCounter; }
-
-// ==================== SISTEMA DE AUTENTICAÇÃO ====================
-var defaultUsers = [
+var usuariosCadastrados = [
   { id: 1, login: "admin", nome: "Administrador", senha: "admin123", role: "admin" },
   { id: 2, login: "tecnico", nome: "Leonardo Martins", senha: "tec123", role: "tecnico" },
   { id: 3, login: "visualizador", nome: "Visitante", senha: "vis123", role: "visualizador" }
 ];
 
-function carregarUsuarios() {
-  var saved = localStorage.getItem('marlift_users');
-  if (saved) {
-    return JSON.parse(saved);
-  } else {
-    localStorage.setItem('marlift_users', JSON.stringify(defaultUsers));
-    return [...defaultUsers];
-  }
-}
-
-function salvarUsuarios(users) {
-  localStorage.setItem('marlift_users', JSON.stringify(users));
+function mostrarToast(mensagem, erro) {
+  var toast = document.getElementById('toastCenter');
+  var msgSpan = document.getElementById('toastMessage');
+  if (!toast) return;
+  msgSpan.textContent = mensagem;
+  toast.style.borderColor = erro ? '#ef4444' : '#10b981';
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 2500);
 }
 
 function fazerLogin() {
@@ -545,26 +476,25 @@ function fazerLogin() {
   var senha = document.getElementById('loginPassword').value;
   
   if (!login || !senha) {
-    showToast('Preencha usuário e senha', true);
+    mostrarToast('Preencha usuário e senha', true);
     return;
   }
   
-  var users = carregarUsuarios();
-  var user = users.find(u => u.login === login && u.senha === senha);
+  var usuario = usuariosCadastrados.find(u => u.login === login && u.senha === senha);
   
-  if (user) {
-    currentUser = { id: user.id, login: user.login, nome: user.nome, role: user.role };
-    localStorage.setItem('marlift_current_user', JSON.stringify(currentUser));
+  if (usuario) {
+    usuarioAtual = { id: usuario.id, login: usuario.login, nome: usuario.nome, role: usuario.role };
+    localStorage.setItem('usuarioMarlift', JSON.stringify(usuarioAtual));
     mostrarAplicacao();
-    showToast(`Bem-vindo, ${user.nome}!`);
+    mostrarToast('Bem-vindo, ' + usuario.nome + '!');
   } else {
-    showToast('Usuário ou senha inválidos!', true);
+    mostrarToast('Usuário ou senha inválidos!', true);
   }
 }
 
 function logout() {
-  currentUser = null;
-  localStorage.removeItem('marlift_current_user');
+  usuarioAtual = null;
+  localStorage.removeItem('usuarioMarlift');
   document.getElementById('loginContainer').style.display = 'flex';
   document.getElementById('appContainer').style.display = 'none';
   document.getElementById('loginUser').value = '';
@@ -572,9 +502,9 @@ function logout() {
 }
 
 function verificarSessao() {
-  var saved = localStorage.getItem('marlift_current_user');
-  if (saved) {
-    currentUser = JSON.parse(saved);
+  var salvo = localStorage.getItem('usuarioMarlift');
+  if (salvo) {
+    usuarioAtual = JSON.parse(salvo);
     mostrarAplicacao();
   } else {
     document.getElementById('loginContainer').style.display = 'flex';
@@ -585,1333 +515,165 @@ function verificarSessao() {
 function mostrarAplicacao() {
   document.getElementById('loginContainer').style.display = 'none';
   document.getElementById('appContainer').style.display = 'block';
-  atualizarUIPorPerfil();
-  renderizarTabelaUsuarios();
+  document.getElementById('userName').textContent = usuarioAtual.nome;
   
-  var tabUsuarios = document.getElementById('tabUsuariosBtn');
-  if (tabUsuarios) {
-    tabUsuarios.style.display = currentUser.role === 'admin' ? 'inline-block' : 'none';
-  }
-}
-
-function atualizarUIPorPerfil() {
-  var userNameSpan = document.getElementById('userName');
-  var userRoleSpan = document.getElementById('userRole');
-  var userBadge = document.getElementById('userBadge');
+  var roleNames = { admin: 'ADMIN', tecnico: 'TÉCNICO', visualizador: 'VISUALIZADOR' };
+  document.getElementById('userRole').textContent = roleNames[usuarioAtual.role];
+  document.getElementById('userBadge').className = 'user-badge ' + usuarioAtual.role;
   
-  if (userNameSpan) userNameSpan.textContent = currentUser.nome;
-  if (userRoleSpan) {
-    var roleNames = { admin: 'ADMIN', tecnico: 'TÉCNICO', visualizador: 'VISUALIZADOR' };
-    userRoleSpan.textContent = roleNames[currentUser.role] || 'USER';
-    userBadge.className = `user-badge ${currentUser.role}`;
-  }
+  var isVisualizador = usuarioAtual.role === 'visualizador';
   
-  var isVisualizador = currentUser.role === 'visualizador';
-  
-  var botoes = ['btnAbrirOS', 'btnIniciarExecucao', 'btnFinalizar', 'btnFecharOS', 'btnAprovar', 'btnNovaOS', 'btnSync', 'btnDownload'];
+  var botoes = ['btnPreviaPDF', 'btnEnviarEmail', 'btnNovaOS', 'btnSync', 'btnDownload', 'btnAbrirOS', 'btnIniciarExecucao', 'btnFinalizar', 'btnFecharOS', 'btnAprovar', 'btnSalvarOS', 'btnSalvarCliente', 'btnAddEquip', 'btnAddUser'];
   botoes.forEach(id => {
     var btn = document.getElementById(id);
     if (btn) btn.disabled = isVisualizador;
   });
   
-  if (isVisualizador) {
-    var saveClientBtn = document.querySelector('#tab-clientes .btn-primary');
-    if (saveClientBtn) saveClientBtn.disabled = true;
-    var addEquipBtn = document.querySelector('#tab-clientes .btn-secondary');
-    if (addEquipBtn) addEquipBtn.disabled = true;
+  var tabUsuarios = document.getElementById('tabUsuariosBtn');
+  if (tabUsuarios) {
+    tabUsuarios.style.display = usuarioAtual.role === 'admin' ? 'inline-block' : 'none';
   }
   
-  var camposEditaveis = ['descricaoServico', 'pecasAplicadas', 'pendencias', 'horasExtras', 'adicionalNoturno', 'modelo', 'numSerie', 'horimetro'];
-  camposEditaveis.forEach(id => {
-    var el = document.getElementById(id);
-    if (el) el.disabled = isVisualizador;
-  });
-}
-
-function adicionarUsuario() {
-  if (currentUser.role !== 'admin') {
-    showToast('Apenas administradores podem adicionar usuários', true);
-    return;
-  }
-  
-  var login = document.getElementById('newUserLogin').value.trim();
-  var nome = document.getElementById('newUserName').value.trim();
-  var senha = document.getElementById('newUserPassword').value;
-  var role = document.getElementById('newUserRole').value;
-  
-  if (!login || !nome || !senha) {
-    showToast('Preencha todos os campos', true);
-    return;
-  }
-  
-  var users = carregarUsuarios();
-  if (users.find(u => u.login === login)) {
-    showToast('Usuário já existe!', true);
-    return;
-  }
-  
-  var newId = Math.max(...users.map(u => u.id), 0) + 1;
-  users.push({ id: newId, login, nome, senha, role });
-  salvarUsuarios(users);
-  renderizarTabelaUsuarios();
-  
-  document.getElementById('newUserLogin').value = '';
-  document.getElementById('newUserName').value = '';
-  document.getElementById('newUserPassword').value = '';
-  
-  showToast(`Usuário ${login} adicionado!`);
-}
-
-function excluirUsuario(id) {
-  if (currentUser.role !== 'admin') {
-    showToast('Apenas administradores podem excluir usuários', true);
-    return;
-  }
-  
-  if (currentUser.id === id) {
-    showToast('Você não pode excluir seu próprio usuário', true);
-    return;
-  }
-  
-  if (confirm('Excluir este usuário?')) {
-    var users = carregarUsuarios();
-    users = users.filter(u => u.id !== id);
-    salvarUsuarios(users);
-    renderizarTabelaUsuarios();
-    showToast('Usuário excluído');
+  if (usuarioAtual.role === 'admin') {
+    carregarTabelaUsuarios();
   }
 }
 
-function renderizarTabelaUsuarios() {
+function carregarTabelaUsuarios() {
   var tbody = document.getElementById('usersTableBody');
   if (!tbody) return;
-  
-  var users = carregarUsuarios();
   tbody.innerHTML = '';
-  
   var roleNames = { admin: '👑 Administrador', tecnico: '🔧 Técnico', visualizador: '👁️ Visualizador' };
   
-  users.forEach(user => {
+  usuariosCadastrados.forEach(user => {
     var row = tbody.insertRow();
     row.innerHTML = `
       <td class="p-2 font-mono">${user.login}</td>
       <td class="p-2">${user.nome}</td>
-      <td class="p-2">${roleNames[user.role] || user.role}</td>
+      <td class="p-2">${roleNames[user.role]}</td>
       <td class="p-2">
-        ${currentUser.role === 'admin' && currentUser.id !== user.id ? 
+        ${usuarioAtual.role === 'admin' && usuarioAtual.id !== user.id ? 
           `<button onclick="excluirUsuario(${user.id})" class="text-red-400"><i class="fas fa-trash"></i></button>` : 
-          currentUser.id === user.id ? '<span class="text-[var(--muted)] text-xs">(você)</span>' : ''
+          usuarioAtual.id === user.id ? '<span class="text-[var(--muted)] text-xs">(você)</span>' : ''
         }
       </td>
     `;
   });
 }
 
-// ==================== CHECKLIST ====================
-function renderizarChecklist() {
-  var container = document.getElementById('checklistSections');
-  if (!container) return;
-  container.innerHTML = '';
-  var total = 0;
+function excluirUsuario(id) {
+  if (usuarioAtual.role !== 'admin') { mostrarToast('Sem permissão', true); return; }
+  if (usuarioAtual.id === id) { mostrarToast('Não pode excluir seu próprio usuário', true); return; }
+  if (confirm('Excluir este usuário?')) {
+    usuariosCadastrados = usuariosCadastrados.filter(u => u.id !== id);
+    carregarTabelaUsuarios();
+    mostrarToast('Usuário excluído');
+  }
+}
+
+function adicionarUsuario() {
+  if (usuarioAtual.role !== 'admin') { mostrarToast('Sem permissão', true); return; }
   
-  checklistConfig.forEach(section => {
-    total += section.items.length;
-    var div = document.createElement('div');
-    div.className = 'checklist-card p-5 mb-4';
-    var itemsHtml = section.items.map(item => {
-      return '<div class="checklist-item"><label><input type="checkbox" data-check="true" id="' + item.id + '" onchange="atualizarProgressoChecklist()" ' + (currentUser?.role === 'visualizador' ? 'disabled' : '') + '><span class="text-sm">' + item.label + '</span></label><select class="form-input w-20 text-xs" id="' + item.id + '_status"><option value="ok">OK</option><option value="atencao">Atencao</option><option value="critico">Critico</option><option value="na">N/A</option></select></div>';
-    }).join('');
-    div.innerHTML = '<div class="flex justify-between items-center mb-3"><h3 class="font-display text-xl">' + section.title + '</h3><button type="button" class="btn btn-secondary text-xs" onclick="selecionarTodosChecklist(\'' + section.id + '\')" ' + (currentUser?.role === 'visualizador' ? 'disabled' : '') + '>Selecionar Todos</button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-2">' + itemsHtml + '</div>';
-    container.appendChild(div);
-  });
-  window.totalChecklist = total;
-  atualizarProgressoChecklist();
-}
-
-function selecionarTodosChecklist(sectionId) {
-  if (currentUser?.role === 'visualizador') return;
-  var section = checklistConfig.find(s => s.id === sectionId);
-  if (section) {
-    section.items.forEach(item => {
-      var cb = document.getElementById(item.id);
-      if (cb) cb.checked = true;
-    });
-  }
-  atualizarProgressoChecklist();
-}
-
-function atualizarProgressoChecklist() {
-  var checkboxes = document.querySelectorAll('input[data-check="true"]');
-  var checked = Array.from(checkboxes).filter(cb => cb.checked).length;
-  var pct = window.totalChecklist > 0 ? Math.round((checked / window.totalChecklist) * 100) : 0;
-  var progText = document.getElementById('progressText');
-  if (progText) progText.textContent = pct + '%';
-  var fill = document.getElementById('progressFill');
-  if (fill) fill.style.width = pct + '%';
-}
-
-// ==================== ASSINATURAS ====================
-function iniciarAssinaturas() {
-  signatureCanvases.tec = document.getElementById('sigTecnicoCanvas');
-  signatureCanvases.cli = document.getElementById('sigClienteCanvas');
-  configurarCanvasAssinatura('tec');
-  configurarCanvasAssinatura('cli');
-  limparAssinatura('tec');
-  limparAssinatura('cli');
-}
-
-function configurarCanvasAssinatura(who) {
-  var canvas = signatureCanvases[who];
-  if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-  ctx.strokeStyle = '#1a1a1a';
-  ctx.lineWidth = 2;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
+  var login = document.getElementById('newUserLogin').value.trim();
+  var nome = document.getElementById('newUserName').value.trim();
+  var senha = document.getElementById('newUserPassword').value;
+  var role = document.getElementById('newUserRole').value;
   
-  var desenhar = function(e) {
-    if (!signatureDrawing[who]) return;
-    var rect = canvas.getBoundingClientRect();
-    var scaleX = canvas.width / rect.width;
-    var scaleY = canvas.height / rect.height;
-    var cx = e.touches ? e.touches[0].clientX : e.clientX;
-    var cy = e.touches ? e.touches[0].clientY : e.clientY;
-    var x = (cx - rect.left) * scaleX;
-    var y = (cy - rect.top) * scaleY;
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-  };
+  if (!login || !nome || !senha) { mostrarToast('Preencha todos os campos', true); return; }
+  if (usuariosCadastrados.find(u => u.login === login)) { mostrarToast('Usuário já existe', true); return; }
   
-  var iniciar = function(e) {
-    signatureDrawing[who] = true;
-    ctx.beginPath();
-    desenhar(e);
-  };
+  var newId = Math.max(...usuariosCadastrados.map(u => u.id), 0) + 1;
+  usuariosCadastrados.push({ id: newId, login, nome, senha, role });
+  carregarTabelaUsuarios();
   
-  var parar = function() {
-    signatureDrawing[who] = false;
-    ctx.beginPath();
-  };
-  
-  canvas.addEventListener('mousedown', iniciar);
-  canvas.addEventListener('mousemove', desenhar);
-  canvas.addEventListener('mouseup', parar);
-  canvas.addEventListener('mouseleave', parar);
-  canvas.addEventListener('touchstart', function(e) { e.preventDefault(); iniciar(e.touches[0]); }, {passive: false});
-  canvas.addEventListener('touchmove', function(e) { e.preventDefault(); desenhar(e.touches[0]); }, {passive: false});
-  canvas.addEventListener('touchend', parar);
-}
-
-function limparAssinatura(who) {
-  var canvas = signatureCanvases[who];
-  if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = '#1a1a1a';
-  ctx.lineWidth = 2;
-  setVal(who === 'tec' ? 'assinaturaTecnicoData' : 'assinaturaClienteData', '');
-}
-
-function salvarAssinatura(who) {
-  var canvas = signatureCanvases[who];
-  if (!canvas) return;
-  var dataURL = canvas.toDataURL('image/png');
-  setVal(who === 'tec' ? 'assinaturaTecnicoData' : 'assinaturaClienteData', dataURL);
-  showToast('Assinatura salva');
-  hasUnsavedChanges = true;
-}
-
-// ==================== TIMER ====================
-function controlarTimer(acao) {
-  if (acao === 'start') iniciarTimer();
-  else if (acao === 'pause') pausarTimer();
-  else if (acao === 'stop') pararTimer();
-}
-
-function iniciarTimer() {
-  if (timerRunning && !timerPaused) return;
-  if (timerPaused) {
-    if (!getVal('horaAlmocoRetorno')) {
-      var n = new Date();
-      setVal('horaAlmocoRetorno', n.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}));
-    }
-    timerPaused = false;
-    timerRunning = true;
-  } else {
-    timerRunning = true;
-    timerPaused = false;
-    if (timerSeconds === 0) resetarTimer();
-    if (!getVal('horaInicio')) {
-      var n = new Date();
-      setVal('horaInicio', n.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}));
-    }
-  }
-  if (timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(function() {
-    if (!timerPaused && timerRunning) {
-      timerSeconds++;
-      atualizarDisplayTimer();
-    }
-  }, 1000);
-}
-
-function pausarTimer() {
-  if (!timerRunning) return;
-  timerPaused = true;
-  if (!getVal('horaAlmocoSaida')) {
-    var n = new Date();
-    setVal('horaAlmocoSaida', n.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}));
-  }
-}
-
-function pararTimer() {
-  if (!timerRunning) return;
-  clearInterval(timerInterval);
-  timerRunning = false;
-  timerPaused = false;
-  if (!getVal('horaTermino')) {
-    var n = new Date();
-    setVal('horaTermino', n.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'}));
-  }
-  calcularHoras();
-}
-
-function resetarTimer() {
-  timerSeconds = 0;
-  var d = document.getElementById('timerDisplay');
-  if (d) d.textContent = '00:00:00';
-}
-
-function atualizarDisplayTimer() {
-  var h = Math.floor(timerSeconds/3600);
-  var m = Math.floor((timerSeconds%3600)/60);
-  var s = timerSeconds%60;
-  var d = document.getElementById('timerDisplay');
-  if (d) d.textContent = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-}
-
-function timeDiff(s, e) {
-  if (!s || !e) return 0;
-  var sp = s.split(':').map(Number), ep = e.split(':').map(Number);
-  var diff = (ep[0]*60 + ep[1]) - (sp[0]*60 + sp[1]);
-  if (diff < 0) diff += 1440;
-  return diff;
-}
-
-function timeToMinutes(t) {
-  if (!t) return 0;
-  if (t.indexOf('h') !== -1) return parseInt(t) * 60;
-  var p = t.split(':');
-  return parseInt(p[0]) * 60 + parseInt(p[1]);
-}
-
-function calcularHoras() {
-  var i = getVal('horaInicio'), t = getVal('horaTermino');
-  if (!i || !t) return 0;
-  var total = timeDiff(i, t);
-  var saida = getVal('horaAlmocoSaida'), retorno = getVal('horaAlmocoRetorno');
-  if (saida && retorno) total -= timeDiff(saida, retorno);
-  var horas = Math.ceil(total / 60);
-  if (horas < 1) horas = 1;
-  setVal('horasTotais', horas + 'h');
-  atualizarTotalHoras();
-  return horas;
-}
-
-function atualizarTotalHoras() {
-  var hs = getVal('horasTotais');
-  var min = 0;
-  if (hs) { var m = hs.match(/(\d+)h/); if (m) min = parseInt(m[1]) * 60; }
-  var extra = timeToMinutes(getVal('horasExtras'));
-  var not = timeToMinutes(getVal('adicionalNoturno'));
-  var total = min + extra + not;
-  var h = Math.floor(total / 60), m = total % 60;
-  setVal('totalGeral', String(h).padStart(2,'0')+':'+String(m).padStart(2,'0'));
-}
-
-// ==================== CLIENTES ====================
-function carregarClientes() {
-  clients = carregarClientesStorage();
-  renderizarTabelaClientes();
-  atualizarStatsClientes();
-}
-
-function atualizarStatsClientes() {
-  var totalClientes = clients.length;
-  var totalMarcas = 0;
-  clients.forEach(c => { totalMarcas += (c.equipamentos || []).length; });
-  var clientesComOS = new Set();
-  var totalOS = 0, osAbertas = 0, osAprovadas = 0;
-  osHistory.forEach(os => {
-    if (os.cliente) { clientesComOS.add(os.cliente); totalOS++; }
-    if (os.status === 'abertura' || os.status === 'execucao' || os.status === 'finalizacao') osAbertas++;
-    if (os.status === 'aprovada') osAprovadas++;
-  });
-  document.getElementById('statTotalClientes').innerText = totalClientes;
-  document.getElementById('statTotalMarcas').innerText = totalMarcas;
-  document.getElementById('statClientesComOS').innerText = clientesComOS.size;
-  document.getElementById('statTotalOSClientes').innerText = totalOS;
-  document.getElementById('statOSAbertasCliente').innerText = osAbertas;
-  document.getElementById('statOSAprovadasCliente').innerText = osAprovadas;
-}
-
-function renderizarTabelaClientes() {
-  var tbody = document.getElementById('cad_tableBody');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-  if (!clients || clients.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-[var(--muted)]">Nenhum cliente cadastrado</td></tr>';
-    return;
-  }
-  clients.forEach(c => {
-    var row = tbody.insertRow();
-    var marcasLista = (c.equipamentos || []).map(eq => eq.marca).join(', ');
-    row.innerHTML = '<td class="p-2 font-medium">' + (c.nome || '-') + '</td><td class="p-2">' + (c.cidade || '-') + '</td><td class="p-2">' + (marcasLista || '-') + '</td><td class="p-2"><button onclick="selecionarCliente(' + c.id + ')" class="btn btn-primary text-xs py-1 px-2">Selecionar</button> ' + (currentUser?.role !== 'visualizador' ? '<i class="fas fa-edit text-blue-400 cursor-pointer ml-2" onclick="editarCliente(' + c.id + ')"></i> <i class="fas fa-trash text-red-400 cursor-pointer ml-2" onclick="excluirCliente(' + c.id + ')"></i>' : '') + '</td>';
-  });
-}
-
-function adicionarCampoEquipamentoVazio() {
-  adicionarCampoEquipamento('', '', '', 1, '');
-}
-
-function adicionarCampoEquipamento(marca, modelo, serie, qtd, combustivel) {
-  marca = marca || '';
-  modelo = modelo || '';
-  serie = serie || '';
-  qtd = qtd || 1;
-  combustivel = combustivel || '';
-  var container = document.getElementById('equipamentosList');
-  if (!container) return;
-  var div = document.createElement('div');
-  div.className = 'equip-item';
-  
-  var options = '<option value="">Selecione</option>';
-  marcasLista.forEach(m => {
-    if (m !== 'OUTRA') {
-      options += '<option value="' + m + '"' + (marca === m ? ' selected' : '') + '>' + m + '</option>';
-    }
-  });
-  options += '<option value="OUTRA"' + (marca === 'OUTRA' ? ' selected' : '') + '>OUTRA</option>';
-  
-  div.innerHTML = `
-    <select class="form-input w-28 equip-marca">${options}</select>
-    <div class="outra-marca-container" style="display:${marca === 'OUTRA' ? 'block' : 'none'}">
-      <input type="text" placeholder="Digite a marca" class="form-input w-28 outra-marca" value="${marca === 'OUTRA' ? '' : marca}">
-    </div>
-    <input type="text" placeholder="Modelo" class="form-input w-28 equip-modelo" value="${modelo}">
-    <input type="text" placeholder="Série" class="form-input w-28 equip-serie" value="${serie}">
-    <input type="number" placeholder="Qtd" class="form-input w-20 equip-qtd" value="${qtd}">
-    <select class="form-input w-28 equip-combustivel">
-      <option value="">Combustível</option>
-      <option value="eletrico" ${combustivel === 'eletrico' ? 'selected' : ''}>Elétrico</option>
-      <option value="diesel" ${combustivel === 'diesel' ? 'selected' : ''}>Diesel</option>
-      <option value="gasolina" ${combustivel === 'gasolina' ? 'selected' : ''}>Gasolina</option>
-      <option value="glp" ${combustivel === 'glp' ? 'selected' : ''}>GLP</option>
-    </select>
-    <button type="button" class="text-red-500" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
-  `;
-  container.appendChild(div);
-  
-  var select = div.querySelector('.equip-marca');
-  var outraDiv = div.querySelector('.outra-marca-container');
-  select.addEventListener('change', function() {
-    outraDiv.style.display = select.value === 'OUTRA' ? 'block' : 'none';
-    if (select.value !== 'OUTRA') {
-      var outraInput = div.querySelector('.outra-marca');
-      if (outraInput) outraInput.value = '';
-    }
-  });
-}
-
-function salvarCliente() {
-  if (currentUser?.role === 'visualizador') { showToast('Sem permissão para cadastrar clientes', true); return; }
-  var nome = getVal('cad_nome').trim();
-  if (!nome) { showToast('Nome do cliente obrigatório', true); return; }
-  var equipamentos = [];
-  var container = document.getElementById('equipamentosList');
-  if (container) {
-    container.querySelectorAll('.equip-item').forEach(item => {
-      var marcaSelect = item.querySelector('.equip-marca').value;
-      var outraInput = item.querySelector('.outra-marca');
-      var marca = marcaSelect === 'OUTRA' ? (outraInput ? outraInput.value.toUpperCase() : '') : marcaSelect;
-      if (marca) {
-        equipamentos.push({
-          marca: marca,
-          modelo: item.querySelector('.equip-modelo').value || '',
-          serie: item.querySelector('.equip-serie').value || '',
-          qtd: parseInt(item.querySelector('.equip-qtd').value) || 1,
-          combustivel: item.querySelector('.equip-combustivel').value || ''
-        });
-      }
-    });
-  }
-  var cliente = {
-    id: editingClientId || Date.now(),
-    nome: nome,
-    cnpj: getVal('cad_cnpj'),
-    endereco: getVal('cad_endereco'),
-    cidade: getVal('cad_cidade'),
-    telefone: getVal('cad_telefone'),
-    whatsapp: getVal('cad_whatsapp'),
-    email: getVal('cad_email'),
-    responsavel_nome: getVal('cad_responsavel_nome'),
-    responsavel_telefone: getVal('cad_responsavel_telefone'),
-    equipamentos: equipamentos
-  };
-  if (editingClientId) {
-    var idx = clients.findIndex(c => c.id === editingClientId);
-    if (idx >= 0) clients[idx] = cliente;
-    editingClientId = null;
-    var cancelBtn = document.getElementById('cad_btnCancelar');
-    if (cancelBtn) cancelBtn.style.display = 'none';
-  } else {
-    clients.push(cliente);
-  }
-  salvarClientesStorage();
-  renderizarTabelaClientes();
-  limparFormCliente();
-  atualizarStatsClientes();
-  showToast('Cliente salvo');
-}
-
-function selecionarCliente(id) {
-  var c = clients.find(c => c.id === id);
-  if (!c) return;
-  if (c.equipamentos && c.equipamentos.length > 0) {
-    mostrarModalEquipamentos(c);
-  } else {
-    setVal('cliente', c.nome);
-    setVal('cnpj', c.cnpj);
-    setVal('cidadeCliente', c.cidade);
-    setVal('endereco', c.endereco);
-    setVal('whatsappCliente', c.whatsapp);
-    showToast('Cliente carregado');
-    var tabOsBtn = document.querySelector('.tab-button[data-tab="tab-os"]');
-    if (tabOsBtn) tabOsBtn.click();
-  }
-}
-
-function mostrarModalEquipamentos(cliente) {
-  var modal = document.getElementById('equipModal');
-  var equipList = document.getElementById('equipList');
-  equipList.innerHTML = '';
-  if (cliente.equipamentos && cliente.equipamentos.length > 0) {
-    cliente.equipamentos.forEach(eq => {
-      var div = document.createElement('div');
-      div.className = 'equip-option';
-      div.innerHTML = '<div><strong><i class="fas fa-forklift"></i> ' + (eq.marca || 'N/A') + ' ' + (eq.modelo || '') + '</strong></div><div class="text-sm text-[var(--muted)]">Série: ' + (eq.serie || 'N/A') + ' | Qtd: ' + (eq.qtd || 1) + ' | Combustível: ' + (eq.combustivel || 'N/A') + '</div>';
-      div.onclick = function() {
-        carregarEquipamento(eq, cliente);
-        modal.style.display = 'none';
-      };
-      equipList.appendChild(div);
-    });
-  } else {
-    equipList.innerHTML = '<div class="text-center py-4 text-[var(--muted)]">Nenhum equipamento cadastrado.</div>';
-    var btnSimples = document.createElement('button');
-    btnSimples.className = 'btn btn-primary w-full mt-2';
-    btnSimples.innerHTML = 'Carregar apenas dados do cliente';
-    btnSimples.onclick = function() {
-      setVal('cliente', cliente.nome);
-      setVal('cnpj', cliente.cnpj);
-      setVal('cidadeCliente', cliente.cidade);
-      setVal('endereco', cliente.endereco);
-      setVal('whatsappCliente', cliente.whatsapp);
-      showToast('Cliente carregado');
-      modal.style.display = 'none';
-      var tabOsBtn = document.querySelector('.tab-button[data-tab="tab-os"]');
-      if (tabOsBtn) tabOsBtn.click();
-    };
-    equipList.appendChild(btnSimples);
-  }
-  modal.style.display = 'flex';
-}
-
-function fecharModalEquip() {
-  document.getElementById('equipModal').style.display = 'none';
-}
-
-function carregarEquipamento(equip, cliente) {
-  setVal('cliente', cliente.nome);
-  setVal('cnpj', cliente.cnpj);
-  setVal('cidadeCliente', cliente.cidade);
-  setVal('endereco', cliente.endereco);
-  setVal('whatsappCliente', cliente.whatsapp);
-  var selectMarca = document.getElementById('marcaSelect');
-  if (selectMarca) {
-    var marcaEquip = equip.marca || '';
-    if (marcasLista.indexOf(marcaEquip) !== -1) {
-      selectMarca.value = marcaEquip;
-      var outraDiv = document.getElementById('marcaOutraDiv');
-      if (outraDiv) outraDiv.style.display = 'none';
-    } else if (marcaEquip) {
-      selectMarca.value = 'OUTRA';
-      setVal('marcaOutra', marcaEquip);
-      var outraDiv = document.getElementById('marcaOutraDiv');
-      if (outraDiv) outraDiv.style.display = 'block';
-    }
-  }
-  setVal('modelo', equip.modelo || '');
-  setVal('numSerie', equip.serie || '');
-  if (equip.combustivel) setVal('combustivel', equip.combustivel);
-  showToast('Equipamento carregado: ' + (equip.marca || '') + ' ' + (equip.modelo || ''));
-  var tabOsBtn = document.querySelector('.tab-button[data-tab="tab-os"]');
-  if (tabOsBtn) tabOsBtn.click();
-}
-
-function editarCliente(id) {
-  if (currentUser?.role === 'visualizador') { showToast('Sem permissão', true); return; }
-  var c = clients.find(c => c.id === id);
-  if (!c) return;
-  editingClientId = id;
-  setVal('cad_nome', c.nome);
-  setVal('cad_cnpj', c.cnpj);
-  setVal('cad_endereco', c.endereco);
-  setVal('cad_cidade', c.cidade);
-  setVal('cad_telefone', c.telefone);
-  setVal('cad_whatsapp', c.whatsapp);
-  setVal('cad_email', c.email || '');
-  setVal('cad_responsavel_nome', c.responsavel_nome || '');
-  setVal('cad_responsavel_telefone', c.responsavel_telefone || '');
-  var container = document.getElementById('equipamentosList');
-  if (container) container.innerHTML = '';
-  if (c.equipamentos && c.equipamentos.length) {
-    c.equipamentos.forEach(eq => { adicionarCampoEquipamento(eq.marca, eq.modelo, eq.serie, eq.qtd, eq.combustivel); });
-  }
-  var cancelBtn = document.getElementById('cad_btnCancelar');
-  if (cancelBtn) cancelBtn.style.display = 'inline-flex';
-  showToast('Editando cliente');
-}
-
-function excluirCliente(id) {
-  if (currentUser?.role !== 'admin') { showToast('Apenas administradores podem excluir clientes', true); return; }
-  if (!confirm('Excluir este cliente?')) return;
-  clients = clients.filter(c => c.id !== id);
-  salvarClientesStorage();
-  renderizarTabelaClientes();
-  atualizarStatsClientes();
-  showToast('Cliente excluido');
-}
-
-function cancelarEdicaoCliente() {
-  editingClientId = null;
-  limparFormCliente();
-  var cancelBtn = document.getElementById('cad_btnCancelar');
-  if (cancelBtn) cancelBtn.style.display = 'none';
-}
-
-function limparFormCliente() {
-  ['cad_nome','cad_cnpj','cad_endereco','cad_cidade','cad_telefone','cad_whatsapp','cad_email','cad_responsavel_nome','cad_responsavel_telefone'].forEach(id => setVal(id, ''));
-  var container = document.getElementById('equipamentosList');
-  if (container) container.innerHTML = '';
-}
-
-function exportarClientesCSV() {
-  var csv = "Nome,CNPJ,Endereco,Cidade,Telefone,WhatsApp,Email,Responsavel,TelefoneResponsavel,Marcas\n";
-  clients.forEach(c => {
-    var marcasLista = (c.equipamentos || []).map(eq => eq.marca).join('; ');
-    csv += '"' + (c.nome || '') + '",' + (c.cnpj || '') + ',"' + (c.endereco || '') + '","' + (c.cidade || '') + '",' + (c.telefone || '') + ',' + (c.whatsapp || '') + ',' + (c.email || '') + ',' + (c.responsavel_nome || '') + ',' + (c.responsavel_telefone || '') + ',"' + marcasLista + '"\n';
-  });
-  var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'clientes_' + new Date().toISOString().split('T')[0] + '.csv';
-  a.click();
-  showToast('Clientes exportados');
-}
-
-function importarClientesCSV() {
-  if (currentUser?.role !== 'admin') { showToast('Apenas administradores podem importar', true); return; }
-  var input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.csv';
-  input.onchange = function(e) {
-    var file = e.target.files[0];
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      var lines = ev.target.result.split('\n');
-      for (var i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;
-        var parts = lines[i].split(',');
-        if (parts[0]) {
-          var nome = parts[0].replace(/"/g, '');
-          var cliente = { id: Date.now() + i, nome: nome, cnpj: parts[1] || '', endereco: (parts[2] || '').replace(/"/g, ''), cidade: (parts[3] || '').replace(/"/g, ''), telefone: parts[4] || '', whatsapp: parts[5] || '', email: parts[6] || '', responsavel_nome: parts[7] || '', responsavel_telefone: parts[8] || '', equipamentos: [] };
-          clients.push(cliente);
-        }
-      }
-      salvarClientesStorage();
-      renderizarTabelaClientes();
-      atualizarStatsClientes();
-      showToast('Importação concluída');
-    };
-    reader.readAsText(file, 'UTF-8');
-  };
-  input.click();
-}
-
-// ==================== HISTÓRICO ====================
-function carregarHistorico() {
-  osHistory = carregarOSHistoryStorage();
-  renderizarHistorico();
-  atualizarStatsHistorico();
-  atualizarStatsClientes();
-}
-
-function atualizarStatsHistorico() {
-  var total = osHistory.length;
-  var statusAbertura = 0, statusExecucao = 0, statusFinalizacao = 0, statusFechada = 0, statusAprovada = 0;
-  var tipoEmergencial = 0, tipoPreventiva = 0, tipoCorretiva = 0, tipoGarantia = 0, tipoNormal = 0, tipoAvaliacao = 0, tipoOrcamento = 0;
-  var esteMes = 0;
-  var now = new Date();
-  var mesAtual = now.getMonth(), anoAtual = now.getFullYear();
-  osHistory.forEach(os => {
-    if (os.status === 'abertura') statusAbertura++;
-    else if (os.status === 'execucao') statusExecucao++;
-    else if (os.status === 'finalizacao') statusFinalizacao++;
-    else if (os.status === 'fechada') statusFechada++;
-    else if (os.status === 'aprovada') statusAprovada++;
-    if (os.tipoChamado === 'emergencial') tipoEmergencial++;
-    else if (os.tipoChamado === 'preventiva') tipoPreventiva++;
-    else if (os.tipoChamado === 'corretiva') tipoCorretiva++;
-    else if (os.tipoChamado === 'garantia') tipoGarantia++;
-    else if (os.tipoChamado === 'normal') tipoNormal++;
-    else if (os.tipoChamado === 'avaliacao') tipoAvaliacao++;
-    else if (os.tipoChamado === 'orcamento') tipoOrcamento++;
-    if (os.dataOS) { var d = new Date(os.dataOS); if (d.getMonth() === mesAtual && d.getFullYear() === anoAtual) esteMes++; }
-  });
-  document.getElementById('statTotalOS').innerText = total;
-  document.getElementById('statStatusAbertura').innerText = statusAbertura;
-  document.getElementById('statStatusExecucao').innerText = statusExecucao;
-  document.getElementById('statStatusFinalizacao').innerText = statusFinalizacao;
-  document.getElementById('statStatusFechada').innerText = statusFechada;
-  document.getElementById('statStatusAprovada').innerText = statusAprovada;
-  document.getElementById('statTipoEmergencial').innerText = tipoEmergencial;
-  document.getElementById('statTipoPreventiva').innerText = tipoPreventiva;
-  document.getElementById('statTipoCorretiva').innerText = tipoCorretiva;
-  document.getElementById('statTipoGarantia').innerText = tipoGarantia;
-  document.getElementById('statTipoNormal').innerText = tipoNormal;
-  document.getElementById('statTipoAvaliacao').innerText = tipoAvaliacao;
-  document.getElementById('statTipoOrcamento').innerText = tipoOrcamento;
-  document.getElementById('statEsteMes').innerText = esteMes;
-}
-
-function renderizarHistorico() {
-  var search = getVal('historicoSearch').toLowerCase();
-  var tipo = getVal('historicoFiltroTipo');
-  var statusFiltro = getVal('historicoFiltroStatus');
-  var filtered = osHistory.filter(os => {
-    var matchSearch = !search || (os.numeroOS && os.numeroOS.toLowerCase().indexOf(search) !== -1) || (os.cliente && os.cliente.toLowerCase().indexOf(search) !== -1);
-    var matchTipo = !tipo || os.tipoChamado === tipo;
-    var matchStatus = !statusFiltro || os.status === statusFiltro;
-    return matchSearch && matchTipo && matchStatus;
-  });
-  var tbody = document.getElementById('historicoTableBody'), empty = document.getElementById('historicoEmpty');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-  if (filtered.length === 0) { if (empty) empty.classList.remove('hidden'); return; }
-  if (empty) empty.classList.add('hidden');
-  filtered.forEach(os => {
-    var row = tbody.insertRow();
-    var statusClass = 'status-' + (os.status || 'abertura');
-    var statusText = formatStatus(os.status);
-    row.innerHTML = '<td class="font-mono font-bold">' + (os.numeroOS || '-') + '</td><td class="p-2">' + (os.dataOS || '-') + '</td><td class="font-medium">' + (os.cliente || '-').toUpperCase() + '</td><td class="p-2"><span class="status-badge ' + statusClass + '">' + statusText + '</span></td><td class="font-mono font-bold text-[var(--success)]">' + (os.horasTotais || '-') + '</td><td class="p-2"><button onclick="visualizarOS(\'' + os.numeroOS + '\')" class="text-blue-400"><i class="fas fa-eye"></i></button> ' + (currentUser?.role !== 'visualizador' ? '<button onclick="editarOS(\'' + os.numeroOS + '\')" class="text-orange-400 ml-2"><i class="fas fa-edit"></i></button> <button onclick="excluirOS(\'' + os.numeroOS + '\')" class="text-red-400 ml-2"><i class="fas fa-trash"></i></button>' : '') + '</td>';
-  });
-}
-
-function visualizarOS(num) {
-  var os = osHistory.find(o => o.numeroOS === num);
-  if (!os) return;
-  currentStatus = os.status || 'abertura';
-  document.querySelectorAll('#tab-os input, #tab-os select, #tab-os textarea').forEach(el => { if (el.id && el.type !== 'file') el.value = ''; });
-  for (var key in os) {
-    if (['fotosBase64','fotoHorimetro','fotosPendencias','assinaturaTecnico','assinaturaCliente'].indexOf(key) === -1) setVal(key, os[key]);
-  }
-  if (os.fotoHorimetro) {
-    fotoHorimetro = os.fotoHorimetro;
-    var preview = document.getElementById('fotoHorimetroPreview');
-    if (preview) preview.innerHTML = '<div class="photo-item"><img src="' + os.fotoHorimetro + '"><div class="photo-remove" onclick="removerFotoHorimetro()">x</div></div>';
-  } else removerFotoHorimetro();
-  if (os.fotosBase64 && os.fotosBase64.length) {
-    fotosServico = os.fotosBase64;
-    var preview = document.getElementById('fotosPreview');
-    if (preview) preview.innerHTML = '';
-    os.fotosBase64.forEach(src => {
-      if (preview) { var div = document.createElement('div'); div.className = 'photo-item'; div.innerHTML = '<img src="' + src + '"><div class="photo-remove" onclick="removerFotoServico(this)">x</div>'; preview.appendChild(div); }
-    });
-  } else { fotosServico = []; var preview = document.getElementById('fotosPreview'); if (preview) preview.innerHTML = ''; }
-  if (os.fotosPendencias && os.fotosPendencias.length) {
-    fotosPendencias = os.fotosPendencias;
-    var preview = document.getElementById('fotosPendenciasPreview');
-    if (preview) preview.innerHTML = '';
-    os.fotosPendencias.forEach(src => {
-      if (preview) { var div = document.createElement('div'); div.className = 'photo-item'; div.innerHTML = '<img src="' + src + '"><div class="photo-remove" onclick="removerFotoPendencia(this)">x</div>'; preview.appendChild(div); }
-    });
-  } else { fotosPendencias = []; var preview = document.getElementById('fotosPendenciasPreview'); if (preview) preview.innerHTML = ''; }
-  carregarAssinaturaCanvas('tec', os.assinaturaTecnico);
-  carregarAssinaturaCanvas('cli', os.assinaturaCliente);
-  document.querySelectorAll('input[data-check="true"]').forEach(cb => { cb.checked = os[cb.id] === true; });
-  atualizarUI();
-  showToast('OS carregada');
-  var tabOsBtn = document.querySelector('.tab-button[data-tab="tab-os"]');
-  if (tabOsBtn) tabOsBtn.click();
-}
-
-function editarOS(num) { visualizarOS(num); }
-function excluirOS(num) {
-  if (currentUser?.role !== 'admin') { showToast('Apenas administradores podem excluir OS', true); return; }
-  if (!confirm('Excluir OS ' + num + '?')) return;
-  osHistory = osHistory.filter(o => o.numeroOS !== num);
-  salvarOSHistoryStorage();
-  renderizarHistorico();
-  atualizarStatsHistorico();
-  atualizarStatsClientes();
-  showToast('OS excluida');
-}
-
-function exportarHistoricoCSV() {
-  var csv = 'OS,Data,Cliente,Status,Tipo,Horas,Total Geral\n';
-  osHistory.forEach(o => { csv += (o.numeroOS || '') + ',' + (o.dataOS || '') + ',"' + (o.cliente || '") + '",' + formatStatus(o.status) + ',' + (o.tipoChamado || '') + ',' + (o.horasTotais || '') + ',' + (o.totalGeral || '') + '\n'; });
-  var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'historico_os_' + new Date().toISOString().split('T')[0] + '.csv';
-  a.click();
-  showToast('CSV exportado');
-}
-
-function importarHistoricoCSV() {
-  if (currentUser?.role !== 'admin') { showToast('Apenas administradores podem importar', true); return; }
-  var input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.csv';
-  input.onchange = function(e) {
-    var file = e.target.files[0];
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      var lines = ev.target.result.split('\n');
-      for (var i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;
-        var parts = lines[i].split(',');
-        if (parts[0]) {
-          var os = { numeroOS: parts[0] || 'OS-' + Date.now() + '-' + i, dataOS: parts[1] || '', cliente: (parts[2] || '').replace(/"/g, ''), status: (parts[3] || '').toLowerCase() || 'abertura', tipoChamado: (parts[4] || '').toLowerCase() || 'normal', horasTotais: parts[5] || '0h', totalGeral: parts[6] || '00:00', descricaoServico: '', pecasAplicadas: '', pendencias: '', relatoCliente: '', marca: '', modelo: '', numSerie: '', horimetro: '', combustivel: '', whatsappCliente: '', cnpj: '', cidadeCliente: '', endereco: '', tecnico: 'MARLIFT', recebedor: '', fotosBase64: [], fotoHorimetro: null, fotosPendencias: [], assinaturaTecnico: '', assinaturaCliente: '' };
-          osHistory.push(os);
-        }
-      }
-      salvarOSHistoryStorage();
-      renderizarHistorico();
-      atualizarStatsHistorico();
-      atualizarStatsClientes();
-      showToast('Importação concluída');
-    };
-    reader.readAsText(file, 'UTF-8');
-  };
-  input.click();
-}
-
-function limparHistorico() {
-  if (currentUser?.role !== 'admin') { showToast('Apenas administradores podem limpar o histórico', true); return; }
-  if (!confirm('Limpar TODO o historico?')) return;
-  osHistory = [];
-  salvarOSHistoryStorage();
-  renderizarHistorico();
-  atualizarStatsHistorico();
-  atualizarStatsClientes();
-  showToast('Historico limpo');
-}
-
-function carregarAssinaturaCanvas(who, dataUrl) {
-  if (!dataUrl) return;
-  var canvas = signatureCanvases[who];
-  if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-  var img = new Image();
-  img.onload = function() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.drawImage(img, 0, 0); setVal(who === 'tec' ? 'assinaturaTecnicoData' : 'assinaturaClienteData', dataUrl); };
-  img.src = dataUrl;
-}
-
-// ==================== FOTOS ====================
-function compressImage(b64) {
-  return new Promise(function(resolve, reject) {
-    var img = new Image();
-    img.src = b64;
-    img.onload = function() {
-      var canvas = document.createElement('canvas');
-      var w = img.width, h = img.height;
-      var tw = 800, th = 600, ratio = Math.min(tw / w, th / h);
-      w = Math.round(w * ratio); h = Math.round(h * ratio);
-      canvas.width = w; canvas.height = h;
-      var ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, w, h);
-      ctx.drawImage(img, 0, 0, w, h);
-      resolve(canvas.toDataURL('image/jpeg', 0.7));
-    };
-    img.onerror = function() { reject(new Error('Falha ao carregar')); };
-  });
-}
-
-function initFotos() {
-  var fotoHorimetroInput = document.getElementById('fotoHorimetroInput');
-  if (fotoHorimetroInput) {
-    fotoHorimetroInput.addEventListener('change', async function(e) {
-      var file = e.target.files[0];
-      if (file) {
-        var reader = new FileReader();
-        reader.onload = async function(ev) {
-          try {
-            fotoHorimetro = await compressImage(ev.target.result);
-            var preview = document.getElementById('fotoHorimetroPreview');
-            if (preview) preview.innerHTML = '<div class="photo-item"><img src="' + fotoHorimetro + '"><div class="photo-remove" onclick="removerFotoHorimetro()">x</div></div>';
-            hasUnsavedChanges = true;
-            showToast('Foto carregada');
-          } catch (err) { showToast('Erro ao processar', true); }
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-  var fotosServicoInput = document.getElementById('fotosServico');
-  if (fotosServicoInput) {
-    fotosServicoInput.addEventListener('change', async function(e) {
-      var files = Array.from(e.target.files);
-      if (fotosServico.length + files.length > 10) { showToast('Máximo de 10 fotos.', true); return; }
-      var preview = document.getElementById('fotosPreview');
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var reader = new FileReader();
-        await new Promise(function(resolve) {
-          reader.onload = async function(ev) {
-            try {
-              var compressed = await compressImage(ev.target.result);
-              fotosServico.push(compressed);
-              if (preview) {
-                var div = document.createElement('div');
-                div.className = 'photo-item';
-                div.innerHTML = '<img src="' + compressed + '"><div class="photo-remove" onclick="removerFotoServico(this)">x</div>';
-                preview.appendChild(div);
-              }
-            } catch (err) { console.error(err); }
-            resolve();
-          };
-          reader.readAsDataURL(file);
-        });
-      }
-      fotosServicoInput.value = '';
-      hasUnsavedChanges = true;
-    });
-  }
-  var fotosPendenciasInput = document.getElementById('fotosPendenciasInput');
-  if (fotosPendenciasInput) {
-    fotosPendenciasInput.addEventListener('change', async function(e) {
-      var files = Array.from(e.target.files);
-      if (fotosPendencias.length + files.length > 10) { showToast('Máximo de 10 fotos de pendências.', true); return; }
-      var preview = document.getElementById('fotosPendenciasPreview');
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var reader = new FileReader();
-        await new Promise(function(resolve) {
-          reader.onload = async function(ev) {
-            try {
-              var compressed = await compressImage(ev.target.result);
-              fotosPendencias.push(compressed);
-              if (preview) {
-                var div = document.createElement('div');
-                div.className = 'photo-item';
-                div.innerHTML = '<img src="' + compressed + '"><div class="photo-remove" onclick="removerFotoPendencia(this)">x</div>';
-                preview.appendChild(div);
-              }
-            } catch (err) { console.error(err); }
-            resolve();
-          };
-          reader.readAsDataURL(file);
-        });
-      }
-      fotosPendenciasInput.value = '';
-      hasUnsavedChanges = true;
-    });
-  }
-}
-
-function removerFotoHorimetro() { fotoHorimetro = null; var inp = document.getElementById('fotoHorimetroInput'); if (inp) inp.value = ''; var preview = document.getElementById('fotoHorimetroPreview'); if (preview) preview.innerHTML = ''; }
-function removerFotoServico(el) { var container = el.parentNode.parentNode; var idx = Array.from(container.children).indexOf(el.parentNode); if (idx !== -1) { fotosServico.splice(idx, 1); el.parentNode.remove(); } }
-function removerFotoPendencia(el) { var container = el.parentNode.parentNode; var idx = Array.from(container.children).indexOf(el.parentNode); if (idx !== -1) { fotosPendencias.splice(idx, 1); el.parentNode.remove(); } }
-
-// ==================== APP PRINCIPAL ====================
-function gerarNumeroOS() {
-  osCounter = carregarCounterStorage();
-  osCounter++;
-  salvarCounterStorage();
-  var now = new Date();
-  var yy = now.getFullYear().toString().slice(-2);
-  var mm = String(now.getMonth() + 1).padStart(2, '0');
-  var os = 'OS-' + yy + mm + '-' + String(osCounter).padStart(4, '0');
-  setVal('numeroOS', os);
-  return os;
-}
-
-function setDefaultDate() { var inp = document.getElementById('dataOS'); if (inp && !inp.value) inp.value = new Date().toISOString().split('T')[0]; }
-
-function popularMarcas() {
-  var select = document.getElementById('marcaSelect');
-  if (!select) return;
-  select.innerHTML = '<option value="">Selecione</option>';
-  marcasLista.forEach(m => { if (m !== 'OUTRA') select.innerHTML += '<option value="' + m + '">' + m + '</option>'; });
-  select.innerHTML += '<option value="OUTRA">OUTRA</option>';
-}
-
-function setupMarcaSelect() {
-  var select = document.getElementById('marcaSelect'), div = document.getElementById('marcaOutraDiv'), input = document.getElementById('marcaOutra');
-  if (!select || !div || !input) return;
-  select.addEventListener('change', function() {
-    div.style.display = select.value === 'OUTRA' ? 'block' : 'none';
-    if (select.value === 'OUTRA') input.focus();
-    setVal('marca', select.value === 'OUTRA' ? input.value.toUpperCase() : select.value);
-  });
-  input.addEventListener('input', function() { setVal('marca', input.value.toUpperCase()); });
-}
-
-function setupTabs() {
-  var tabs = document.querySelectorAll('.tab-button');
-  var contents = document.querySelectorAll('.tab-content');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', function(e) {
-      e.preventDefault();
-      var targetId = this.getAttribute('data-tab');
-      if (!targetId) return;
-      tabs.forEach(t => t.classList.remove('active'));
-      contents.forEach(c => c.classList.remove('active'));
-      this.classList.add('active');
-      var target = document.getElementById(targetId);
-      if (target) target.classList.add('active');
-    });
-  });
-}
-
-function setupSearch() {
-  var histSearch = document.getElementById('historicoSearch');
-  if (histSearch) histSearch.addEventListener('input', function() { renderizarHistorico(); });
-  var tipoFiltro = document.getElementById('historicoFiltroTipo');
-  if (tipoFiltro) tipoFiltro.addEventListener('change', function() { renderizarHistorico(); });
-  var statusFiltro = document.getElementById('historicoFiltroStatus');
-  if (statusFiltro) statusFiltro.addEventListener('change', function() { renderizarHistorico(); });
-  var searchInput = document.getElementById('cad_searchInput');
-  if (searchInput) {
-    searchInput.addEventListener('input', function(e) {
-      var search = e.target.value.toLowerCase();
-      var filtered = clients.filter(c => (c.nome && c.nome.toLowerCase().indexOf(search) !== -1) || (c.cidade && c.cidade.toLowerCase().indexOf(search) !== -1));
-      var original = clients;
-      clients = filtered;
-      renderizarTabelaClientes();
-      clients = original;
-    });
-  }
-}
-
-function atualizarUI() {
-  var isAbertura = currentStatus === 'abertura';
-  var isExecucao = currentStatus === 'execucao';
-  var isFinalizacao = currentStatus === 'finalizacao';
-  var isFechada = currentStatus === 'fechada';
-  var isAprovada = currentStatus === 'aprovada';
-  var isVisualizador = currentUser?.role === 'visualizador';
-  
-  var btnIniciar = document.getElementById('btnIniciarExecucao');
-  if (btnIniciar) btnIniciar.disabled = !isAbertura || isVisualizador;
-  var btnFinalizar = document.getElementById('btnFinalizar');
-  if (btnFinalizar) btnFinalizar.disabled = !isExecucao || isVisualizador;
-  var btnFechar = document.getElementById('btnFecharOS');
-  if (btnFechar) btnFechar.disabled = !isFinalizacao || isVisualizador;
-  var btnAprovar = document.getElementById('btnAprovar');
-  if (btnAprovar) btnAprovar.disabled = !isFechada || isVisualizador;
-  var btnPDF = document.getElementById('btnPreviaPDF');
-  var btnEmail = document.getElementById('btnEnviarEmail');
-  if (btnPDF) btnPDF.disabled = !isAprovada;
-  if (btnEmail) btnEmail.disabled = !isAprovada;
-  
-  var camposEditaveis = ['descricaoServico','pecasAplicadas','pendencias','horasExtras','adicionalNoturno','modelo','numSerie','horimetro'];
-  camposEditaveis.forEach(id => { var el = document.getElementById(id); if (el) el.disabled = isFechada || isAprovada || isVisualizador; });
-  var marcaSelect = document.getElementById('marcaSelect');
-  if (marcaSelect) marcaSelect.disabled = isFechada || isAprovada || isVisualizador;
-  
-  var badge = document.getElementById('statusBadge');
-  if (badge) {
-    badge.className = 'status-badge';
-    var statusConfig = { abertura: {text:'EM ABERTURA', class:'status-abertura'}, execucao: {text:'EM EXECUCAO', class:'status-execucao'}, finalizacao: {text:'FINALIZANDO', class:'status-finalizacao'}, fechada: {text:'FECHADA', class:'status-fechada'}, aprovada: {text:'APROVADA', class:'status-aprovada'} };
-    var cfg = statusConfig[currentStatus];
-    badge.textContent = cfg.text;
-    badge.classList.add(cfg.class);
-  }
-  
-  var steps = ['abertura','execucao','finalizacao','fechada','aprovada'];
-  document.querySelectorAll('.step').forEach((step, idx) => {
-    step.classList.remove('active','completed','locked');
-    if (steps[idx] === currentStatus) step.classList.add('active');
-    else if (steps.indexOf(currentStatus) > idx) step.classList.add(steps[idx] === 'fechada' && currentStatus === 'aprovada' ? 'locked' : 'completed');
-  });
-}
-
-function coletarDados() {
-  var data = {};
-  document.querySelectorAll('#tab-os input, #tab-os select, #tab-os textarea').forEach(el => { if (el.id && el.type !== 'file') data[el.id] = el.value; });
-  document.querySelectorAll('input[data-check="true"]').forEach(cb => { data[cb.id] = cb.checked; });
-  document.querySelectorAll('#checklistSections select').forEach(sel => { data[sel.id] = sel.value; });
-  var marcaSelect = document.getElementById('marcaSelect').value, marcaOutra = document.getElementById('marcaOutra').value;
-  data.marca = marcaSelect === 'OUTRA' ? marcaOutra.toUpperCase() : marcaSelect;
-  return data;
-}
-
-async function salvarOS() {
-  salvarAssinatura('tec');
-  salvarAssinatura('cli');
-  var data = coletarDados();
-  data.status = currentStatus;
-  data.fotosBase64 = fotosServico;
-  data.fotoHorimetro = fotoHorimetro;
-  data.fotosPendencias = fotosPendencias;
-  data.assinaturaTecnico = getVal('assinaturaTecnicoData');
-  data.assinaturaCliente = getVal('assinaturaClienteData');
-  calcularHoras();
-  data.horasTotais = getVal('horasTotais');
-  data.totalGeral = getVal('totalGeral');
-  if (!data.numeroOS) { data.numeroOS = gerarNumeroOS(); }
-  try {
-    var idx = osHistory.findIndex(os => os.numeroOS === data.numeroOS);
-    if (idx >= 0) { osHistory[idx] = data; } else { osHistory.unshift(data); }
-    salvarOSHistoryStorage();
-    hasUnsavedChanges = false;
-    atualizarStatsHistorico();
-    atualizarStatsClientes();
-    return true;
-  } catch (e) { showToast('Erro ao salvar', true); return false; }
-}
-
-async function salvarOSManual() {
-  if (currentUser?.role === 'visualizador') { showToast('Sem permissão para salvar', true); return; }
-  var ok = await salvarOS();
-  if (ok) { showToast('OS salva com sucesso'); renderizarHistorico(); }
-}
-
-async function mudarStatus(novoStatus) {
-  if (currentUser?.role === 'visualizador') { showToast('Sem permissão', true); return; }
-  if (novoStatus === 'abertura') {
-    if (!getVal('numeroOS')) { showToast('Clique em Nova OS primeiro.', true); return; }
-    if (!getVal('cliente').trim()) { showToast('Cliente obrigatório para abrir a OS.', true); return; }
-  }
-  if (novoStatus === 'execucao' && currentStatus !== 'abertura') { showToast('A OS precisa estar EM ABERTURA para iniciar execução.', true); return; }
-  if (novoStatus === 'finalizacao' && currentStatus !== 'execucao') { showToast('A OS precisa estar EM EXECUÇÃO para finalizar.', true); return; }
-  if (novoStatus === 'fechada' && currentStatus !== 'finalizacao') { showToast('A OS precisa estar FINALIZANDO para ser fechada.', true); return; }
-  if (novoStatus === 'aprovada') {
-    if (currentStatus !== 'fechada') { showToast('A OS precisa estar FECHADA para aprovação.', true); return; }
-    if (!getVal('assinaturaClienteData')) { showToast('O cliente deve assinar digitalmente.', true); return; }
-    if (!getVal('recebedor').trim()) { showToast('Informe o nome do recebedor.', true); return; }
-  }
-  currentStatus = novoStatus;
-  if (novoStatus === 'finalizacao' || novoStatus === 'fechada') calcularHoras();
-  var ok = await salvarOS();
-  if (ok) {
-    atualizarUI();
-    renderizarHistorico();
-    showToast('Status: ' + formatStatus(novoStatus));
-  }
-}
-
-function iniciarExecucao() { if (currentStatus !== 'abertura') return; mudarStatus('execucao'); controlarTimer('start'); showToast('Execução iniciada'); }
-function finalizarServico() { if (currentStatus !== 'execucao') return; var horimetro = getVal('horimetro'); if (!horimetro) { showToast('Preencha o campo Horímetro antes de finalizar o serviço.', true); return; } controlarTimer('stop'); calcularHoras(); mudarStatus('finalizacao'); showToast('Serviço finalizado'); }
-function fecharOS() { if (currentStatus !== 'finalizacao') return; var descricao = getVal('descricaoServico').trim(); if (!descricao) { showToast('Descreva o serviço realizado antes de fechar a OS.', true); return; } var horimetro = getVal('horimetro'); if (!horimetro) { showToast('Campo Horímetro obrigatório.', true); return; } calcularHoras(); if (!confirm('Fechar esta OS? Após fechada, os dados não poderão ser alterados.')) return; mudarStatus('fechada'); showToast('OS fechada'); }
-
-function novaOS() {
-  if (currentUser?.role === 'visualizador') { showToast('Sem permissão para criar OS', true); return; }
-  if (hasUnsavedChanges && !confirm('Há alterações não salvas. Criar nova OS?')) return;
-  currentStatus = 'abertura';
-  fotosServico = [];
-  fotoHorimetro = null;
-  fotosPendencias = [];
-  hasUnsavedChanges = false;
-  document.querySelectorAll('#tab-os input, #tab-os select, #tab-os textarea').forEach(el => { if (el.id && el.type !== 'file') { el.value = ''; } });
-  setDefaultDate();
-  document.querySelectorAll('input[data-check="true"]').forEach(cb => { cb.checked = false; });
-  atualizarProgressoChecklist();
-  var preview = document.getElementById('fotosPreview'); if (preview) preview.innerHTML = '';
-  var previewH = document.getElementById('fotoHorimetroPreview'); if (previewH) previewH.innerHTML = '';
-  var previewP = document.getElementById('fotosPendenciasPreview'); if (previewP) previewP.innerHTML = '';
-  document.getElementById('fotosServico').value = '';
-  document.getElementById('fotoHorimetroInput').value = '';
-  document.getElementById('fotosPendenciasInput').value = '';
-  limparAssinatura('tec');
-  limparAssinatura('cli');
-  resetarTimer();
-  timerSeconds = 0;
-  timerRunning = false;
-  timerPaused = false;
-  if (timerInterval) clearInterval(timerInterval);
-  gerarNumeroOS();
-  atualizarUI();
-  showToast('Nova OS criada');
-  var tabClientesBtn = document.querySelector('.tab-button[data-tab="tab-clientes"]');
-  if (tabClientesBtn) tabClientesBtn.click();
-}
-
-function getResumoEmail() {
-  var tipoChamado = getVal('tipoChamado') || 'normal';
-  var tipoChamadoFormatado = { normal:'NORMAL', emergencial:'EMERGENCIAL', garantia:'GARANTIA', preventiva:'PREVENTIVA', corretiva:'CORRETIVA', avaliacao:'AVALIAÇÃO', orcamento:'ORÇAMENTO' }[tipoChamado] || tipoChamado.toUpperCase();
-  var statusTexto = formatStatus(currentStatus);
-  var horasTotais = getVal('horasTotais') || '0h';
-  var marca = getVal('marca') || 'Não informada';
-  var modelo = getVal('modelo') || 'Não informado';
-  var descricao = getVal('descricaoServico') || 'Não informado';
-  var pecas = getVal('pecasAplicadas') || 'Nenhuma peça informada';
-  var pendencias = getVal('pendencias') || 'Nenhuma pendência informada';
-  var relato = getVal('relatoCliente') || 'Não informado';
-  var clienteNome = getVal('cliente');
-  var dataOS = getVal('dataOS') || new Date().toLocaleDateString('pt-BR');
-  var numeroOS = getVal('numeroOS') || 'OS-' + Date.now();
-  var resumo = '🏭 *MARLIFT EMPILHADEIRAS*\n━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━\n📋 *OS:* ' + numeroOS + '\n📅 *Data:* ' + dataOS + '\n👤 *Cliente:* ' + clienteNome + '\n🔧 *Empilhadeira:* ' + marca + ' ' + modelo + '\n⏱️ *Tempo de Serviço:* ' + horasTotais + '\n✅ *Status:* ' + statusTexto + '\n📄 *Tipo de Chamado:* ' + tipoChamadoFormatado + '\n🗣️ *Relato do Cliente:*\n' + relato + '\n\n📝 *Serviço Realizado:*\n' + descricao + '\n\n' + (pecas !== 'Nenhuma peça informada' ? '🔩 *Peças Aplicadas:*\n' + pecas + '\n\n' : '') + (pendencias !== 'Nenhuma pendência informada' ? '⚠️ *Pendências:*\n' + pendencias + '\n\n' : '') + '━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━\n📱 *MARLIFT Empilhadeiras*\n🏭 *Excelência em Movimento*';
-  return resumo;
-}
-
-function enviarEmailComResumo() {
-  if (currentStatus !== 'aprovada') { showToast('Somente OS aprovadas podem ser enviadas por e-mail.', true); return; }
-  var clienteNome = getVal('cliente');
-  var clienteEncontrado = clients.find(c => c.nome === clienteNome);
-  var emailCliente = clienteEncontrado ? clienteEncontrado.email : '';
-  if (!emailCliente) {
-    var emailDigitado = prompt('Cliente não possui e-mail cadastrado. Digite o e-mail para envio:', '');
-    if (!emailDigitado || !emailDigitado.includes('@')) { showToast('E-mail inválido!', true); return; }
-    emailCliente = emailDigitado;
-  }
-  var assunto = 'MARLIFT - Relatório da Ordem de Serviço ' + getVal('numeroOS');
-  var corpo = getResumoEmail();
-  window.location.href = 'mailto:' + encodeURIComponent(emailCliente) + '?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(corpo);
-  showToast('Abrindo cliente de e-mail com o resumo da OS');
-}
-
-function gerarPreviaPDF() {
-  if (currentStatus !== 'aprovada') { showToast('Somente OS aprovadas geram PDF.', true); return; }
-  var html = gerarRelatorioHTML();
-  var win = window.open();
-  win.document.write(html);
-  win.document.close();
-  setTimeout(function() { win.print(); }, 500);
-}
-
-function gerarRelatorioHTML() {
-  var tipoChamado = getVal('tipoChamado') || 'normal';
-  var tipoChamadoFormatado = { normal:'NORMAL', emergencial:'EMERGENCIAL', garantia:'GARANTIA', preventiva:'PREVENTIVA', corretiva:'CORRETIVA', avaliacao:'AVALIAÇÃO', orcamento:'ORÇAMENTO' }[tipoChamado] || tipoChamado.toUpperCase();
-  var endereco = getVal('endereco');
-  var mapaLink = endereco ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(endereco) : '#';
-  var mapaHtml = endereco ? '<div style="margin-top:8px;"><a href="' + mapaLink + '" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#f97316; color:white; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:bold;">📍 Ver localização no Google Maps</a></div>' : '';
-  var fotosHtml = fotosServico.length ? '<div style="margin-top:20px;"><h3>📸 Registro Fotográfico do Serviço</h3><div style="display:flex;flex-wrap:wrap;gap:10px;">' + fotosServico.map(src => '<img src="' + src + '" style="max-width:200px;max-height:200px;border-radius:8px;border:1px solid #ccc;">').join('') + '</div></div>' : '';
-  var fotosPendHtml = fotosPendencias.length ? '<div style="margin-top:20px;"><h3>⚠️ Registro Fotográfico das Pendências</h3><div style="display:flex;flex-wrap:wrap;gap:10px;">' + fotosPendencias.map(src => '<img src="' + src + '" style="max-width:200px;max-height:200px;border-radius:8px;border:1px solid #ccc;">').join('') + '</div></div>' : '';
-  var horimetroImg = fotoHorimetro ? '<div><h3>📊 Horímetro</h3><img src="' + fotoHorimetro + '" style="max-width:180px;border:1px solid #ccc;border-radius:8px;"></div>' : '';
-  var checklistItems = [];
-  document.querySelectorAll('input[data-check="true"]').forEach(cb => { if (cb.checked) checklistItems.push(cb.parentElement.innerText.trim()); });
-  var checklistHtml = checklistItems.length ? '<div><h3>✅ Itens Verificados</h3><ul>' + checklistItems.map(i => '<li>' + i + '</li>').join('') + '</ul></div>' : '';
-  var horasCobradas = getVal('horasTotais') || '0h';
-  var horasExtras = getVal('horasExtras') || '00:00';
-  var adicionalNoturno = getVal('adicionalNoturno') || '00:00';
-  var totalGeral = getVal('totalGeral') || '00:00';
-  
-  return '<!DOCTYPE html><html><head><title>Relatorio_' + getVal('numeroOS') + '</title><meta charset="UTF-8"><style>body{font-family:Arial,sans-serif;padding:30px;max-width:900px;margin:auto;color:#1e293b;}h1{color:#f97316;margin-bottom:5px;font-size:28px;}h2{color:#374151;margin-top:25px;font-size:20px;}h3{color:#4b5563;margin-top:15px;border-bottom:1px solid #e5e7eb;padding-bottom:5px;}.header{border-bottom:2px solid #f97316;margin-bottom:20px;padding-bottom:15px;text-align:center;}.logo-area{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:10px;}.logo-icon{width:60px;height:60px;background:linear-gradient(135deg,#f97316,#fb923c);border-radius:15px;display:flex;align-items:center;justify-content:center;}.logo-icon svg{width:40px;height:40px;color:white;}.footer{margin-top:40px;font-size:10px;text-align:center;border-top:1px solid #ccc;padding-top:15px;color:#6b7280;}.assinatura-img{max-width:200px;max-height:80px;border:1px solid #ddd;border-radius:8px;}.section{margin-bottom:20px;}p{margin:5px 0;}.status-aprovada{background:#22c55e20;color:#16a34a;padding:5px 12px;border-radius:20px;font-weight:bold;display:inline-block;}.info-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:10px;gap:10px;}.cliente-linha{background:#f8fafc;padding:12px;border-radius:8px;margin:10px 0;border-left:4px solid #f97316;}.equip-linha{background:#f1f5f9;padding:12px;border-radius:8px;margin:10px 0;border-left:4px solid #10b981;}.horas-linha{background:#f1f5f9;padding:12px;border-radius:8px;margin:10px 0;border-left:4px solid #10b981;display:flex;flex-wrap:wrap;justify-content:space-around;text-align:center;}.horas-item{flex:1;min-width:120px;}</style></head><body><div class="header"><div class="logo-area"><div class="logo-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg></div><div><h1>MARLIFT EMPILHADEIRAS</h1><p style="margin:0;">Excelência em Movimento</p></div></div><h2>RELATÓRIO FINAL - OS ' + getVal('numeroOS') + '</h2><p><strong>Data de Emissão:</strong> ' + new Date().toLocaleString('pt-BR') + '</p><div class="info-row"><span class="status-aprovada">✅ APROVADA PELO CLIENTE</span> <span style="background:#f9731620; color:#f97316; padding:5px 12px; border-radius:20px; font-weight:bold;">📋 TIPO: ' + tipoChamadoFormatado + '</span></div></div><div class="section"><h3>📋 Dados do Cliente</h3><div class="cliente-linha"><strong>👤 Cliente:</strong> ' + getVal('cliente') + '  |  <strong>📄 CNPJ/CPF:</strong> ' + getVal('cnpj') + '</div><div><strong>📍 Endereço:</strong> ' + getVal('endereco') + ' - ' + getVal('cidadeCliente') + '</div>' + mapaHtml + '</div><div class="section"><h3>🏗️ Equipamento</h3><div class="equip-linha"><strong>🔧 Marca:</strong> ' + getVal('marca') + '  |  <strong>📐 Modelo:</strong> ' + getVal('modelo') + '  |  <strong>🔢 Nº Série:</strong> ' + getVal('numSerie') + '  |  <strong>⏱️ Horímetro:</strong> ' + getVal('horimetro') + 'h</div>' + horimetroImg + '</div><div class="section"><h3>🔧 Serviço Executado</h3><p><strong>Diagnóstico:</strong><br>' + (getVal('descricaoServico') || '').replace(/\n/g, '<br>') + '</p><p><strong>Peças Aplicadas:</strong><br>' + (getVal('pecasAplicadas') || '').replace(/\n/g, '<br>') + '</p><p><strong>Pendências:</strong><br>' + (getVal('pendencias') || '').replace(/\n/g, '<br>') + '</p></div>' + checklistHtml + fotosHtml + fotosPendHtml + '<div class="section"><h3>⏱️ Horas Trabalhadas</h3><div class="horas-linha"><div class="horas-item"><strong>Horas Cobradas</strong><br><span style="font-size:1.3em; color:#16a34a;">' + horasCobradas + '</span></div><div class="horas-item"><strong>Horas Extras</strong><br>' + horasExtras + '</div><div class="horas-item"><strong>Adicional Noturno</strong><br>' + adicionalNoturno + '</div><div class="horas-item"><strong>TOTAL GERAL</strong><br><span style="font-size:1.3em; color:#16a34a; font-weight:bold;">' + totalGeral + '</span></div></div></div><div class="section"><h3>✍️ Assinaturas de Aprovação</h3><div style="display:flex;gap:60px;margin-top:15px;flex-wrap:wrap;"><div><strong>Técnico:</strong> ' + getVal('tecnico') + '<br>' + (getVal('assinaturaTecnicoData') ? '<img src="' + getVal('assinaturaTecnicoData') + '" class="assinatura-img">' : '<p style="color:#999;">Não assinado</p>') + '</div><div><strong>Cliente:</strong> ' + getVal('recebedor') + '<br>' + (getVal('assinaturaClienteData') ? '<img src="' + getVal('assinaturaClienteData') + '" class="assinatura-img">' : '<p style="color:#999;">Não assinado</p>') + '</div></div></div><div class="footer">Documento gerado eletronicamente - MARLIFT Empilhadeiras<br>Este documento é válido como comprovante de serviço prestado.</div></body></html>';
-}
-
-function abrirMapa() { var end = getVal('endereco'); if (end) window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(end)); else showToast('Informe o endereço primeiro.', true); }
-function sendWhatsAppMessage() { var numero = prompt('WhatsApp com DDD:', getVal('whatsappCliente')); if (!numero) return; var msg = getResumoEmail(); window.open('https://wa.me/' + numero.replace(/\D/g, '') + '?text=' + encodeURIComponent(msg)); }
-
-// ==================== GOOGLE SHEETS SYNC ====================
-const webAppUrl = 'https://script.google.com/macros/s/AKfycbxbDRx57y4CnRW4e-3hW1eG3n3vX6HxJGV-oG3a59wul2Jx6ATr5g1XZaAiDRpUQI7U/exec';
-
-async function syncAllClientes() {
-  try {
-    setSyncStatus('Enviando clientes...');
-    await fetch(webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'syncClientes', clientes: clients }) });
-    setSyncStatus('Clientes sincronizados!', true);
-    return true;
-  } catch (error) { console.error(error); setSyncStatus('Erro na sincronização', false); return false; }
-}
-
-async function syncSingleCliente(cliente) {
-  try { await fetch(webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'syncSingleCliente', cliente: cliente }) }); return true; } catch (error) { console.error(error); return false; }
-}
-
-async function syncAllOS() {
-  try {
-    setSyncStatus('Enviando OS...');
-    await fetch(webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'syncOS', os: osHistory }) });
-    setSyncStatus('OS sincronizadas!', true);
-    return true;
-  } catch (error) { console.error(error); setSyncStatus('Erro na sincronização', false); return false; }
-}
-
-async function syncSingleOS(os) {
-  try { await fetch(webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'syncSingleOS', os: os }) }); return true; } catch (error) { console.error(error); return false; }
-}
-
-async function fetchFromSheet() {
-  try {
-    setSyncStatus('Baixando dados...');
-    const response = await fetch(webAppUrl);
-    const data = await response.json();
-    if (data.success) {
-      if (data.clientes && data.clientes.length) { clients = data.clientes; salvarClientesStorage(); renderizarTabelaClientes(); atualizarStatsClientes(); }
-      if (data.os && data.os.length) { osHistory = data.os; salvarOSHistoryStorage(); renderizarHistorico(); atualizarStatsHistorico(); }
-      setSyncStatus(`${data.clientes?.length || 0} clientes, ${data.os?.length || 0} OS`, true);
-      showToast(`✅ Dados sincronizados da planilha!`);
-      return true;
-    } else { throw new Error(data.error); }
-  } catch (error) { console.error(error); setSyncStatus('Erro ao baixar', false); showToast('❌ Erro ao carregar dados da planilha', true); return false; }
-}
-
-async function fullSync() { await syncAllClientes(); await syncAllOS(); showToast('✅ Sincronização completa realizada!'); }
-
-function setSyncStatus(message, success = null) {
-  var statusDiv = document.getElementById('syncStatus');
-  var statusText = document.getElementById('syncStatusText');
-  if (statusText) statusText.textContent = message;
-  if (statusDiv && success !== null) {
-    statusDiv.classList.remove('online', 'offline');
-    statusDiv.classList.add(success ? 'online' : 'offline');
-    setTimeout(() => { statusDiv.classList.remove('online', 'offline'); if (statusText) statusText.textContent = 'Pronto'; }, 3000);
-  }
+  document.getElementById('newUserLogin').value = '';
+  document.getElementById('newUserName').value = '';
+  document.getElementById('newUserPassword').value = '';
+  mostrarToast('Usuário adicionado!');
 }
 
 // ==================== INICIALIZAÇÃO ====================
-function init() {
+document.addEventListener('DOMContentLoaded', function() {
   verificarSessao();
-  carregarClientes();
-  carregarHistorico();
-  popularMarcas();
-  renderizarChecklist();
-  iniciarAssinaturas();
-  initFotos();
-  setDefaultDate();
-  setupTabs();
-  setupMarcaSelect();
-  setupSearch();
   
-  // Adicionar listeners para cálculo de horas
-  ['horaInicio','horaTermino','horaAlmocoSaida','horaAlmocoRetorno'].forEach(id => {
-    var el = document.getElementById(id);
-    if (el) el.addEventListener('change', function() { calcularHoras(); });
+  // Configurar eventos básicos
+  document.getElementById('btnLogout').onclick = logout;
+  document.getElementById('btnWhatsApp').onclick = function() { mostrarToast('Função WhatsApp - Em desenvolvimento', false); };
+  document.getElementById('btnMapa').onclick = function() { mostrarToast('Função Mapa - Em desenvolvimento', false); };
+  document.getElementById('btnAddUser').onclick = adicionarUsuario;
+  document.getElementById('btnSalvarCliente').onclick = function() { mostrarToast('Cliente salvo (demo)', false); };
+  document.getElementById('btnAddEquip').onclick = function() { mostrarToast('Adicionar equipamento (demo)', false); };
+  document.getElementById('btnNovaOS').onclick = function() { mostrarToast('Nova OS (demo)', false); };
+  document.getElementById('btnSalvarOS').onclick = function() { mostrarToast('OS salva (demo)', false); };
+  document.getElementById('btnSync').onclick = function() { mostrarToast('Sincronizando...', false); };
+  document.getElementById('btnDownload').onclick = function() { mostrarToast('Baixando dados...', false); };
+  document.getElementById('btnExportClientes').onclick = function() { mostrarToast('Exportando clientes...', false); };
+  document.getElementById('btnImportClientes').onclick = function() { mostrarToast('Importar clientes (demo)', false); };
+  document.getElementById('btnExportHistorico').onclick = function() { mostrarToast('Exportando histórico...', false); };
+  document.getElementById('btnImportHistorico').onclick = function() { mostrarToast('Importar histórico (demo)', false); };
+  document.getElementById('btnLimparHistorico').onclick = function() { if(confirm('Limpar histórico?')) mostrarToast('Histórico limpo', false); };
+  
+  // Timer
+  var timerSeconds = 0, timerInterval = null;
+  document.getElementById('btnTimerStart').onclick = function() {
+    if(timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(function() {
+      timerSeconds++;
+      var h = Math.floor(timerSeconds/3600);
+      var m = Math.floor((timerSeconds%3600)/60);
+      var s = timerSeconds%60;
+      document.getElementById('timerDisplay').textContent = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    }, 1000);
+    mostrarToast('Timer iniciado', false);
+  };
+  document.getElementById('btnTimerPause').onclick = function() { if(timerInterval) clearInterval(timerInterval); mostrarToast('Timer pausado', false); };
+  document.getElementById('btnTimerStop').onclick = function() { if(timerInterval) clearInterval(timerInterval); timerSeconds=0; document.getElementById('timerDisplay').textContent='00:00:00'; mostrarToast('Timer zerado', false); };
+  
+  // Assinaturas
+  var canvasTec = document.getElementById('sigTecnicoCanvas');
+  var ctxTec = canvasTec.getContext('2d');
+  ctxTec.fillStyle = '#ffffff';
+  ctxTec.fillRect(0, 0, canvasTec.width, canvasTec.height);
+  
+  var canvasCli = document.getElementById('sigClienteCanvas');
+  var ctxCli = canvasCli.getContext('2d');
+  ctxCli.fillStyle = '#ffffff';
+  ctxCli.fillRect(0, 0, canvasCli.width, canvasCli.height);
+  
+  document.getElementById('btnLimparTec').onclick = function() { ctxTec.fillStyle = '#ffffff'; ctxTec.fillRect(0, 0, canvasTec.width, canvasTec.height); mostrarToast('Assinatura limpa', false); };
+  document.getElementById('btnLimparCli').onclick = function() { ctxCli.fillStyle = '#ffffff'; ctxCli.fillRect(0, 0, canvasCli.width, canvasCli.height); mostrarToast('Assinatura limpa', false); };
+  document.getElementById('btnSalvarTec').onclick = function() { mostrarToast('Assinatura salva', false); };
+  document.getElementById('btnSalvarCli').onclick = function() { mostrarToast('Assinatura salva', false); };
+  
+  // Configurar data padrão
+  var dataInput = document.getElementById('dataOS');
+  if(dataInput && !dataInput.value) dataInput.value = new Date().toISOString().split('T')[0];
+  
+  // Configurar marcas
+  var marcas = ["TOYOTA","CLARK","BYD","PALETRANS","LINDE","HYSTER","YALE","CATERPILLAR","KOMATSU","MITSUBISHI","NISSAN","STILL","CROWN","JUNGHEINRICH","TCM","HYUNDAI","DOOSAN","HELI","HANGCHA","LONKING","OUTRA"];
+  var selectMarca = document.getElementById('marcaSelect');
+  marcas.forEach(m => { if(m !== 'OUTRA') selectMarca.innerHTML += '<option value="' + m + '">' + m + '</option>'; });
+  selectMarca.innerHTML += '<option value="OUTRA">OUTRA</option>';
+  
+  document.getElementById('marcaSelect').onchange = function() {
+    document.getElementById('marcaOutraDiv').style.display = this.value === 'OUTRA' ? 'block' : 'none';
+  };
+  
+  // Abas
+  var tabs = document.querySelectorAll('.tab-button');
+  var contents = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => {
+    tab.onclick = function() {
+      var targetId = this.getAttribute('data-tab');
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById(targetId).classList.add('active');
+    };
   });
-  var extras = document.getElementById('horasExtras');
-  if (extras) extras.addEventListener('input', function() { atualizarTotalHoras(); });
-  var noturno = document.getElementById('adicionalNoturno');
-  if (noturno) noturno.addEventListener('input', function() { atualizarTotalHoras(); });
   
-  currentStatus = 'abertura';
-  atualizarUI();
-  
-  setTimeout(function() { fetchFromSheet(); }, 2000);
-  
-  var loading = document.getElementById('loadingOverlay');
-  if (loading) loading.style.display = 'none';
-}
-
-document.addEventListener('DOMContentLoaded', function() { init(); });
+  document.getElementById('loadingOverlay').style.display = 'none';
+});
 </script>
 </body>
 </html>
